@@ -6,25 +6,28 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 class Setup {
-    AppDataSource = new DataSource({
-        type: 'mysql',
-        host: process.env.MYSQL_HOST,
-        port: 3306,
-        username: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
-        synchronize: true, // modify database
-        logging: false,
-        entities: [User, Role],
-    });
+    #appDataSource;
+    constructor() {
+        this.#appDataSource = new DataSource({
+            type: 'mysql',
+            host: process.env.MYSQL_HOST,
+            port: process.env.MYSQL_PORT,
+            username: process.env.MYSQL_USER,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DATABASE,
+            synchronize: true, // modify database
+            logging: false,
+            entities: [User, Role],
+        });
+    }
     
     async setupDatabase() {
         try {
             await AppDataSource.initialize();
             console.log('Database connected and synchronized!');
     
-            const userRepository = AppDataSource.getRepository(User);
-            const roleRepository = AppDataSource.getRepository(Role);
+            const userRepository = this.#appDataSource.getRepository(User);
+            const roleRepository = this.#appDataSource.getRepository(Role);
     
             let adminRole = await roleRepository.findOneBy({ name: 'admin' });
             if (!adminRole) {
