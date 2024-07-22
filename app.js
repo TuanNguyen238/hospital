@@ -6,22 +6,25 @@ const AppDataSource = require('./utils/configs.js');
 
 dotenv.config();
 
-if (AppDataSource.isInitialized) {
-    const setup = new Setup();
-    setup.setupDatabase()
-    .then(() => console.log("Database setup complete"))
-    .catch(err => console.error("Database setup failed:", err));
-} else {
-    console.error('DataSource has not been initialized.');
-}
+AppDataSource.initialize()
+    .then(() => {
+        console.log('Database connected and synchronized!');
+        const setup = new Setup();
+        return setup.setupDatabase();
+    })
+    .then(() => {
+        console.log("Database setup complete");
+        const app = express();
+        const PORT = process.env.PORT || 3000;
+        console.log("PORT: " + PORT);
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-console.log("PORT: " + PORT);
+        app.use(express.json());
+        app.use("/users", userRoutes);
 
-app.use(express.json());
-app.use("/users", userRoutes);
-
-app.listen(PORT, () => {
-    console.log(`Server is running on PORT: ${PORT}`);
-});
+        app.listen(PORT, () => {
+            console.log(`Server is running on PORT: ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Database connection or setup error:', err);
+    });

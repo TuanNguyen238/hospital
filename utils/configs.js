@@ -15,8 +15,4 @@ const AppDataSource = new DataSource({
     entities: ["../models/**/*.js"],
 });
 
-AppDataSource.initialize()
-    .then(() => console.log('Database connected and synchronized!'))
-    .catch(err => console.error('Database connection error:', err));
-
 module.exports = AppDataSource;
