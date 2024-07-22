@@ -1,5 +1,4 @@
 import express from 'express';
-import userController from './controller/user-controller.js';
 import { Setup } from './setup.js';
 import dotenv from 'dotenv';
 
@@ -14,7 +13,7 @@ const app = express();
 const PORT = process.env.MYSQL_PORT;
 
 app.use(express.json());
-app.use('/users', userController);
+app.use("/users", userRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);

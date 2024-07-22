@@ -1,4 +1,3 @@
-// repository/setup.js
 import mysql from 'mysql2/promise';
 import { UserQuery } from './utils/user-query.js';
 import { createDB, useDB } from './utils/configs.js';
