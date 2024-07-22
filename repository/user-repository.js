@@ -3,7 +3,7 @@ const User = require('../models/user.js');
 
 class UserRepository {
     constructor() {
-        this.repository = new Repository(User);
+        this.repository = AppDataSource.getRepository(User);
     }
 
     async getUserById(id) {
