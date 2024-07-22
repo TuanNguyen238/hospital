@@ -1,7 +1,8 @@
-import { UserRepository } from '../repository/user-repository.js';
+const UserRepository = require('../repository/user-repository.js');
 
-export class UserService {
+class UserService {
     #userRepository = null;
+
     constructor() {
         this.#userRepository = new UserRepository();
     }
@@ -18,3 +19,5 @@ export class UserService {
         return this.#userRepository.getAllUsers();
     }
 }
+
+module.exports = UserService;

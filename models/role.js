@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { User } from './user.js';
+const { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } = require('typeorm');
+const User = require('./user.js');
 
 @Entity()
 class Role {
@@ -10,7 +10,8 @@ class Role {
     name;
 
     @ManyToMany(() => User, user => user.roles)
+    @JoinTable()
     users;
 }
 
-export default Role;
+module.exports = Role;

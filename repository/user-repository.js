@@ -1,25 +1,24 @@
-import mysql from 'mysql2/promise';
-import { dbConfig } from '../utils/configs.js';
-import { UserQuery } from '../utils/user-query.js';
+const { Repository } = require('typeorm');
+const User = require('../models/user.js');
 
-export class UserRepository {
-    #pool = null;
+class UserRepository {
     constructor() {
-        this.#pool = mysql.createPool(dbConfig);
+        this.repository = new Repository(User);
     }
 
     async getUserById(id) {
-        const [rows] = await this.#pool.query(UserQuery.getUserById, [id]);
-        return rows[0];
+        return await this.repository.findOne({ where: { id } });
     }
 
-    async createUser(name, email, password) {
-        const [result] = await this.#pool.query(UserQuery.createUser, [name, email, password]);
-        return result.insertId;
+    async createUser(userData) {
+        const user = this.repository.create(userData);
+        await this.repository.save(user);
+        return user.id;
     }
 
     async getAllUsers() {
-        const [rows] = await this.#pool.query(UserQuery.getAllUsers);
-        return rows;
+        return await this.repository.find();
     }
 }
+
+module.exports = UserRepository;

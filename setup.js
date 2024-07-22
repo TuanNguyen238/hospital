@@ -1,8 +1,7 @@
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
-import User from './models/user.js';
-import Role from './models/role.js';
-import dotenv from 'dotenv';
+const DataSource = require('typeorm');
+const User = require('./models/user.js');
+const Role = require('./models/role.js');
+const dotenv = require('dotenv');
 
 dotenv.config();
 

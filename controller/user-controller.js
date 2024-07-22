@@ -1,10 +1,8 @@
-import express from 'express';
-import { UserService } from '../service/user-service.js';
-
-const router = express.Router();
+const UserService = require('../service/user-service.js');
 
 class UserController {
     #userService = null;
+
     constructor() {
         this.#userService = new UserService();
     }
@@ -41,3 +39,5 @@ class UserController {
         }
     }
 }
+
+module.exports = UserController;
