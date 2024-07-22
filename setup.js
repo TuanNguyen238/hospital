@@ -1,66 +1,54 @@
-import mysql from 'mysql2/promise';
-import { UserQuery } from './utils/user-query.js';
-import { createDB, useDB } from './utils/configs.js';
-import dotenv from 'dotenv'
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import User from './models/user.js';
+import Role from './models/role.js';
+import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
-export class Setup {
-    #connection = null;
-    
-    async initializeConnection() {
-        try {
-            this.#connection = await mysql.createConnection({
-                host: process.env.MYSQL_HOST,
-                user: process.env.MYSQL_USER,
-                password: process.env.MYSQL_PASSWORD
-            });
-            console.log("Connected!");
-        } catch (err) {
-            console.error("Error connecting to the database:", err);
-            throw err;
+const AppDataSource = new DataSource({
+    type: 'mysql',
+    host: process.env.MYSQL_HOST,
+    port: 3306,
+    username: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    synchronize: true, // modify database
+    logging: false,
+    entities: [User, Role],
+});
+
+const setupDatabase = async () => {
+    try {
+        await AppDataSource.initialize();
+        console.log('Database connected and synchronized!');
+
+        const userRepository = AppDataSource.getRepository(User);
+        const roleRepository = AppDataSource.getRepository(Role);
+
+        let adminRole = await roleRepository.findOneBy({ name: 'admin' });
+        if (!adminRole) {
+            adminRole = roleRepository.create({ name: 'admin' });
+            await roleRepository.save(adminRole);
+            console.log('Admin role created.');
         }
-    }
 
-    async setupDatabase() {
-        try {
-            await this.initializeConnection();
-
-            //await this.#connection.query(createDB);
-
-            await this.#connection.query(useDB);
-
-            await this.#setupUsersTable();
-        } catch (err) {
-            console.error("Error occurred:", err);
-        } finally {
-            if (this.#connection) {
-                await this.#connection.end();
-            }
+        const users = await userRepository.find();
+        if (users.length === 0) {
+            console.log('Users table does not exist or is empty. Seeding data...');
+            const usersData = [
+                { username: 'admin1', email: 'hendong34@gmail.com', password: 'admin1', phoneNumber: '0799699159', status: 'active', roles: [adminRole] },
+                { username: 'admin2', email: 'tuannguyen23823@gmail.com', password: 'admin2', phoneNumber: '0943640913', status: 'active', roles: [adminRole] },
+                { username: 'admin3', email: 'lethithuyduyen230803@gmail.com', password: 'admin3', phoneNumber: '0937837564', status: 'active', roles: [adminRole] }
+            ];
+            await userRepository.save(usersData);
+            console.log('Users seeded.');
+        } else {
+            console.log('Users table already exists or is not empty.');
         }
+    } catch (err) {
+        console.error('Error occurred:', err);
     }
+};
 
-    async #setupUsersTable() {
-        try {
-            const [tables] = await this.#connection.query(UserQuery.showTable, ['users']);
-            if (tables.length === 0) {
-                await this.#connection.query(UserQuery.createTable); 
-                console.log("Users table created");
-
-                const users = [
-                    ['admin1', 'hendong34@gmail.com', 'admin1'],
-                    ['admin2', 'tuannguyen23823@gmail.com', 'admin2'],
-                    ['admin3', 'lethithuyduyen230803@gmail.com', 'admin3']
-                ];
-                for (let user of users) {
-                    await this.#connection.query(UserQuery.createUser, user);
-                    console.log(`Inserted row ${user[0]} into users table`);
-                }
-            } else {
-                console.log("Users table already exists");
-            }
-        } catch (err) {
-            console.error("Error setting up users table:", err);
-        }
-    }
-}
+export default setupDatabase;
