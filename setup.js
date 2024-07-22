@@ -2,6 +2,9 @@
 import mysql from 'mysql2/promise';
 import { UserQuery } from './utils/user-query.js';
 import { createDB, useDB } from './utils/configs.js';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export class Setup {
     #connection = null;
@@ -9,9 +12,9 @@ export class Setup {
     async initializeConnection() {
         try {
             this.#connection = await mysql.createConnection({
-                host: '127.0.0.1',
-                user: 'root',
-                password: '232723'
+                host: process.env.MYSQL_HOST,
+                user: process.env.MYSQL_USER,
+                password: process.env.MYSQL_PASSWORD
             });
             console.log("Connected!");
         } catch (err) {
@@ -24,7 +27,7 @@ export class Setup {
         try {
             await this.initializeConnection();
 
-            await this.#connection.query(createDB);
+            //await this.#connection.query(createDB);
 
             await this.#connection.query(useDB);
 

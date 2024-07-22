@@ -1,7 +1,9 @@
 import express from 'express';
-import userController from './user-controller.js';
-import { Setup } from '../setup.js';
+import userController from './controller/user-controller.js';
+import { Setup } from './setup.js';
+import dotenv from 'dotenv';
 
+dotenv.config()
 const setup = new Setup();
 
 setup.setupDatabase()
@@ -9,7 +11,7 @@ setup.setupDatabase()
     .catch(err => console.error("Database setup failed:", err));
 
 const app = express();
-const PORT = 3000;
+const PORT = 3000//process.env.MYSQL_PORT;
 
 app.use(express.json());
 app.use('/users', userController);
