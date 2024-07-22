@@ -14,11 +14,11 @@ const AppDataSource = new DataSource({
     database: process.env.MYSQL_DATABASE,
     synchronize: true, // modify database
     logging: false,
-    entities: [User, Role],
+    entities: ["../models/**/*.js"],
 });
 
 AppDataSource.initialize()
     .then(() => console.log('Database connected and synchronized!'))
     .catch(err => console.error('Database connection error:', err));
-    
+
 module.exports = AppDataSource;
