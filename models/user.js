@@ -28,7 +28,8 @@ const User = new EntitySchema({
             unique: true
         },
         status: {
-            type: 'tinyint'
+            type: 'varchar',
+            length: 20,
         }
     },
     relations: {

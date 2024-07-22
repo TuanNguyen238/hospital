@@ -19,6 +19,7 @@ class Setup {
             logging: false,
             entities: [User, Role],
         });
+        console.log("PORT SETUP: " + process.env.MYSQL_PORT);
     }
     
     async setupDatabase() {
