@@ -23,7 +23,7 @@ class Setup {
     
     async setupDatabase() {
         try {
-            await AppDataSource.initialize();
+            await this.#appDataSource.initialize();
             console.log('Database connected and synchronized!');
     
             const userRepository = this.#appDataSource.getRepository(User);
