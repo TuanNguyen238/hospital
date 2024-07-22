@@ -1,17 +1,27 @@
-const { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } = require('typeorm');
-const User = require('./user.js');
+const { EntitySchema } = require('typeorm');
 
-@Entity()
-class Role {
-    @PrimaryGeneratedColumn()
-    id;
-
-    @Column()
-    name;
-
-    @ManyToMany(() => User, user => user.roles)
-    @JoinTable()
-    users;
-}
+const Role = new EntitySchema({
+    name: 'Role',
+    tableName: 'roles',
+    columns: {
+        id: {
+            primary: true,
+            type: 'int',
+            generated: true
+        },
+        name: {
+            type: 'varchar',
+            length: 255
+        }
+    },
+    relations: {
+        users: {
+            target: 'User',
+            type: 'many-to-many',
+            inverseSide: 'roles',
+            joinTable: true
+        }
+    }
+});
 
 module.exports = Role;
