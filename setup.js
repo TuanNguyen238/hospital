@@ -50,4 +50,4 @@ const setupDatabase = async () => {
     }
 };
 
-export default setupDatabase;
+module.exports = setupDatabase;
