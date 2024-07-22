@@ -11,7 +11,7 @@ setup.setupDatabase()
     .catch(err => console.error("Database setup failed:", err));
 
 const app = express();
-const PORT = 3000//process.env.MYSQL_PORT;
+const PORT = process.env.MYSQL_PORT;
 
 app.use(express.json());
 app.use('/users', userController);
