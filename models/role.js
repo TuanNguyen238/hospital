@@ -13,6 +13,13 @@ const Role = new EntitySchema({
             type: 'varchar',
             length: 255
         }
+    },
+    relations: {
+        users: {
+            target: 'User',
+            type: 'many-to-many',
+            inverseSide: 'roles'
+        }
     }
 });
 
