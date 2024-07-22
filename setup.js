@@ -6,6 +6,7 @@ class Setup {
     
     async setupDatabase() {
         try {
+            AppDataSource.initialize();
             const userRepository = AppDataSource.getRepository(User);
             const roleRepository = AppDataSource.getRepository(Role);
             roleRepository.name = 'vcl';
