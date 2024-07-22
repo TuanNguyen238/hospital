@@ -15,7 +15,6 @@ AppDataSource.initialize()
         console.log("Database setup complete");
         const app = express();
         const PORT = process.env.PORT || 3000;
-        console.log("PORT: " + PORT);
 
         app.use(express.json());
         app.use("/users", userRoutes);

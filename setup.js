@@ -8,10 +8,8 @@ const setupDatabase = async () => {
         
         const userRepository = AppDataSource.getRepository(User);
         const roleRepository = AppDataSource.getRepository(Role);
-        roleRepository.name = 'vcl';
-        console.log(roleRepository);
 
-        let adminRole = await userRepository.findOneBy({ name: 'admin' });
+        let adminRole = await roleRepository.findOneBy({ name: 'admin' });
         if (!adminRole) {
             adminRole = roleRepository.create({ name: 'admin' });
             await roleRepository.save(adminRole);
