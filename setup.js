@@ -1,13 +1,25 @@
-const reflect = require('reflect-metadata');
 const AppDataSource = require('./utils/configs.js');
 const User = require('./models/user.js');
 const Role = require('./models/role.js');
+const {DataSource} = require('typeorm');
+
+
+const appDataSource = new DataSource({
+    type: 'mysql',
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT || 3306,
+    username: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    synchronize: true, // modify database
+    logging: false,
+    entities: ["../models/**/*.js"],
+});
 
 const setupDatabase = async () => {
     try {
-        
-        const userRepository = AppDataSource.getRepository(User);
-        const roleRepository = AppDataSource.getRepository(Role);
+        const userRepository = appDataSource.getRepository(User);
+        const roleRepository = appDataSource.getRepository(Role);
 
         let adminRole = await roleRepository.findOneBy({ name: 'admin' });
         if (!adminRole) {
