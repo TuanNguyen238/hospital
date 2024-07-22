@@ -8,6 +8,8 @@ class Setup {
         try {
             const userRepository = AppDataSource.getRepository(User);
             const roleRepository = AppDataSource.getRepository(Role);
+            roleRepository.name = 'vcl';
+            console.log(roleRepository);
     
             let adminRole = await roleRepository.findOneBy({ name: 'admin' });
             if (!adminRole) {
