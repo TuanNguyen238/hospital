@@ -1,6 +1,4 @@
 const { DataSource } = require('typeorm');
-const User = require('../models/user.js');
-const Role = require('../models/role.js');
 const dotenv = require('dotenv');
 
 dotenv.config();
