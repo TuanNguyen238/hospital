@@ -1,4 +1,4 @@
-const AppDataSource = require('./utils/config.js');
+const AppDataSource = require('./utils/configs.js');
 const User = require('./models/user.js');
 const Role = require('./models/role.js');
 
