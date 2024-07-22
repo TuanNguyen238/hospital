@@ -3,15 +3,11 @@ const User = require('./models/user.js');
 const Role = require('./models/role.js');
 
 class Setup {
-    #appDataSource;
-    constructor() {
-        this.#appDataSource = AppDataSource;
-    }
     
     async setupDatabase() {
         try {
-            const userRepository = this.#appDataSource.getRepository(User);
-            const roleRepository = this.#appDataSource.getRepository(Role);
+            const userRepository = AppDataSource.getRepository(User);
+            const roleRepository = AppDataSource.getRepository(Role);
     
             let adminRole = await roleRepository.findOneBy({ name: 'admin' });
             if (!adminRole) {
