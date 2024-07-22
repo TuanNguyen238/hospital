@@ -9,7 +9,7 @@ dotenv.config();
 AppDataSource.initialize()
     .then(() => {
         console.log('Database connected and synchronized!');
-        setupDatabase();
+        setupDatabase()
     })
     .then(() => {
         console.log("Database setup complete");
