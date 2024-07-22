@@ -1,5 +1,6 @@
 const { Repository } = require('typeorm');
 const User = require('../models/user.js');
+const AppDataSource = require('../utils/configs.js');
 
 class UserRepository {
     constructor() {
