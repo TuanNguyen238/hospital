@@ -1,6 +1,5 @@
 const User = require('../models/user.js');
 const UserRepository = require('../repository/user-repository.js');
-const { use } = require('../routes/user-routes.js');
 
 class UserService {
     #userRepository = null;
@@ -14,7 +13,13 @@ class UserService {
     }
 
     async createUser(username, email, password, phoneNumber, status) {
-        const user = new User(username, email, password, phoneNumber, status);
+        const user = new User({
+            username,
+            email,
+            password,
+            phoneNumber,
+            status
+        });
         return this.#userRepository.createUser(user);
     }
 
