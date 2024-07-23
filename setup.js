@@ -18,6 +18,7 @@ const appDataSource = new DataSource({
 
 const setupDatabase = async () => {
     try {
+        appDataSource.initialize();
         const userRepository = appDataSource.getRepository(User);
         const roleRepository = appDataSource.getRepository(Role);
 
