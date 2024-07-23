@@ -8,7 +8,6 @@ const Role = new EntitySchema({
             primary: true,
             type: 'varchar',
             length: 255,
-            generated: true
         },
         description: {
             type: 'varchar',
