@@ -26,7 +26,7 @@ class UserRepository {
   }
 
   async getAllUsers() {
-    return await this.repository.find();
+    return await this.repository.find({ relations: ["roles"] });
   }
 }
 
