@@ -7,6 +7,7 @@ const EnumRole = require("../enum/enum-role.js");
 class UserRepository {
   constructor() {
     this.repository = AppDataSource.getRepository(User);
+    this.roleRepository = AppDataSource.getRoleRepository(Role);
   }
 
   async getUserById(id) {
@@ -14,12 +15,15 @@ class UserRepository {
   }
 
   async createUser(user) {
-    const role = AppDataSource.getRepository(Role).findOneBy({
+    const userRole = await this.roleRepository.findOneBy({
       name: EnumRole.USER,
     });
-    user.roles = [role];
+    if (!userRole) {
+      throw new Error("USER role not found in the database");
+    }
+    user.roles = [userRole];
     await this.repository.save(user);
-    return user.id;
+    return user.roles;
   }
 
   async getAllUsers() {
