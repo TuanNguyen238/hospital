@@ -20,6 +20,8 @@ class UserService {
             phoneNumber,
             status
         });
+        console.log("create");
+        console.log(user);
         return this.#userRepository.createUser(user);
     }
 
