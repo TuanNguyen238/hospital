@@ -1,15 +1,17 @@
-const AppDataSource = require("./utils/configs.js");
-const User = require("./models/user.js");
-const Role = require("./models/role.js");
 const EnumRole = require("./enum/enum-role.js");
+const UserRepository = require("./repository/user-repository.js");
+const RoleRepository = require("./repository/role-repository.js");
+const bcrypt = require("bcrypt");
 
 class Setup {
   #roleRepository;
   #userRepository;
+
   constructor() {
-    this.#roleRepository = AppDataSource.getRepository(Role);
-    this.#userRepository = AppDataSource.getRepository(User);
+    this.#roleRepository = new RoleRepository();
+    this.#userRepository = new UserRepository();
   }
+
   async setupDatabase() {
     try {
       await this.setupRole(EnumRole.ADMIN, "admin role");
@@ -23,13 +25,10 @@ class Setup {
 
   async setupRole(name, description) {
     try {
-      let role = await this.#roleRepository.findOneBy({ name: name });
+      let role = await this.#roleRepository.getRole(name);
       if (!role) {
-        role = this.#roleRepository.create({
-          name: name,
-          description: description,
-        });
-        await this.#roleRepository.save(role);
+        role = this.#roleRepository.createEntity(name, description);
+        await this.#roleRepository.createRole(role);
         console.log(`${name} role created.`);
       }
     } catch (err) {
@@ -39,27 +38,28 @@ class Setup {
 
   async setupAdmin() {
     try {
-      const users = await this.#userRepository.find();
+      const users = await this.#userRepository.getAllUsers();
       if (users.length === 0) {
         console.log("Users table does not exist or is empty. Seeding data...");
         let adminRole = await this.#roleRepository.findOneBy({
           name: EnumRole.ADMIN,
         });
+
+        const hashedPassword = await bcrypt.hash("admin", 10);
+
         const usersData = [
           {
             username: "admin",
             email: "tuannguyen23823@gmail.com",
-            password: "admin",
+            password: hashedPassword,
             phoneNumber: "0937837564",
             status: "active",
             roles: [adminRole],
           },
         ];
-        await this.#userRepository.save(usersData);
+        await this.#userRepository.createUser(usersData);
         console.log("Users seeded.");
-      } else {
-        console.log("Users table already exists.");
-      }
+      } else console.log("Users table already exists.");
     } catch (err) {
       console.error(`Error setup Admin: ${err}`);
     }

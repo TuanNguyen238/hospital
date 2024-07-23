@@ -16,7 +16,7 @@ class UserRepository {
 
   async createUser(user) {
     await this.#repository.save(user);
-    return user.roles;
+    return user.id;
   }
 
   async getAllUsers() {
@@ -24,10 +24,11 @@ class UserRepository {
   }
 
   async existsByUsername(username) {
-    const count = await this.#repository.count({
-      where: { username: username },
-    });
-    return count > 0;
+    return (
+      (await this.#repository.count({
+        where: { username: username },
+      })) > 0
+    );
   }
 }
 

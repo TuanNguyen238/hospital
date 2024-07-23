@@ -16,17 +16,14 @@ class UserService {
   }
 
   async createUser(user) {
-    if (await this.#userRepository.existsByUsername(user.username)) {
+    if (await this.#userRepository.existsByUsername(user.username))
       throw new Error("User already exists");
-    }
 
-    const hashedPassword = await bcrypt;
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
 
     const userRole = await this.#roleRepository.getRole(EnumRole.USER);
-
-    if (!userRole) {
-      throw new Error("USER role not found in the database");
-    }
+    if (!userRole) throw new Error("USER role not found in the database");
     user.roles = [userRole];
 
     return this.#userRepository.createUser(user);
