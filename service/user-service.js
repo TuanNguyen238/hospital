@@ -13,6 +13,7 @@ class UserService {
     }
 
     async createUser(user) {
+        user.id = uuidv4();
         return this.#userRepository.createUser(user);
     }
 
