@@ -41,9 +41,7 @@ class Setup {
       const users = await this.#userRepository.getAllUsers();
       if (users.length === 0) {
         console.log("Users table does not exist or is empty. Seeding data...");
-        let adminRole = await this.#roleRepository.findOneBy({
-          name: EnumRole.ADMIN,
-        });
+        let adminRole = await this.#roleRepository.getRole(EnumRole.ADMIN);
 
         const hashedPassword = await bcrypt.hash("admin", 10);
 
