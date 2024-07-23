@@ -1,4 +1,3 @@
-const { Repository } = require("typeorm");
 const User = require("../models/user.js");
 const AppDataSource = require("../utils/configs.js");
 const Role = require("../models/role.js");
@@ -7,7 +6,7 @@ const EnumRole = require("../enum/enum-role.js");
 class UserRepository {
   constructor() {
     this.repository = AppDataSource.getRepository(User);
-    this.roleRepository = AppDataSource.getRoleRepository(Role);
+    this.roleRepository = AppDataSource.getRepository(Role);
   }
 
   async getUserById(id) {
