@@ -9,9 +9,9 @@ class Setup {
             const userRepository = AppDataSource.getRepository(User);
             const roleRepository = AppDataSource.getRepository(Role);
             
-            let adminRole = await roleRepository.findOneBy({ name: EnumRole.ADMIN.name });
+            let adminRole = await roleRepository.findOneBy({ name: EnumRole.ADMIN });
             if (!adminRole) {
-                adminRole = roleRepository.create({ name: EnumRole.ADMIN.name , description: 'admin role' });
+                adminRole = roleRepository.create({ name: EnumRole.ADMIN , description: 'admin role' });
                 await roleRepository.save(adminRole);
                 console.log('Admin role created.');
             }
