@@ -10,7 +10,7 @@ class Setup {
             
             let adminRole = await roleRepository.findOneBy({ name: 'admin' });
             if (!adminRole) {
-                adminRole = roleRepository.create({ name: 'admin' });
+                adminRole = roleRepository.create({ name: 'admin' , description: 'admin role' });
                 await roleRepository.save(adminRole);
                 console.log('Admin role created.');
             }
