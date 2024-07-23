@@ -4,12 +4,13 @@ const Role = new EntitySchema({
     name: 'Role',
     tableName: 'roles',
     columns: {
-        id: {
+        name: {
             primary: true,
-            type: 'int',
+            type: 'varchar',
+            length: 255,
             generated: true
         },
-        name: {
+        description: {
             type: 'varchar',
             length: 255
         }
