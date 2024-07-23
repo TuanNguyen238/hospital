@@ -15,7 +15,6 @@ class UserController {
         return { ...user, roles: userRoles };
       });
       res.json(usersWithRoles);
-      res.json(users);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
