@@ -21,13 +21,15 @@ const setupDatabase = async () => {
         await appDataSource.initialize();
         const userRepository = appDataSource.getRepository(User);
         const roleRepository = appDataSource.getRepository(Role);
-
-        /*let adminRole = await roleRepository.findOneBy({ name: 'admin' });
+        roleRepository.name = "12345";
+        console.log("NAME: " + roleRepository.name);
+        console.log("FIND: " + roleRepository.find());
+        let adminRole = await roleRepository.findOneBy({ name: 'admin' });
         if (!adminRole) {
             adminRole = roleRepository.create({ name: 'admin' });
             await roleRepository.save(adminRole);
             console.log('Admin role created.');
-        }*/adminRole = roleRepository.create({ name: 'admin' });
+        }
 
         const users = await userRepository.find();
         if (users.length === 0) {
