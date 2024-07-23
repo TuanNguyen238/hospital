@@ -7,9 +7,7 @@ class Setup {
         try {
             const userRepository = AppDataSource.getRepository(User);
             const roleRepository = AppDataSource.getRepository(Role);
-            roleRepository.name = "12345";
-            console.log("NAME: " + roleRepository.name);
-            console.log("FIND: " + roleRepository.find());
+            
             let adminRole = await roleRepository.findOneBy({ name: 'admin' });
             if (!adminRole) {
                 adminRole = roleRepository.create({ name: 'admin' });

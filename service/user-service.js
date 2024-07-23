@@ -11,8 +11,8 @@ class UserService {
         return this.#userRepository.getUserById(id);
     }
 
-    async createUser(name, email, password) {
-        return this.#userRepository.createUser(name, email, password);
+    async createUser(username, email, password, phoneNumber, status) {
+        return this.#userRepository.createUser(username, email, password, phoneNumber, status);
     }
 
     async getAllUsers() {
