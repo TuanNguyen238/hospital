@@ -1,26 +1,26 @@
-const { EntitySchema } = require('typeorm');
+const { EntitySchema } = require("typeorm");
 
 const Role = new EntitySchema({
-    name: 'Role',
-    tableName: 'roles',
-    columns: {
-        name: {
-            primary: true,
-            type: 'varchar',
-            length: 255,
-        },
-        description: {
-            type: 'varchar',
-            length: 255
-        }
+  name: "Role",
+  tableName: "roles",
+  columns: {
+    name: {
+      primary: true,
+      type: "varchar",
+      length: 255,
     },
-    relations: {
-        users: {
-            target: 'User',
-            type: 'many-to-many',
-            inverseSide: 'roles'
-        }
-    }
+    description: {
+      type: "varchar",
+      length: 255,
+    },
+  },
+  relations: {
+    users: {
+      target: "User",
+      type: "many-to-many",
+      inverseSide: "roles",
+    },
+  },
 });
 
 module.exports = Role;

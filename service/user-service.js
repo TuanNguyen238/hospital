@@ -1,24 +1,24 @@
-const User = require('../models/user.js');
-const UserRepository = require('../repository/user-repository.js');
+const User = require("../models/user.js");
+const UserRepository = require("../repository/user-repository.js");
 
 class UserService {
-    #userRepository = null;
+  #userRepository = null;
 
-    constructor() {
-        this.#userRepository = new UserRepository();
-    }
+  constructor() {
+    this.#userRepository = new UserRepository();
+  }
 
-    async getUserById(id) {
-        return this.#userRepository.getUserById(id);
-    }
+  async getUserById(id) {
+    return this.#userRepository.getUserById(id);
+  }
 
-    async createUser(user) {
-        return this.#userRepository.createUser(user);
-    }
+  async createUser(user) {
+    return this.#userRepository.createUser(user);
+  }
 
-    async getAllUsers() {
-        return this.#userRepository.getAllUsers();
-    }
+  async getAllUsers() {
+    return this.#userRepository.getAllUsers();
+  }
 }
 
 module.exports = UserService;
