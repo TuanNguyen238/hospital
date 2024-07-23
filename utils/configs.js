@@ -12,7 +12,8 @@ const AppDataSource = new DataSource({
     database: process.env.MYSQL_DATABASE,
     synchronize: true, // modify database
     logging: false,
-    entities: [__dirname + '/../models/*.js']
+    entities: [require('../models/*.js')],
+    //entities: [__dirname + '/../models/*.js']
 });
 
 module.exports = AppDataSource;
