@@ -12,16 +12,7 @@ class UserService {
         return this.#userRepository.getUserById(id);
     }
 
-    async createUser(username, email, password, phoneNumber, status) {
-        const user = {
-            username,
-            email,
-            password,
-            phoneNumber,
-            status
-        };
-        console.log("create");
-        console.log(user);
+    async createUser(user) {
         return this.#userRepository.createUser(user);
     }
 
