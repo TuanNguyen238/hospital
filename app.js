@@ -1,5 +1,5 @@
 const express = require('express');
-const setupDatabase = require('./setup.js');
+const Setup = require('./setup.js');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/user-routes.js');
 const AppDataSource = require('./utils/configs.js');
@@ -9,7 +9,8 @@ dotenv.config();
 AppDataSource.initialize()
     .then(() => {
         console.log('Database connected and synchronized!');
-        setupDatabase()
+        const setup = new Setup();
+        setup.setupDatabase();
     })
     .then(() => {
         console.log("Database setup complete");
