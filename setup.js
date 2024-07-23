@@ -1,6 +1,7 @@
 const AppDataSource = require('./utils/configs.js');
 const User = require('./models/user.js');
 const Role = require('./models/role.js');
+const EnumRole = require('./enum/enum-role.js');
 
 class Setup {
     async setupDatabase() {
@@ -8,9 +9,9 @@ class Setup {
             const userRepository = AppDataSource.getRepository(User);
             const roleRepository = AppDataSource.getRepository(Role);
             
-            let adminRole = await roleRepository.findOneBy({ name: 'admin' });
+            let adminRole = await roleRepository.findOneBy({ name: EnumRole.ADMIN.name });
             if (!adminRole) {
-                adminRole = roleRepository.create({ name: 'admin' , description: 'admin role' });
+                adminRole = roleRepository.create({ name: EnumRole.ADMIN.name , description: 'admin role' });
                 await roleRepository.save(adminRole);
                 console.log('Admin role created.');
             }

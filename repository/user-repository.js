@@ -8,10 +8,11 @@ class UserRepository {
     }
 
     async getUserById(id) {
-        return await this.repository.findOne({ where: { id } });
+        return await this.repository.findOneBy({ id: id });
     }
 
     async createUser(user) {
+        
         await this.repository.save(user);
         return user.id;
     }
