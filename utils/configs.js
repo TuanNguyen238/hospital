@@ -12,7 +12,7 @@ const AppDataSource = new DataSource({
     database: process.env.MYSQL_DATABASE,
     synchronize: true, // modify database
     logging: false,
-    entities: ["../models/**/*.js"],
+    entities: [require('../models/user'), require('../models/role')],
 });
 
 module.exports = AppDataSource;
