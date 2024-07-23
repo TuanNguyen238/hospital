@@ -13,13 +13,13 @@ class UserService {
     }
 
     async createUser(username, email, password, phoneNumber, status) {
-        const user = new User({
+        const user = {
             username,
             email,
             password,
             phoneNumber,
             status
-        });
+        };
         console.log("create");
         console.log(user);
         return this.#userRepository.createUser(user);
