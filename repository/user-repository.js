@@ -11,8 +11,7 @@ class UserRepository {
         return await this.repository.findOne({ where: { id } });
     }
 
-    async createUser(userData) {
-        const user = this.repository.create(userData);
+    async createUser(user) {
         await this.repository.save(user);
         return user.id;
     }
