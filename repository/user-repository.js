@@ -1,6 +1,8 @@
 const { Repository } = require("typeorm");
 const User = require("../models/user.js");
 const AppDataSource = require("../utils/configs.js");
+const Role = require("../models/role.js");
+const EnumRole = require("../enum/enum-role.js");
 
 class UserRepository {
   constructor() {
@@ -12,6 +14,10 @@ class UserRepository {
   }
 
   async createUser(user) {
+    const role = AppDataSource.getRepository(Role).findOneBy({
+      name: EnumRole.USER,
+    });
+    user.roles = [role];
     await this.repository.save(user);
     return user.id;
   }
