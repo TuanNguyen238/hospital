@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserRepository = require("../repository/user-repository.js");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 class AuthenticationService {
   #userRepository = null;
@@ -10,16 +13,18 @@ class AuthenticationService {
   }
 
   async authenticate(authentication) {
-    return authentication;
-    /*const user = await this.#userRepository.findByPhoneNumber(
+    const user = await this.#userRepository.findByPhoneNumber(
       authentication.phoneNumber
     );
     if (!user) {
       throw new Error("USER_NOT_EXISTED");
     }
-    
+    console.log(user);
 
-    const authenticated = await bcrypt.compare(request.password, user.password);
+    const authenticated = await bcrypt.compare(
+      authentication.password,
+      user.password
+    );
     if (!authenticated) {
       throw new Error("UNAUTHENTICATED");
     }
@@ -29,17 +34,19 @@ class AuthenticationService {
     return {
       token: token,
       isAuthenticated: true,
-    };*/
+    };
   }
 
   generateToken(user) {
     const payload = {
       sub: user.username,
-      iss: "tuannguyen",
+      iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
       scope: this.buildScope(user),
     };
+    console.log(payload);
+    console.log(process.env.SIGNER_KEY);
 
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
   }

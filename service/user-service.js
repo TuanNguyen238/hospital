@@ -1,3 +1,4 @@
+const EnumRole = require("../enum/enum-role.js");
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");

@@ -11,7 +11,10 @@ class UserRepository {
   }
 
   async getUserById(id) {
-    return await this.#repository.findOneBy({ id: id });
+    return await this.#repository.findOne({
+      where: { id: id },
+      relations: ["roles"],
+    });
   }
 
   async createUser(user) {
@@ -32,7 +35,10 @@ class UserRepository {
   }
 
   async findByPhoneNumber(phoneNumber) {
-    return await this.#repository.findOneBy({ phoneNumber: phoneNumber });
+    return await this.#repository.findOne({
+      where: { phoneNumber: phoneNumber },
+      relations: ["roles"],
+    });
   }
 }
 

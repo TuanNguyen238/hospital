@@ -20,7 +20,7 @@ AppDataSource.initialize()
 
     app.use(express.json());
     app.use("/users", userRoutes);
-    app.use("/authentication", authenticationRoutes);
+    app.use("/auth", authenticationRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
