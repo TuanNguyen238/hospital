@@ -30,6 +30,10 @@ class UserRepository {
       })) > 0
     );
   }
+
+  async findByPhoneNumber(phoneNumber) {
+    return await this.#repository.findOneBy({ phoneNumber: phoneNumber });
+  }
 }
 
 module.exports = UserRepository;

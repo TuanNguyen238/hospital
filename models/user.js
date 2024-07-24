@@ -26,6 +26,7 @@ const User = new EntitySchema({
       type: "varchar",
       length: 20,
       unique: true,
+      nullable: false,
     },
     status: {
       type: "varchar",
