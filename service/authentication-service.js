@@ -45,8 +45,6 @@ class AuthenticationService {
       exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
       scope: this.buildScope(user),
     };
-    console.log(payload);
-    console.log(process.env.SIGNER_KEY);
 
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
   }
