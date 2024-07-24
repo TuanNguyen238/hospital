@@ -42,7 +42,7 @@ class AuthenticationService {
       sub: user.username,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
       scope: this.buildScope(user),
     };
 
