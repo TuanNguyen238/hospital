@@ -19,12 +19,12 @@ class AuthenticationService {
     if (!user) {
       throw new Error("USER_NOT_EXISTED");
     }
-    console.log(user);
 
     const authenticated = await bcrypt.compare(
       authentication.password,
       user.password
     );
+
     if (!authenticated) {
       throw new Error("UNAUTHENTICATED");
     }
@@ -32,6 +32,7 @@ class AuthenticationService {
     const token = this.generateToken(user);
 
     return {
+      phoneNumber: user.phoneNumber,
       username: user.username,
       token: token,
       isAuthenticated: true,
