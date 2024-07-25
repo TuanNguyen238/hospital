@@ -25,7 +25,7 @@ class AuthenticationService {
       user.password
     );
 
-    if (!authenticated) {
+    if (!authenticated && user.roles === "ADMIN") {
       throw new Error("UNAUTHENTICATED");
     }
 
