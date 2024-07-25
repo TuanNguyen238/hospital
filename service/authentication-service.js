@@ -32,8 +32,7 @@ class AuthenticationService {
     const token = this.generateToken(user);
 
     return {
-      phoneNumber: user.phoneNumber,
-      username: user.username,
+      user: user,
       token: token,
       isAuthenticated: true,
     };
