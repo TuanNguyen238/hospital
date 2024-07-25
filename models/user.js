@@ -28,6 +28,11 @@ const User = new EntitySchema({
       unique: true,
       nullable: false,
     },
+    identifyCard: {
+      type: "varchar",
+      length: "12",
+      nullable: true,
+    },
     status: {
       type: "varchar",
       length: 20,
