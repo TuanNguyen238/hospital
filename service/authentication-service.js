@@ -26,7 +26,7 @@ class AuthenticationService {
       user.password
     );
 
-    if (!authenticated && user.roles == EnumRole.ADMIN) {
+    if (!authenticated || user.roles == EnumRole.ADMIN) {
       throw new Error("UNAUTHENTICATED");
     }
 
