@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserRepository = require("../repository/user-repository.js");
 const dotenv = require("dotenv");
+const EnumRole = require("../enum/enum-role.js");
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ class AuthenticationService {
       user.password
     );
 
-    if (!authenticated && user.roles === "ADMIN") {
+    if (!authenticated && user.roles == EnumRole.ADMIN) {
       throw new Error("UNAUTHENTICATED");
     }
 
