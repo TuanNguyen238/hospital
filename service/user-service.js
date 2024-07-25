@@ -17,9 +17,6 @@ class UserService {
   }
 
   async createUser(user) {
-    if (await this.#userRepository.existsByUsername(user.username))
-      throw new Error("User already exists");
-
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
 

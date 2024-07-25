@@ -26,14 +26,6 @@ class UserRepository {
     return await this.#repository.find({ relations: ["roles"] });
   }
 
-  async existsByUsername(username) {
-    return (
-      (await this.#repository.count({
-        where: { username: username },
-      })) > 0
-    );
-  }
-
   async findByPhoneNumber(phoneNumber) {
     return await this.#repository.findOne({
       where: { phoneNumber: phoneNumber },
