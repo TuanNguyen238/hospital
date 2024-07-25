@@ -26,7 +26,9 @@ class AuthenticationService {
       user.password
     );
 
-    if (!authenticated || user.roles.name == EnumRole.ADMIN) {
+    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
+
+    if (!authenticated || isAdmin) {
       throw new Error("UNAUTHENTICATED");
     }
 
