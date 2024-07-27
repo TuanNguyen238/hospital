@@ -28,6 +28,7 @@ AppDataSource.initialize()
     app.use(express.json());
     app.use("/users", userRoutes);
     app.use("/auth", authenticationRoutes);
+
     app.post("/request-otp", async (req, res) => {
       const { phoneNumber, fcmToken } = req.body;
 
