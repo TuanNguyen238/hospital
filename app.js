@@ -52,6 +52,7 @@ AppDataSource.initialize()
     app.post("/verify-otp", (req, res) => {
       const { phone_number, otp } = req.body;
       console.log(phone_number, otp);
+      res.status(200).send("OTP verified successfully");
       /*const otpStore = {
         84937837564: "123456",
       };
