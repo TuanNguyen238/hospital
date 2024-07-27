@@ -49,6 +49,20 @@ AppDataSource.initialize()
       }
     });
 
+    app.post("/verify-otp", (req, res) => {
+      const { phone_number, otp } = req.body;
+      console.log(phone_number, otp);
+      /*const otpStore = {
+        84937837564: "123456",
+      };
+
+      if (otpStore[phone_number] && otpStore[phone_number] === otp) {
+        res.status(200).send("OTP verified successfully");
+      } else {
+        res.status(400).send("Invalid OTP");
+      }*/
+    });
+
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
     });
