@@ -9,6 +9,7 @@ const admin = require("firebase-admin");
 dotenv.config();
 
 const serviceAccount = require("./service-account.json");
+const { getMessaging } = require("firebase-admin/messaging");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -43,7 +44,7 @@ AppDataSource.initialize()
       };
 
       try {
-        await admin.messaging().send(message);
+        await getMessaging().send(message);
         res.send("OTP request sent to Flutter app");
       } catch (error) {
         console.error("Error sending FCM message:", error);
