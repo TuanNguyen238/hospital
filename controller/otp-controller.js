@@ -11,10 +11,20 @@ class OtpController {
   async createOtp(req, res) {
     try {
       const otp = req.body;
+      console.log(otp);
       const otpId = await this.#otpService.createOtp(otp);
       res.status(201).json({ id: otpId });
     } catch (err) {
       res.status(500).json({ err: err.message });
+    }
+  }
+
+  async getAllOtp(req, res) {
+    try {
+      const otps = await this.#otpService.getAllOtp();
+      res.status(200).json(otps);
+    } catch (error) {
+      res.status(500).send({ err: err.message });
     }
   }
 

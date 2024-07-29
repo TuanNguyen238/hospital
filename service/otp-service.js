@@ -10,6 +10,10 @@ class OtpService {
   async createOtp(otp) {
     return this.#otpRepository.createOtp(otp);
   }
+
+  async getAllOtp() {
+    return this.#otpRepository.getAllOtp();
+  }
 }
 
 module.exports = OtpService;

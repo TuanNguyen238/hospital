@@ -12,6 +12,10 @@ class OtpRepository {
     return await this.#repository.findOneBy({ phoneNumber });
   }
 
+  async getAllOtp() {
+    return await this.#repository.find();
+  }
+
   async createOtp(otp) {
     await this.#repository.save(otp);
     return otp.id;
