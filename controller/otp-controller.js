@@ -1,5 +1,5 @@
 const OtpService = require("../service/otp-service.js");
-const getMessaging = require("firebase-admin/messaging");
+const { getMessaging } = require("firebase-admin/messaging");
 
 class OtpController {
   #otpService = null;
