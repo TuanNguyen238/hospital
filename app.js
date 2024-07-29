@@ -31,7 +31,8 @@ AppDataSource.initialize()
 
     app.post("/request-otp", async (req, res) => {
       const { phoneNumber, fcmToken } = req.body;
-
+      console.log("request is call");
+      console.log(res.body);
       const message = {
         token: fcmToken,
         data: {
