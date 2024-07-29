@@ -13,6 +13,7 @@ class OtpController {
       const otp = req.body;
       console.log(otp);
       const otpId = await this.#otpService.createOtp(otp);
+      console.log(otpId);
       res.status(201).json({ id: otpId });
     } catch (err) {
       res.status(500).json({ err: err.message });
