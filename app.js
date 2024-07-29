@@ -3,13 +3,12 @@ const Setup = require("./setup.js");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/user-routes.js");
 const authenticationRoutes = require("./routes/authentication-routes.js");
+const otpRoutes = require("./routes/otp-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
+const serviceAccount = require("./service-account.json");
 
 dotenv.config();
-
-const serviceAccount = require("./service-account.json");
-const { getMessaging } = require("firebase-admin/messaging");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -29,43 +28,7 @@ AppDataSource.initialize()
     app.use(express.json());
     app.use("/users", userRoutes);
     app.use("/auth", authenticationRoutes);
-
-    app.post("/request-otp", async (req, res) => {
-      const { phoneNumber, fcmToken } = req.body;
-      console.log("request is call");
-      console.log(phoneNumber);
-      console.log(fcmToken);
-      const message = {
-        token: fcmToken,
-        data: {
-          phone_number: phoneNumber,
-          otp_request: "true",
-        },
-      };
-
-      try {
-        await getMessaging().send(message);
-        res.send("OTP request sent to Flutter app");
-      } catch (error) {
-        console.error("Error sending FCM message:", error);
-        res.status(500).send("Error sending OTP request");
-      }
-    });
-
-    app.post("/verify-otp", (req, res) => {
-      const { phone_number, otp } = req.body;
-      console.log(phone_number, otp);
-      res.status(200).send("OTP verified successfully");
-      /*const otpStore = {
-        84937837564: "123456",
-      };
-
-      if (otpStore[phone_number] && otpStore[phone_number] === otp) {
-        res.status(200).send("OTP verified successfully");
-      } else {
-        res.status(400).send("Invalid OTP");
-      }*/
-    });
+    app.use("/otp", otpRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
