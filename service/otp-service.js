@@ -14,6 +14,10 @@ class OtpService {
   async getAllOtp() {
     return this.#otpRepository.getAllOtp();
   }
+
+  async verifyOtp(otp) {
+    return this.#otpRepository.verifyOtp(otp);
+  }
 }
 
 module.exports = OtpService;

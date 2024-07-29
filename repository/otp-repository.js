@@ -20,6 +20,16 @@ class OtpRepository {
     await this.#repository.save(otp);
     return otp.id;
   }
+
+  async verifyOtp(otp) {
+    const verifiedOtp = await this.#repository.findOne({
+      where: {
+        phoneNumber: otp.phoneNumber,
+        otp: otp.otp,
+      },
+    });
+    return verifiedOtp && new Date() < new Date(verifiedOtp.expireAt);
+  }
 }
 
 module.exports = OtpRepository;

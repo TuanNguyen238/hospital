@@ -52,16 +52,17 @@ class OtpController {
   }
 
   async verifyOtp(req, res) {
-    const { phone_number, otp } = req.body;
-    console.log(phone_number, otp);
-    const otpStore = {
-      84937837564: "123456 ",
-    };
-
-    if (otpStore[phone_number] && otpStore[phone_number] === otp) {
-      res.status(200).send("OTP verified successfully");
-    } else {
-      res.status(400).send("Invalid OTP");
+    const otp = req.body;
+    console.log(otp);
+    try {
+      if (this.#otpService.verifyOtp(otp)) {
+        res.status(200).send("OTP verified successfully");
+      } else {
+        res.status(400).send("Invalid OTP");
+      }
+    } catch (err) {
+      console.error("Error verifying OTP", err);
+      res.status(500).send("Error verifying OTP");
     }
   }
 }
