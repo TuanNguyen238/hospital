@@ -28,7 +28,18 @@ class OtpRepository {
         otp: otp.otp,
       },
     });
-    return verifiedOtp && new Date() < new Date(verifiedOtp.expireAt);
+
+    if (!verifiedOtp) {
+      return false;
+    }
+
+    const currentTime = new Date();
+    const expiryTime = new Date(verifiedOtp.expireAt);
+
+    console.log("Current time:", currentTime);
+    console.log("Expiry time:", expiryTime);
+
+    return currentTime < expiryTime;
   }
 }
 

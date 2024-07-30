@@ -55,11 +55,9 @@ class OtpController {
     const otp = req.body;
     console.log(otp);
     try {
-      if (this.#otpService.verifyOtp(otp)) {
-        res.status(200).send("OTP verified successfully");
-      } else {
-        res.status(400).send("Invalid OTP");
-      }
+      const isValid = await this.#otpService.verifyOtp(otp);
+      if (isValid) res.status(200).send("OTP verified successfully");
+      else res.status(400).send("Invalid OTP");
     } catch (err) {
       console.error("Error verifying OTP", err);
       res.status(500).send("Error verifying OTP");
