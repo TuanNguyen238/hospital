@@ -1,3 +1,4 @@
+const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const OtpRepository = require("../repository/otp-repository.js");
 const UserRepository = require("../repository/user-repository.js");
