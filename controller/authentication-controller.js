@@ -14,7 +14,9 @@ class AuthenticationController {
       const isAuthenticated = await this.#authenticationService.authenticate(
         authentication
       );
-      res.status(200).json(isAuthenticated);
+      res
+        .status(200)
+        .json({ isAuthenticated, message: ErrorCode.AUTHENTICATED });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

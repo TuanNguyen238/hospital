@@ -9,7 +9,8 @@ const ErrorCode = {
   OTP_ERROR: "Lỗi xảy ra khi gửi mã OTP",
   OTP_VERIFIED: "Xác thực mã OTP thành công",
   PASS_UPDATED: "Đổi mật khẩu thành công",
-  REGISTED: "Đăng ký thành công",
+  REGISTED: "Đăng ký thành công"
+  AUTHENTICATED: "Đăng nhập thành công",
 };
 
 module.exports = ErrorCode;
