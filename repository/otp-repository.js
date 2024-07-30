@@ -33,7 +33,7 @@ class OtpRepository {
       return false;
     }
 
-    const currentTime = new Date();
+    const currentTime = new Date(otp.expireAt);
     const expiryTime = new Date(verifiedOtp.expireAt);
 
     console.log("Current time:", currentTime);
