@@ -25,7 +25,7 @@ class OtpController {
       const otps = await this.#otpService.getAllOtp();
       res.status(200).json(otps);
     } catch (error) {
-      res.status(500).send({ err: err.message });
+      res.status(500).json({ err: err.message });
     }
   }
 
@@ -44,10 +44,10 @@ class OtpController {
 
     try {
       await getMessaging().send(message);
-      res.status(200).send("OTP request sent to Flutter app");
+      res.status(200).json("OTP request sent to Flutter app");
     } catch (error) {
       console.error("Error sending FCM message:", error);
-      res.status(500).send("Error sending OTP request");
+      res.status(500).json("Error sending OTP request");
     }
   }
 
@@ -56,11 +56,11 @@ class OtpController {
     console.log(otp);
     try {
       const isValid = await this.#otpService.verifyOtp(otp);
-      if (isValid) res.status(200).send("OTP verified successfully");
-      else res.status(400).send("Invalid OTP");
+      if (isValid) res.status(200).json("OTP verified successfully");
+      else res.status(400).json("Invalid OTP");
     } catch (err) {
       console.error("Error verifying OTP", err);
-      res.status(500).send("Error verifying OTP");
+      res.status(500).json("Error verifying OTP");
     }
   }
 }
