@@ -27,7 +27,7 @@ class OtpService {
   }
 
   async requestOtp(phoneNumber, fcmToken) {
-    const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
     await this.#otpRepository.requestOtp(phoneNumber, fcmToken);
   }
