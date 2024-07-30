@@ -41,9 +41,9 @@ class OtpController {
   }
 
   async verifyOtp(req, res) {
-    const otp = req.body;
-    console.log(otp);
     try {
+      const otp = req.body;
+      console.log(otp);
       await this.#otpService.verifyOtp(otp);
       res.status(200).json({ message: "OTP verified successfully" });
     } catch (err) {
