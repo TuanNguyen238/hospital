@@ -55,7 +55,7 @@ class Setup {
             roles: [adminRole],
           },
         ];
-        await this.#userRepository.createUser(usersData);
+        await this.#userRepository.saveUser(usersData);
         console.log("Users seeded.");
       } else console.log("Users table already exists.");
     } catch (err) {
