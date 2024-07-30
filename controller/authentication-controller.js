@@ -10,6 +10,7 @@ class AuthenticationController {
   async authenticate(req, res) {
     try {
       const authentication = req.body;
+      console.log(authentication);
       const isAuthenticated = await this.#authenticationService.authenticate(
         authentication
       );
