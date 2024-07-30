@@ -10,6 +10,7 @@ class OtpController {
   async createOtp(req, res) {
     try {
       const otp = req.body;
+      console.log(otp);
       const otpId = await this.#otpService.createOtp(otp);
       res.status(200).json({ id: otpId });
     } catch (err) {
@@ -29,6 +30,7 @@ class OtpController {
   async requestOtp(req, res) {
     try {
       const { phoneNumber, fcmToken } = req.body;
+      console.log(phoneNumber, fcmToken);
       await this.#otpService.requestOtp(phoneNumber, fcmToken);
       res.status(200).json({ message: "OTP request sent to Flutter app" });
     } catch (err) {
