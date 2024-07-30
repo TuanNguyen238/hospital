@@ -1,3 +1,4 @@
+const ErrorCode = require("../enum/error-code.js");
 const UserService = require("../service/user-service.js");
 
 class UserController {
@@ -33,7 +34,7 @@ class UserController {
     try {
       const user = req.body;
       const userId = await this.#userService.createUser(user);
-      res.status(200).json({ id: userId });
+      res.status(200).json({ id: userId, message: ErrorCode.REGISTED });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -43,7 +44,7 @@ class UserController {
     try {
       const { phoneNumber, password } = req.body;
       const id = await this.#userService.updatePass(phoneNumber, password);
-      res.status(200).json({ id: id });
+      res.status(200).json({ message: ErrorCode.PASS_UPDATED });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
