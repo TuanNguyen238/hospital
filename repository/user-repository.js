@@ -15,7 +15,7 @@ class UserRepository {
     });
   }
 
-  async createUser(user) {
+  async saveUser(user) {
     await this.#repository.save(user);
     return user.id;
   }

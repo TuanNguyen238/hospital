@@ -38,6 +38,16 @@ class UserController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async updatePass(req, res) {
+    try {
+      const { phoneNumber, password } = req.body;
+      const id = await this.#userService.updatePass(phoneNumber, password);
+      res.status(200).json({ id: id });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = UserController;
