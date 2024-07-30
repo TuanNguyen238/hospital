@@ -1,4 +1,5 @@
 const AuthenticationService = require("../service/authentication-service");
+const ErrorCode = require("../enum/error-code.js");
 
 class AuthenticationController {
   #authenticationService = null;
@@ -14,9 +15,7 @@ class AuthenticationController {
       const isAuthenticated = await this.#authenticationService.authenticate(
         authentication
       );
-      res
-        .status(200)
-        .json({ isAuthenticated, message: ErrorCode.AUTHENTICATED });
+      res.status(200).json({ isAuthenticated });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
