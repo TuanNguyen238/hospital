@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const UserRepository = require("../repository/user-repository.js");
 const dotenv = require("dotenv");
 const EnumRole = require("../enum/enum-role.js");
+const ErrorCode = require("../enum/error-code.js");
 
 dotenv.config();
 
@@ -17,9 +18,7 @@ class AuthenticationService {
     const user = await this.#userRepository.findByPhoneNumber(
       authentication.phoneNumber
     );
-    if (!user) {
-      throw new Error("USER_NOT_EXISTED");
-    }
+    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const authenticated = await bcrypt.compare(
       authentication.password,
@@ -28,9 +27,7 @@ class AuthenticationService {
 
     const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
 
-    if (!authenticated || isAdmin) {
-      throw new Error("UNAUTHENTICATED");
-    }
+    if (!authenticated || isAdmin) throw new Error(ErrorCode.UNAUTHENTICATED);
 
     const token = this.generateToken(user);
 

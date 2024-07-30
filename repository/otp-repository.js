@@ -1,5 +1,6 @@
 const Otp = require("../models/otp.js");
 const AppDataSource = require("../utils/configs");
+const { getMessaging } = require("firebase-admin/messaging");
 
 class OtpRepository {
   #repository;
@@ -29,17 +30,23 @@ class OtpRepository {
       },
     });
 
-    if (!verifiedOtp) {
-      return false;
-    }
+    if (!verifiedOtp) return false;
 
     const currentTime = new Date(otp.expireAt);
     const expiryTime = new Date(verifiedOtp.expireAt);
 
-    console.log("Current time:", currentTime);
-    console.log("Expiry time:", expiryTime);
-
     return currentTime < expiryTime;
+  }
+
+  async requestOtp(phoneNumber, fcmToken) {
+    const message = {
+      token: fcmToken,
+      data: {
+        phone_number: phoneNumber,
+        otp_request: "true",
+      },
+    };
+    await getMessaging().send(message);
   }
 }
 

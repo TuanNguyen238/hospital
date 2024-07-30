@@ -1,5 +1,4 @@
 const OtpService = require("../service/otp-service.js");
-const { getMessaging } = require("firebase-admin/messaging");
 
 class OtpController {
   #otpService = null;
@@ -11,12 +10,10 @@ class OtpController {
   async createOtp(req, res) {
     try {
       const otp = req.body;
-      console.log(otp);
       const otpId = await this.#otpService.createOtp(otp);
-      console.log(otpId);
-      res.status(201).json({ id: otpId });
+      res.status(200).json({ id: otpId });
     } catch (err) {
-      res.status(500).json({ err: err.message });
+      res.status(500).json({ error: err.message });
     }
   }
 
@@ -24,30 +21,20 @@ class OtpController {
     try {
       const otps = await this.#otpService.getAllOtp();
       res.status(200).json(otps);
-    } catch (error) {
-      res.status(500).json({ err: err.message });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
     }
   }
 
   async requestOtp(req, res) {
-    const { phoneNumber, fcmToken } = req.body;
-    console.log("request is call");
-    console.log(phoneNumber);
-    console.log(fcmToken);
-    const message = {
-      token: fcmToken,
-      data: {
-        phone_number: phoneNumber,
-        otp_request: "true",
-      },
-    };
-
     try {
-      await getMessaging().send(message);
-      res.status(200).json("OTP request sent to Flutter app");
-    } catch (error) {
-      console.error("Error sending FCM message:", error);
-      res.status(500).json("Error sending OTP request");
+      const { phoneNumber, fcmToken } = req.body;
+      await this.#otpService.requestOtp(phoneNumber, fcmToken);
+      res.status(200).json({ message: "OTP request sent to Flutter app" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Error sending OTP request: " + err.message });
     }
   }
 
@@ -55,12 +42,10 @@ class OtpController {
     const otp = req.body;
     console.log(otp);
     try {
-      const isValid = await this.#otpService.verifyOtp(otp);
-      if (isValid) res.status(200).json("OTP verified successfully");
-      else res.status(400).json("Invalid OTP");
+      await this.#otpService.verifyOtp(otp);
+      res.status(200).json({ message: "OTP verified successfully" });
     } catch (err) {
-      console.error("Error verifying OTP", err);
-      res.status(500).json("Error verifying OTP");
+      res.status(500).json({ error: err.message });
     }
   }
 }

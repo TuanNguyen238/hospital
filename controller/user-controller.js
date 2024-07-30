@@ -14,7 +14,7 @@ class UserController {
         const userRoles = user.roles.map((role) => role.name);
         return { ...user, roles: userRoles };
       });
-      res.json(usersWithRoles);
+      res.status(200).json(usersWithRoles);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -23,11 +23,7 @@ class UserController {
   async getUserById(req, res) {
     try {
       const user = await this.#userService.getUserById(req.params.id);
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ error: "User not found" });
-      }
+      res.status(200).json(user);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -37,7 +33,7 @@ class UserController {
     try {
       const user = req.body;
       const userId = await this.#userService.createUser(user);
-      res.status(201).json({ id: userId });
+      res.status(200).json({ id: userId });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
