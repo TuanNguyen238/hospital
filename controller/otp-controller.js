@@ -1,3 +1,4 @@
+const ErrorCode = require("../enum/error-code.js");
 const OtpService = require("../service/otp-service.js");
 
 class OtpController {
@@ -32,11 +33,9 @@ class OtpController {
       const { phoneNumber, fcmToken } = req.body;
       console.log(phoneNumber, fcmToken);
       await this.#otpService.requestOtp(phoneNumber, fcmToken);
-      res.status(200).json({ message: "OTP request sent to Flutter app" });
+      res.status(200).json({ message: ErrorCode.OTP_SENT });
     } catch (err) {
-      res
-        .status(500)
-        .json({ error: "Error sending OTP request: " + err.message });
+      res.status(500).json({ error: ErrorCode.OTP_ERROR + err.message });
     }
   }
 
@@ -45,9 +44,9 @@ class OtpController {
       const otp = req.body;
       console.log(otp);
       await this.#otpService.verifyOtp(otp);
-      res.status(200).json({ message: "OTP verified successfully" });
+      res.status(200).json({ message: ErrorCode.OTP_VERIFIED });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: ErrorCode.OTP_ERROR + err.message });
     }
   }
 }
