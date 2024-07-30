@@ -44,7 +44,7 @@ class OtpController {
 
     try {
       await getMessaging().send(message);
-      res.send("OTP request sent to Flutter app");
+      res.status(200).send("OTP request sent to Flutter app");
     } catch (error) {
       console.error("Error sending FCM message:", error);
       res.status(500).send("Error sending OTP request");
