@@ -45,7 +45,8 @@ class OtpController {
       console.log(otp);
       const isValid = await this.#otpService.verifyOtp(otp);
       console.log(isValid);
-      res.status(200).json({ message: ErrorCode.OTP_VERIFIED });
+      if (isValid) res.status(200).json({ message: ErrorCode.OTP_VERIFIED });
+      else res.status(400).json({ error: ErrorCode.INVALID_OTP });
     } catch (err) {
       res.status(500).json({ error: ErrorCode.OTP_ERROR + err.message });
     }

@@ -24,7 +24,6 @@ class OtpService {
 
   async verifyOtp(otp) {
     const isValid = await this.#otpRepository.verifyOtp(otp);
-    if (!isValid) throw new Error(ErrorCode.INVALID_OTP);
     return isValid;
   }
 
