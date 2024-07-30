@@ -24,11 +24,16 @@ class OtpService {
   async verifyOtp(otp) {
     const isValid = await this.#otpRepository.verifyOtp(otp);
     if (!isValid) throw new Error(ErrorCode.INVALID_OTP);
+    return isValid;
   }
 
   async requestOtp(phoneNumber, fcmToken) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+
+    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
+    if (isAdmin) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+
     await this.#otpRepository.requestOtp(phoneNumber, fcmToken);
   }
 }

@@ -35,7 +35,7 @@ class OtpController {
       await this.#otpService.requestOtp(phoneNumber, fcmToken);
       res.status(200).json({ message: ErrorCode.OTP_SENT });
     } catch (err) {
-      res.status(500).json({ error: ErrorCode.OTP_ERROR + err.message });
+      res.status(500).json({ error: ErrorCode.OTP_ERROR + ": " + err.message });
     }
   }
 
@@ -43,7 +43,8 @@ class OtpController {
     try {
       const otp = req.body;
       console.log(otp);
-      await this.#otpService.verifyOtp(otp);
+      const isValid = await this.#otpService.verifyOtp(otp);
+      console.log(isValid);
       res.status(200).json({ message: ErrorCode.OTP_VERIFIED });
     } catch (err) {
       res.status(500).json({ error: ErrorCode.OTP_ERROR + err.message });
