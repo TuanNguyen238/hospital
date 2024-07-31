@@ -90,7 +90,7 @@ class UserService {
     await this.#userRepository.saveUser(user);
 
     return {
-      message: ErrorCode.UPDATE_INTFO,
+      message: ErrorCode.UPDATE_INFO,
     };
   }
 

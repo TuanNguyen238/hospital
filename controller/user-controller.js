@@ -65,7 +65,7 @@ class UserController {
       const message = await this.#userService.updateInfo(obj);
       res.status(200).json(message);
     } catch (err) {
-      req.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
     }
   }
 }

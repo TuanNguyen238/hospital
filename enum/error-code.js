@@ -10,7 +10,7 @@ const ErrorCode = {
   PASS_UPDATED: "Đổi mật khẩu thành công",
   REGISTED: "Đăng ký thành công",
   AUTHENTICATED: "Đăng nhập thành công",
-  UPDATE_INTFO: "Thay đổi thông tin tài khoản thành công",
+  UPDATE_INFO: "Thay đổi thông tin tài khoản thành công",
 };
 
 module.exports = ErrorCode;
