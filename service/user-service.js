@@ -26,14 +26,17 @@ class UserService {
 
     if (checkUser) throw new Error(ErrorCode.USER_ALREADY_EXISTS);
 
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(user.password, 10);
 
     const userRole = await this.#roleRepository.getRole(EnumRole.USER);
     if (!userRole) throw new Error(ErrorCode.ROLE_NOT_EXISTED);
     user.roles = [userRole];
 
     await this.#userRepository.saveUser(user);
+
+    return {
+      message: ErrorCode.REGISTED,
+    };
   }
 
   async forgotPass(phoneNumber, password) {
@@ -43,10 +46,13 @@ class UserService {
     const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
     if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(password, 10);
 
     await this.#userRepository.saveUser(user);
+
+    return {
+      message: ErrorCode.PASS_UPDATED,
+    };
   }
 
   async updatePass(phoneNumber, password, newPass) {
@@ -64,6 +70,10 @@ class UserService {
     user.password = hashedPassword;
 
     await this.#userRepository.saveUser(user);
+
+    return {
+      message: ErrorCode.PASS_UPDATED,
+    };
   }
 
   async getAllUsers() {

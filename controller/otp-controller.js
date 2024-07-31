@@ -1,4 +1,3 @@
-const ErrorCode = require("../enum/error-code.js");
 const OtpService = require("../service/otp-service.js");
 
 class OtpController {
@@ -12,8 +11,8 @@ class OtpController {
     try {
       const otp = req.body;
       console.log(otp);
-      const otpId = await this.#otpService.createOtp(otp);
-      res.status(200).json({ id: otpId });
+      const message = await this.#otpService.createOtp(otp);
+      res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -32,10 +31,10 @@ class OtpController {
     try {
       const { phoneNumber, fcmToken } = req.body;
       console.log(phoneNumber, fcmToken);
-      await this.#otpService.requestOtp(phoneNumber, fcmToken);
-      res.status(200).json({ message: ErrorCode.OTP_SENT });
+      const message = await this.#otpService.requestOtp(phoneNumber, fcmToken);
+      res.status(200).json(message);
     } catch (err) {
-      res.status(500).json({ error: ErrorCode.OTP_ERROR + ": " + err.message });
+      res.status(500).json({ error: err.message });
     }
   }
 
@@ -43,12 +42,11 @@ class OtpController {
     try {
       const otp = req.body;
       console.log(otp);
-      const isValid = await this.#otpService.verifyOtp(otp);
-      console.log(isValid);
-      if (isValid) res.status(200).json({ message: ErrorCode.OTP_VERIFIED });
-      else res.status(400).json({ error: ErrorCode.INVALID_OTP });
+      const valid = await this.#otpService.verifyOtp(otp);
+      console.log(valid);
+      res.status(valid.statusCode).json({ message: valid.message });
     } catch (err) {
-      res.status(500).json({ error: ErrorCode.OTP_ERROR + err.message });
+      res.status(500).json({ error: err.message });
     }
   }
 }

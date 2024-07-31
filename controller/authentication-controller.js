@@ -1,5 +1,4 @@
 const AuthenticationService = require("../service/authentication-service");
-const ErrorCode = require("../enum/error-code.js");
 
 class AuthenticationController {
   #authenticationService = null;

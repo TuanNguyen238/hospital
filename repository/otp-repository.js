@@ -19,7 +19,6 @@ class OtpRepository {
 
   async createOtp(otp) {
     await this.#repository.save(otp);
-    return otp.id;
   }
 
   async verifyOtp(otp) {

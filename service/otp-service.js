@@ -15,7 +15,10 @@ class OtpService {
   async createOtp(otp) {
     const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
-    return this.#otpRepository.createOtp(otp);
+    await this.#otpRepository.createOtp(otp);
+    return {
+      message: ErrorCode.OTP_SENT,
+    };
   }
 
   async getAllOtp() {
@@ -24,7 +27,12 @@ class OtpService {
 
   async verifyOtp(otp) {
     const isValid = await this.#otpRepository.verifyOtp(otp);
-    return isValid;
+    const statusCode = isValid ? 200 : 400;
+    const message = isValid ? ErrorCode.OTP_VERIFIED : ErrorCode.INVALID_OTP;
+    return {
+      message: message,
+      statusCode: statusCode,
+    };
   }
 
   async requestOtp(phoneNumber, fcmToken) {
@@ -35,6 +43,10 @@ class OtpService {
     if (isAdmin) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
 
     await this.#otpRepository.requestOtp(phoneNumber, fcmToken);
+
+    return {
+      message: ErrorCode.OTP_SENT,
+    };
   }
 }
 
