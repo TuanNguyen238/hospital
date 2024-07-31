@@ -7,6 +7,7 @@ const userController = new UserController();
 router.get("/", (req, res) => userController.getAllUsers(req, res));
 router.get("/:id", (req, res) => userController.getUserById(req, res));
 router.post("/", (req, res) => userController.createUser(req, res));
+router.put("/forgotpass", (req, res) => userController.forgotPass(req, res));
 router.put("/updatepass", (req, res) => userController.updatePass(req, res));
 
 module.exports = router;

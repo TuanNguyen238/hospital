@@ -18,16 +18,17 @@ class AuthenticationService {
     const user = await this.#userRepository.findByPhoneNumber(
       authentication.phoneNumber
     );
+
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
+    if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const authenticated = await bcrypt.compare(
       authentication.password,
       user.password
     );
 
-    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
-
-    if (!authenticated || isAdmin) throw new Error(ErrorCode.UNAUTHENTICATED);
+    if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
     const token = this.generateToken(user);
 

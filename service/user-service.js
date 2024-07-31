@@ -33,10 +33,10 @@ class UserService {
     if (!userRole) throw new Error(ErrorCode.ROLE_NOT_EXISTED);
     user.roles = [userRole];
 
-    return this.#userRepository.saveUser(user);
+    await this.#userRepository.saveUser(user);
   }
 
-  async updatePass(phoneNumber, password) {
+  async forgotPass(phoneNumber, password) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
@@ -46,7 +46,24 @@ class UserService {
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
 
-    return this.#userRepository.saveUser(user);
+    await this.#userRepository.saveUser(user);
+  }
+
+  async updatePass(phoneNumber, password, newPass) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+
+    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
+    if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
+
+    const authenticated = await bcrypt.compare(password, user.password);
+
+    if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
+
+    const hashedPassword = await bcrypt.hash(newPass, 10);
+    user.password = hashedPassword;
+
+    await this.#userRepository.saveUser(user);
   }
 
   async getAllUsers() {
