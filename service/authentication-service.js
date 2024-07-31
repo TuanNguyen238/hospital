@@ -32,6 +32,7 @@ class AuthenticationService {
     const token = this.generateToken(user);
 
     return {
+      message: ErrorCode.AUTHENTICATED,
       user: user,
       token: token,
       isAuthenticated: true,
