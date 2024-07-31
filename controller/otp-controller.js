@@ -29,9 +29,9 @@ class OtpController {
 
   async requestOtp(req, res) {
     try {
-      const { phoneNumber, fcmToken } = req.body;
-      console.log(phoneNumber, fcmToken);
-      const message = await this.#otpService.requestOtp(phoneNumber, fcmToken);
+      const otp = req.body;
+      console.log(otp);
+      const message = await this.#otpService.requestOtp(otp);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });

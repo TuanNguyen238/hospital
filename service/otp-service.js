@@ -35,14 +35,14 @@ class OtpService {
     };
   }
 
-  async requestOtp(phoneNumber, fcmToken) {
-    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+  async requestOtp(otp) {
+    const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
 
     const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
     if (isAdmin) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
 
-    await this.#otpRepository.requestOtp(phoneNumber, fcmToken);
+    await this.#otpRepository.requestOtp(otp);
 
     return {
       message: ErrorCode.OTP_SENT,
