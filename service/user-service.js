@@ -39,14 +39,14 @@ class UserService {
     };
   }
 
-  async forgotPass(phoneNumber, password) {
-    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+  async forgotPass(obj) {
+    const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
     const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
     if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    user.password = await bcrypt.hash(password, 10);
+    user.password = await bcrypt.hash(obj.password, 10);
 
     await this.#userRepository.saveUser(user);
 
@@ -55,24 +55,42 @@ class UserService {
     };
   }
 
-  async updatePass(phoneNumber, password, newPass) {
-    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+  async updatePass(obj) {
+    const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
     const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
     if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    const authenticated = await bcrypt.compare(password, user.password);
+    const authenticated = await bcrypt.compare(obj.password, user.password);
 
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
-    const hashedPassword = await bcrypt.hash(newPass, 10);
+    const hashedPassword = await bcrypt.hash(obj.newPass, 10);
     user.password = hashedPassword;
 
     await this.#userRepository.saveUser(user);
 
     return {
       message: ErrorCode.PASS_UPDATED,
+    };
+  }
+
+  async updateInfo(obj) {
+    const user = await thif.#userRepository.findByPhoneNumber(obj.phoneNumber);
+
+    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
+    if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
+
+    user.username = obj.username;
+    user.email = obj.email;
+    user.identifyCard = obj.identifyCard;
+
+    await this.#userRepository.saveUser(user);
+
+    return {
+      message: ErrorCode.UPDATE_INTFO,
     };
   }
 

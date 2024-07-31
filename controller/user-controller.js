@@ -51,15 +51,21 @@ class UserController {
 
   async updatePass(req, res) {
     try {
-      const { phoneNumber, password, newPass } = req.body;
-      const message = await this.#userService.updatePass(
-        phoneNumber,
-        password,
-        newPass
-      );
+      const obj = req.body;
+      const message = await this.#userService.updatePass(obj);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
+    }
+  }
+
+  async updateInfo(req, res) {
+    try {
+      const obj = req.body;
+      const message = await this.#userService.updateInfo(obj);
+      res.status(200).json(message);
+    } catch (err) {
+      req.status(500).json({ error: err.message });
     }
   }
 }
