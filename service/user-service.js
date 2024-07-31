@@ -77,7 +77,7 @@ class UserService {
   }
 
   async updateInfo(obj) {
-    const user = await thif.#userRepository.findByPhoneNumber(obj.phoneNumber);
+    const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
     const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
