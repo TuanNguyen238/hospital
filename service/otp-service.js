@@ -41,9 +41,7 @@ class OtpService {
 
     const isUser = user.role.name === EnumRole.USER;
 
-    const isAuthenticated = otp.isAuthenticated === "true";
-
-    if ((!isAuthenticated && !isUser) || (isAuthenticated && isUser)) {
+    if ((!otp.isAuthenticated && !isUser) || (otp.isAuthenticated && isUser)) {
       throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
     }
 
