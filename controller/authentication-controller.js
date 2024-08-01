@@ -18,7 +18,6 @@ class AuthenticationController {
   async #handleAuthentication(req, res, isMobile) {
     try {
       const authentication = req.body;
-      console.log(authentication);
       const isAuthenticated = isMobile
         ? await this.#authenticationService.authenticate(authentication)
         : await this.#authenticationService.authWeb(authentication);

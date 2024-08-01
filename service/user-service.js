@@ -44,7 +44,7 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name === EnumRole.ADMIN)
+    if (user.role.name !== EnumRole.USER)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     user.password = await bcrypt.hash(obj.password, 10);
@@ -60,7 +60,7 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name === EnumRole.ADMIN)
+    if (user.role.name !== EnumRole.USER)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const authenticated = await bcrypt.compare(obj.password, user.password);
@@ -80,7 +80,7 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name === EnumRole.ADMIN)
+    if (user.role.name !== EnumRole.USER)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     user.username = obj.username;
