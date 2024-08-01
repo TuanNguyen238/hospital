@@ -71,7 +71,7 @@ class UserController {
   async getCount(req, res) {
     try {
       const count = await this.#userService.getCount();
-      res.status(200).json({ message: count });
+      res.status(200).json(count);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
