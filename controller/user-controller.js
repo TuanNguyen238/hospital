@@ -10,10 +10,10 @@ class UserController {
   async getAllUsers(req, res) {
     try {
       const users = await this.#userService.getAllUsers();
-      const usersWithRoles = users.map((user) => {
+      const usersWithRole = users.map((user) => {
         return { ...user, role: user.role.name };
       });
-      res.status(200).json(users);
+      res.status(200).json(usersWithRole);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
