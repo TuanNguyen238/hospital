@@ -37,11 +37,11 @@ class OtpRepository {
     return currentTime < expiryTime;
   }
 
-  async requestOtp(phoneNumber, fcmToken) {
+  async requestOtp(otp) {
     const message = {
-      token: fcmToken,
+      token: otp.fcmToken,
       data: {
-        phone_number: phoneNumber,
+        phone_number: otp.phoneNumber,
         otp_request: "true",
       },
     };

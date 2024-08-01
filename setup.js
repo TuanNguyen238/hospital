@@ -46,16 +46,14 @@ class Setup {
 
         const hashedPassword = await bcrypt.hash("admin", 10);
 
-        const usersData = [
-          {
-            username: "admin",
-            email: "tuannguyen23823@gmail.com",
-            password: hashedPassword,
-            phoneNumber: "0937837564",
-            status: "active",
-            role: adminRole,
-          },
-        ];
+        const usersData = {
+          username: "admin",
+          email: "tuannguyen23823@gmail.com",
+          password: hashedPassword,
+          phoneNumber: "0937837564",
+          status: "active",
+          role: adminRole,
+        };
         await this.#userRepository.saveUser(usersData);
         console.log("Users seeded.");
       } else console.log("Users table already exists.");
