@@ -58,14 +58,10 @@ class AuthenticationService {
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 60,
-      scope: this.#buildScope(user),
+      scope: user.role.name,
     };
 
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
-  }
-
-  #buildScope(user) {
-    return user.roles.map((role) => role.name);
   }
 }
 
