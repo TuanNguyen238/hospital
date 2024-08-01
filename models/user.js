@@ -39,7 +39,7 @@ const User = new EntitySchema({
     },
   },
   relations: {
-    roles: {
+    role: {
       target: "Role",
       type: "many-to-one",
       joinTable: true,
