@@ -97,6 +97,15 @@ class UserService {
   async getAllUsers() {
     return this.#userRepository.getAllUsers();
   }
+
+  async getCount() {
+    try {
+      const count = await this.#userRepository.getCount();
+      return count;
+    } catch (err) {
+      throw new ErrorCode(err.message);
+    }
+  }
 }
 
 module.exports = UserService;

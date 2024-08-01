@@ -67,6 +67,15 @@ class UserController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async getCount(req, res) {
+    try {
+      const count = await this.#userService.getCount();
+      res.status(200).json({ count: count });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = UserController;

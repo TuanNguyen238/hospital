@@ -29,6 +29,10 @@ class UserRepository {
       relations: ["role"],
     });
   }
+
+  async getCount() {
+    return await this.#repository.count();
+  }
 }
 
 module.exports = UserRepository;
