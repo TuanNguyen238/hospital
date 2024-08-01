@@ -100,10 +100,9 @@ class UserService {
 
   async getCount() {
     try {
-      const count = await this.#userRepository.getCount();
-      return count;
+      return await this.#userRepository.getCount();
     } catch (err) {
-      throw new ErrorCode(err.message);
+      throw new Error(err.message);
     }
   }
 }

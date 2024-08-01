@@ -73,7 +73,7 @@ class UserController {
       const count = await this.#userService.getCount();
       res.status(200).json({ message: count });
     } catch (err) {
-      res.status(500).json({ error: err.message, message: count });
+      res.status(500).json({ error: err.message });
     }
   }
 }
