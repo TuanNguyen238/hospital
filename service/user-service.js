@@ -14,7 +14,7 @@ class UserService {
   }
 
   async getUserById(id) {
-    const user = this.#userRepository.getUserById(id);
+    const user = await this.#userRepository.getUserById(id);
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
     return user;
   }
