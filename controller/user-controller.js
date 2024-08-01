@@ -70,6 +70,7 @@ class UserController {
 
   async getCount(req, res) {
     try {
+      console.log(1);
       const count = await this.#userService.getCount();
       res.status(200).json({ message: count });
     } catch (err) {

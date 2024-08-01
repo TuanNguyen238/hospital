@@ -100,6 +100,7 @@ class UserService {
 
   async getCount() {
     try {
+      console.log(2);
       return await this.#userRepository.getCount();
     } catch (err) {
       throw new Error(err.message);
