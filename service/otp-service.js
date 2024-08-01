@@ -39,8 +39,11 @@ class OtpService {
     const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
 
-    if (user.role.name !== EnumRole.USER)
+    const isUser = user.role.name === EnumRole.USER;
+
+    if ((!otp.isAuthenticated && !isUser) || (otp.isAuthenticated && isUser)) {
       throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+    }
 
     await this.#otpRepository.requestOtp(otp);
 
