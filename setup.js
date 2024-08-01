@@ -16,6 +16,7 @@ class Setup {
     try {
       await this.setupRole(EnumRole.ADMIN, "admin role");
       await this.setupRole(EnumRole.USER, "user role");
+      await this.setupRole(EnumRole.DOCTOR, "doctor role");
 
       await this.setupAdmin();
     } catch (err) {
@@ -52,7 +53,7 @@ class Setup {
             password: hashedPassword,
             phoneNumber: "0937837564",
             status: "active",
-            roles: [adminRole],
+            role: adminRole,
           },
         ];
         await this.#userRepository.saveUser(usersData);

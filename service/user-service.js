@@ -28,9 +28,10 @@ class UserService {
 
     user.password = await bcrypt.hash(user.password, 10);
 
-    const userRole = await this.#roleRepository.getRole(EnumRole.USER);
+    const userRole = await this.#roleRepository.getRole(user.role);
     if (!userRole) throw new Error(ErrorCode.ROLE_NOT_EXISTED);
-    user.roles = [userRole];
+
+    user.role = userRole;
 
     await this.#userRepository.saveUser(user);
 
@@ -43,8 +44,8 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
-    if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    if (user.role.name === EnumRole.ADMIN)
+      throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     user.password = await bcrypt.hash(obj.password, 10);
 
@@ -59,15 +60,14 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
-    if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    if (user.role.name === EnumRole.ADMIN)
+      throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const authenticated = await bcrypt.compare(obj.password, user.password);
 
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
-    const hashedPassword = await bcrypt.hash(obj.newPass, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(obj.newPass, 10);
 
     await this.#userRepository.saveUser(user);
 
@@ -80,8 +80,8 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    const isAdmin = user.roles.some((role) => role.name === EnumRole.ADMIN);
-    if (isAdmin) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    if (user.role.name === EnumRole.ADMIN)
+      throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     user.username = obj.username;
     user.email = obj.email;

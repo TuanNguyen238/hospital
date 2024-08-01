@@ -29,9 +29,9 @@ class AuthenticationService {
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    const hasCorrectRole = user.roles.some((role) =>
-      isMobile ? role.name === EnumRole.USER : role.name !== EnumRole.USER
-    );
+    const hasCorrectRole = isMobile
+      ? user.role.name === EnumRole.USER
+      : user.role.name !== EnumRole.USER;
 
     if (!hasCorrectRole) throw new Error(ErrorCode.USER_NOT_EXISTED);
 

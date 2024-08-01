@@ -41,7 +41,7 @@ const User = new EntitySchema({
   relations: {
     roles: {
       target: "Role",
-      type: "many-to-many",
+      type: "many-to-one",
       joinTable: true,
     },
   },
