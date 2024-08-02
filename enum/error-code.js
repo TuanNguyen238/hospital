@@ -11,6 +11,7 @@ const ErrorCode = {
   REGISTED: "Đăng ký thành công",
   AUTHENTICATED: "Đăng nhập thành công",
   UPDATE_INFO: "Thay đổi thông tin tài khoản thành công",
+  TOKEN_UNAUTHENTICATED: "Phiên xác thực không hợp lệ",
 };
 
 module.exports = ErrorCode;
