@@ -22,7 +22,7 @@ class OtpRepository {
   }
 
   async deleteOtp(phoneNumber) {
-    await this.#repository.delete({ phoneNumBer: phoneNumber });
+    await this.#repository.delete({ phoneNumber: phoneNumber });
   }
 
   async verifyOtp(otp) {
