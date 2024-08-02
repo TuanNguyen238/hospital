@@ -1,4 +1,3 @@
-const { messaging } = require("firebase-admin");
 const UserService = require("../service/user-service.js");
 
 class UserController {
