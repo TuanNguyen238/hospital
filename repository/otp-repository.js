@@ -21,6 +21,10 @@ class OtpRepository {
     await this.#repository.save(otp);
   }
 
+  async deleteOtp(phoneNumber) {
+    await this.#repository.delete({ phoneNumBer: phoneNumber });
+  }
+
   async verifyOtp(otp) {
     const verifiedOtp = await this.#repository.findOne({
       where: {

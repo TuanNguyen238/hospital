@@ -15,6 +15,7 @@ class OtpService {
   async createOtp(otp) {
     const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+    await this.#otpRepository.deleteOtp(otp.phoneNumber);
     await this.#otpRepository.createOtp(otp);
     return {
       message: ErrorCode.OTP_SENT,
