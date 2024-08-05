@@ -40,7 +40,17 @@ const Prescription = new EntitySchema({
     medicines: {
       target: "Medicine",
       type: "many-to-many",
-      joinTable: true,
+      joinTable: {
+        name: "prescriptions_medicines",
+        joinColumn: {
+          name: "prescription_id",
+          referencedColumnName: "id",
+        },
+        inverseJoinColumn: {
+          name: "medicine_id",
+          referencedColumnName: "id",
+        },
+      },
     },
   },
 });
