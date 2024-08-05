@@ -18,6 +18,12 @@ const authenticateToken = (req, res, next) => {
       return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
     }
 
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (user.exp < currentTime) {
+      return res.status(500).json({ error: ErrorCode.TOKEN_EXPIRED });
+    }
+
     if (user.scope !== "ADMIN") {
       return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
     }

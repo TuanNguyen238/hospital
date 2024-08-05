@@ -12,6 +12,7 @@ const ErrorCode = {
   AUTHENTICATED: "Đăng nhập thành công",
   UPDATE_INFO: "Thay đổi thông tin tài khoản thành công",
   TOKEN_UNAUTHENTICATED: "Phiên xác thực không hợp lệ",
+  TOKEN_EXPIRED: "Phiên xác thực hết hạn",
 };
 
 module.exports = ErrorCode;

@@ -1,24 +1,15 @@
-const { EntitySchema, JoinColumn } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 
-const User = new EntitySchema({
-  name: "User",
-  tableName: "users",
+const Patient = new EntitySchema({
+  name: "Patient",
+  tableName: "patients",
   columns: {
     id: {
       primary: true,
       type: "uuid",
       generated: "uuid",
     },
-    username: {
-      type: "varchar",
-      length: 255,
-    },
-    email: {
-      type: "varchar",
-      length: 255,
-      nullable: true,
-    },
-    password: {
+    fullName: {
       type: "varchar",
       length: 255,
     },
@@ -28,9 +19,14 @@ const User = new EntitySchema({
       unique: true,
       nullable: false,
     },
+    address: {
+      type: "varchar",
+      length: 255,
+      nullable: true,
+    },
     identifyCard: {
       type: "varchar",
-      length: "12",
+      length: 12,
       nullable: true,
     },
     status: {
@@ -39,17 +35,18 @@ const User = new EntitySchema({
     },
   },
   relations: {
-    role: {
-      target: "Role",
+    user: {
+      target: "User",
       type: "many-to-one",
-      JoinColumn: true,
+      joinColumn: true,
+      onDelete: "CASCADE",
     },
-    patients: {
-      target: "Patient",
+    medicalRecords: {
+      target: "MedicalRecord",
       type: "one-to-many",
-      inverseSide: "users",
+      inverseSide: "patients",
     },
   },
 });
 
-module.exports = User;
+module.exports = Patient;
