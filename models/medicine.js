@@ -25,7 +25,6 @@ const Medicine = new EntitySchema({
       type: "many-to-many",
       inverseSide: "medicines",
       joinTable: true,
-      cascade: true,
     },
   },
 });

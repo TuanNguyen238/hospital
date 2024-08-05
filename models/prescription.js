@@ -31,14 +31,11 @@ const Prescription = new EntitySchema({
       target: "MedicalRecord",
       type: "one-to-one",
       joinColumn: true,
-      cascade: true,
-      onDelete: "CASCADE",
     },
     medicines: {
       target: "Medicine",
       type: "many-to-many",
       joinTable: true,
-      cascade: true,
     },
   },
 });
