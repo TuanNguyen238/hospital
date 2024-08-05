@@ -19,6 +19,13 @@ const Medicine = new EntitySchema({
       length: 255,
     },
   },
+  relations: {
+    prescriptions: {
+      target: "Prescription",
+      type: "many-to-many",
+      inverseSide: "medicines",
+    },
+  },
 });
 
 module.exports = Medicine;

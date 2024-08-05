@@ -9,7 +9,7 @@ const MedicalRecord = new EntitySchema({
       type: "uuid",
       generated: "uuid",
     },
-    examinationDate: {
+    examDate: {
       type: "date",
       nullable: false,
     },
@@ -18,7 +18,7 @@ const MedicalRecord = new EntitySchema({
       length: 255,
       nullable: true,
     },
-    examinationResult: {
+    examResult: {
       type: "varchar",
       length: 255,
       nullable: true,
