@@ -17,6 +17,11 @@ const authenticateToken = (req, res, next) => {
     if (err) {
       return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
     }
+
+    if (user.scope !== "ADMIN") {
+      return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+    }
+
     next();
   });
 };
