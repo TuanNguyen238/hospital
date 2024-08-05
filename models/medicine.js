@@ -24,7 +24,6 @@ const Medicine = new EntitySchema({
       target: "Prescription",
       type: "many-to-many",
       inverseSide: "medicines",
-      joinTable: true,
     },
   },
 });
