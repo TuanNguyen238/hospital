@@ -31,6 +31,18 @@ const Prescription = new EntitySchema({
       nullable: true,
     },
   },
+  relations: {
+    medicalRecord: {
+      target: "MedicalRecord",
+      type: "one-to-one",
+      inverseSide: "prescriptions",
+    },
+    medicines: {
+      target: "Medicine",
+      type: "many-to-many",
+      joinTable: true,
+    },
+  },
 });
 
 module.exports = Prescription;

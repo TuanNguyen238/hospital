@@ -39,7 +39,6 @@ const Patient = new EntitySchema({
       target: "User",
       type: "many-to-one",
       joinColumn: true,
-      onDelete: "CASCADE",
     },
     medicalRecords: {
       target: "MedicalRecord",
