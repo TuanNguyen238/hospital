@@ -25,17 +25,10 @@ const Prescription = new EntitySchema({
       type: "int",
       nullable: true,
     },
-  },
-  relations: {
-    medicalRecord: {
-      target: "MedicalRecord",
-      type: "one-to-one",
-      joinColumn: true,
-    },
-    medicines: {
-      target: "Medicine",
-      type: "many-to-many",
-      joinTable: true,
+    note: {
+      type: "varchar",
+      length: "255",
+      nullable: true,
     },
   },
 });
