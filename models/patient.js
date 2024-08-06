@@ -29,7 +29,7 @@ const Patient = new EntitySchema({
       length: 12,
       nullable: true,
     },
-    examDate: {
+    dateOfBirth: {
       type: "date",
       nullable: false,
     },
