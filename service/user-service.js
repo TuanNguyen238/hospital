@@ -60,7 +60,7 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
 
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name !== EnumRole.USER)
+    if (user.role.name === EnumRole.ADMIN)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const authenticated = await bcrypt.compare(obj.password, user.password);
