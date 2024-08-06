@@ -14,4 +14,4 @@ class RelativeRepository {
   }
 }
 
-module.exports = PatientRepository;
+module.exports = RelativeRepository;

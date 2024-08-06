@@ -10,8 +10,8 @@ class PatientRepository {
 
   async generatePatientCode() {
     const lastPatient = await this.#repository
-      .createQueryBuilder("patient")
-      .orderBy("patient.patientCode", "DESC")
+      .createQueryBuilder("patients")
+      .orderBy("patients.patientCode", "DESC")
       .getOne();
 
     if (!lastPatient) {
@@ -25,6 +25,10 @@ class PatientRepository {
 
   async savePatient(patient) {
     await this.#repository.save(patient);
+  }
+
+  async getPatientById(id) {
+    return await this.#repository.findBy({ userId: id });
   }
 }
 

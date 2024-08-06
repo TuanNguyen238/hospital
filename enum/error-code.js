@@ -13,6 +13,7 @@ const ErrorCode = {
   UPDATE_INFO: "Thay đổi thông tin tài khoản thành công",
   TOKEN_UNAUTHENTICATED: "Phiên xác thực không hợp lệ",
   TOKEN_EXPIRED: "Phiên xác thực hết hạn",
+  PATIENT_CREATED: "Tạo bệnh nhân thành công",
 };
 
 module.exports = ErrorCode;

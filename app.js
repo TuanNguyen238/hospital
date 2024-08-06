@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const userRoutes = require("./routes/user-routes.js");
 const authenticationRoutes = require("./routes/authentication-routes.js");
 const otpRoutes = require("./routes/otp-routes.js");
+const patientRoutes = require("./routes/patient-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
 const serviceAccount = require("./service-account.json");
@@ -29,6 +30,7 @@ AppDataSource.initialize()
     app.use("/users", userRoutes);
     app.use("/auth", authenticationRoutes);
     app.use("/otp", otpRoutes);
+    app.use("/patient", patientRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
