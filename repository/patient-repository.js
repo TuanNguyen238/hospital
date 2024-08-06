@@ -24,7 +24,7 @@ class PatientRepository {
   }
 
   async savePatient(patient) {
-    return await this.#repository.save(patient);
+    await this.#repository.save(patient);
   }
 }
 

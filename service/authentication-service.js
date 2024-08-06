@@ -54,7 +54,7 @@ class AuthenticationService {
 
   #generateToken(user) {
     const payload = {
-      sub: user.username,
+      sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 60,

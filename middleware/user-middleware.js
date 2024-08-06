@@ -5,31 +5,53 @@ const dotenv = require("dotenv");
 dotenv.config();
 const SECRET_KEY = process.env.SIGNER_KEY;
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+class UserMiddleware {
+  static authenticateTokenAdmin(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-  if (!token) {
-    return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+    if (!token)
+      return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err)
+        return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (user.exp < currentTime)
+        return res.status(500).json({ error: ErrorCode.TOKEN_EXPIRED });
+
+      if (user.scope !== "ADMIN")
+        return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+
+      next();
+    });
   }
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) {
+  static authenticationTokenUser(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token)
       return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
-    }
 
-    const currentTime = Math.floor(Date.now() / 1000);
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err)
+        return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
 
-    if (user.exp < currentTime) {
-      return res.status(500).json({ error: ErrorCode.TOKEN_EXPIRED });
-    }
+      const currentTime = Math.floor(Date.now() / 1000);
 
-    if (user.scope !== "ADMIN") {
-      return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
-    }
+      if (user.exp < currentTime)
+        return res.status(500).json({ error: ErrorCode.TOKEN_EXPIRED });
 
-    next();
-  });
-};
+      const obj = req.body;
+      if (user.sub !== obj.phoneNumber)
+        return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
 
-module.exports = authenticateToken;
+      next();
+    });
+  }
+}
+
+module.exports = UserMiddleware;
