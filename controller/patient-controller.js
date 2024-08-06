@@ -9,14 +9,10 @@ class PatientController {
 
   async createPatient(req, res) {
     try {
-      const relative = 0;
-      const patient = req.body;
-      console.log(patient, relative);
-      /*const message = await this.#patientService.createPatient(
-        patient,
-        relative
-      );*/
-      res.status(200).json("message");
+      const obj = req.body;
+      console.log(obj);
+      const message = await this.#patientService.createPatient(obj);
+      res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
