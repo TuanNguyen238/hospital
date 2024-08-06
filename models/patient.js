@@ -9,6 +9,12 @@ const Patient = new EntitySchema({
       type: "uuid",
       generated: "uuid",
     },
+    patientCode: {
+      type: "varchar",
+      length: 20,
+      unique: true,
+      nullable: false,
+    },
     fullName: {
       type: "varchar",
       length: 255,

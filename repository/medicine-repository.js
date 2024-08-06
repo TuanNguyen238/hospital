@@ -3,6 +3,7 @@ const Medicine = require("../models/medicine.js");
 
 class MedicineRepository {
   #repository;
+
   constructor() {
     this.#repository = AppDataSource.getRepository(Medicine);
   }
