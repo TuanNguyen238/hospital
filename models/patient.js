@@ -29,9 +29,9 @@ const Patient = new EntitySchema({
       length: 12,
       nullable: true,
     },
-    status: {
-      type: "varchar",
-      length: 20,
+    examDate: {
+      type: "date",
+      nullable: false,
     },
   },
   relations: {
