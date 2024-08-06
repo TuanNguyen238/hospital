@@ -45,6 +45,11 @@ const Patient = new EntitySchema({
       type: "one-to-many",
       inverseSide: "patients",
     },
+    relatives: {
+      target: "Relative",
+      type: "one-to-one",
+      joinColumn: true,
+    },
   },
 });
 

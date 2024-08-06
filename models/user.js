@@ -42,7 +42,7 @@ const User = new EntitySchema({
     role: {
       target: "Role",
       type: "many-to-one",
-      JoinColumn: true,
+      joinColumn: true,
     },
     patients: {
       target: "Patient",
