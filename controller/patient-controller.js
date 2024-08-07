@@ -10,7 +10,6 @@ class PatientController {
   async createPatient(req, res) {
     try {
       const obj = req.body;
-      console.log(obj);
       const message = await this.#patientService.createPatient(obj);
       res.status(200).json(message);
     } catch (err) {

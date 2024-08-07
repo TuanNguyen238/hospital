@@ -15,6 +15,7 @@ class PatientService {
   async createPatient(obj) {
     const relative = await this.#relativeRepository.createEntity(obj);
     const id = await this.#relativeRepository.saveRelative(relative);
+    console.log(id);
     const code = await this.#patientRepository.generatePatientCode();
     const patient = {
       fullName: obj.fullName,
@@ -26,6 +27,7 @@ class PatientService {
     };
     patient.relativesId = id;
     patient.patientCode = code;
+    console.log(patient);
     await this.#patientRepository.savePatient(patient);
     return {
       message: ErrorCode.PATIENT_CREATED,

@@ -10,7 +10,6 @@ class RelativeRepository {
 
   async saveRelative(relative) {
     const new_relative = await this.#repository.save(relative);
-    console.log(new_relative);
     return new_relative.id;
   }
 
