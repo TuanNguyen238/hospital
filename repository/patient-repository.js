@@ -29,7 +29,7 @@ class PatientRepository {
 
   async getPatientByUserId(id) {
     return await this.#repository.find({
-      where: { user: { userId: id } },
+      where: { user: { id: id } },
       relations: ["user"],
     });
   }
