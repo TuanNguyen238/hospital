@@ -22,6 +22,7 @@ class PatientService {
       address: obj.address,
       identifyCard: obj.identifyCard,
       dateOfBirth: obj.dateOfBirth,
+      userId: obj.userId,
     };
     patient.relativesId = id;
     patient.patientCode = code;
