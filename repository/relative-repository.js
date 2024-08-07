@@ -18,6 +18,7 @@ class RelativeRepository {
       fullName: obj.fullNameRLT,
       phoneNumber: obj.phoneNumberRLT,
       address: obj.addressRLT,
+      relations: obj.relations,
     });
   }
 }
