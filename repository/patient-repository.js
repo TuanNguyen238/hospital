@@ -38,6 +38,7 @@ class PatientRepository {
       address: obj.address,
       identifyCard: obj.identifyCard,
       dateOfBirth: obj.dateOfBirth,
+      gender: obj.gender,
       patientCode: code,
       relative: savedRelative,
       user: user,
