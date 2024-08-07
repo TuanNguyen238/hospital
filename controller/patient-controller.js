@@ -19,8 +19,8 @@ class PatientController {
 
   async getPatientByUserId(req, res) {
     try {
-      const id = req.body;
-      const patients = await this.#patientService.getPatientByUserId(id);
+      const obj = req.body;
+      const patients = await this.#patientService.getPatientByUserId(obj.id);
       res.status(200).json(patients);
     } catch (err) {
       res.status(500).json({ error: err.message });
