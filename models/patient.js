@@ -38,6 +38,11 @@ const Patient = new EntitySchema({
       type: "date",
       nullable: false,
     },
+    gender: {
+      type: "varchar",
+      length: 20,
+      nullable: false,
+    },
   },
   relations: {
     user: {
