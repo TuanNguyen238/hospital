@@ -29,8 +29,7 @@ class PatientService {
       identifyCard: obj.identifyCard,
       dateOfBirth: obj.dateOfBirth,
       userId: obj.userId,
-      relativesId: obj.relativesId,
-      userId: id,
+      relativesId: id,
       patientCode: code,
     };
     console.log(patient);
