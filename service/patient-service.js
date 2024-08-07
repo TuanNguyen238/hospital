@@ -31,6 +31,7 @@ class PatientService {
       userId: obj.userId,
       relativesId: obj.relativesId,
       userId: id,
+      patientCode: code,
     };
     console.log(patient);
     await this.#patientRepository.savePatient(patient);
