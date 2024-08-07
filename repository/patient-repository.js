@@ -34,7 +34,7 @@ class PatientRepository {
   async createEntity(obj, code, savedRelative, user) {
     return await this.#repository.create({
       fullName: obj.fullName,
-      phoneNumber: obj.phoneNumber,
+      phoneNumber: obj.phoneNumberPatient,
       address: obj.address,
       identifyCard: obj.identifyCard,
       dateOfBirth: obj.dateOfBirth,

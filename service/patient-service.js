@@ -21,7 +21,7 @@ class PatientService {
       const relative = await this.#relativeRepository.createEntity(obj);
       savedRelative = await this.#relativeRepository.saveRelative(relative);
       const user = await this.#userRepository.findByPhoneNumber(
-        obj.phoneNumberUser
+        obj.phoneNumber
       );
       const code = await this.#patientRepository.generatePatientCode();
       const patient = await this.#patientRepository.createEntity(
@@ -37,7 +37,7 @@ class PatientService {
     } catch (err) {
       if (savedRelative) {
         try {
-          await this.#relativeRepository.deleteRelative(savedRelative.id);
+          await this.#relativeRepository.delete(savedRelative.id);
         } catch (deleteError) {
           console.error(`Error deleting relative: ${deleteError}`);
         }
