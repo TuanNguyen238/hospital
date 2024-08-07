@@ -2,14 +2,17 @@ const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const RelativeRepository = require("../repository/relative-repository.js");
 const PatientRepository = require("../repository/patient-repository.js");
+const UserRepository = require("../repository/user-repository.js");
 
 class PatientService {
   #patientRepository;
   #relativeRepository;
+  #userRepository;
 
   constructor() {
     this.#patientRepository = new PatientRepository();
     this.#relativeRepository = new RelativeRepository();
+    this.#userRepository = new UserRepository();
   }
 
   async createPatient(obj) {
@@ -19,8 +22,12 @@ class PatientService {
       address: obj.addressRLT,
       relations: obj.relations,
     };
-    const id = await this.#relativeRepository.saveRelative(relative);
-    console.log(id);
+    const savedRelative = await this.#relativeRepository.saveRelative(relative);
+    const user = await this.#userRepository.findByPhoneNumber(
+      obj.phoneNumberUser
+    );
+    console.log(savedRelative);
+    console.log(user);
     const code = await this.#patientRepository.generatePatientCode();
     const patient = {
       fullName: obj.fullName,
@@ -28,9 +35,9 @@ class PatientService {
       address: obj.address,
       identifyCard: obj.identifyCard,
       dateOfBirth: obj.dateOfBirth,
-      userId: obj.userId,
-      relativesId: id,
       patientCode: code,
+      relative: savedRelative,
+      user: user,
     };
     console.log(patient);
     await this.#patientRepository.savePatient(patient);

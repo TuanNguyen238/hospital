@@ -15,7 +15,7 @@ const Role = new EntitySchema({
     },
   },
   relations: {
-    users: {
+    user: {
       target: "User",
       type: "one-to-many",
       inverseSide: "roles",

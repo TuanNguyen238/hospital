@@ -9,8 +9,7 @@ class RelativeRepository {
   }
 
   async saveRelative(relative) {
-    const new_relative = await this.#repository.save(relative);
-    return new_relative.id;
+    return await this.#repository.save(relative);
   }
 }
 

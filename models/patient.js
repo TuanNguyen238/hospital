@@ -44,25 +44,17 @@ const Patient = new EntitySchema({
     user: {
       target: "User",
       type: "many-to-one",
-      joinColumn: {
-        name: "userId",
-        referencedColumnName: "id",
-      },
-      nullable: false,
+      joinColumn: true,
     },
-    medicalRecords: {
+    medicalRecord: {
       target: "MedicalRecord",
       type: "one-to-many",
       inverseSide: "patients",
     },
-    relatives: {
+    relative: {
       target: "Relative",
       type: "one-to-one",
-      joinColumn: {
-        name: "relativesId",
-        referencedColumnName: "id",
-      },
-      nullable: false,
+      joinColumn: true,
     },
   },
 });

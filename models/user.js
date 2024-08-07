@@ -44,7 +44,7 @@ const User = new EntitySchema({
       type: "many-to-one",
       joinColumn: true,
     },
-    patients: {
+    patient: {
       target: "Patient",
       type: "one-to-many",
       inverseSide: "users",
