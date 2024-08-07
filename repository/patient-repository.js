@@ -29,8 +29,7 @@ class PatientRepository {
 
   async getPatientsByUserId(id) {
     return await this.#repository.findBy({
-      where: { user: { id: id } },
-      relations: ["user"],
+      user: { id: id },
     });
   }
 
