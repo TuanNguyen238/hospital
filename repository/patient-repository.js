@@ -30,6 +30,19 @@ class PatientRepository {
   async getPatientById(id) {
     return await this.#repository.findBy({ userId: id });
   }
+
+  async createEntity(obj, code, savedRelative, user) {
+    return await this.#repository.create({
+      fullName: obj.fullName,
+      phoneNumber: obj.phoneNumber,
+      address: obj.address,
+      identifyCard: obj.identifyCard,
+      dateOfBirth: obj.dateOfBirth,
+      patientCode: code,
+      relative: savedRelative,
+      user: user,
+    });
+  }
 }
 
 module.exports = PatientRepository;

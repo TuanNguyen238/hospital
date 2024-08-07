@@ -11,6 +11,15 @@ class RelativeRepository {
   async saveRelative(relative) {
     return await this.#repository.save(relative);
   }
+
+  async createEntity(obj) {
+    return await this.#repository.create({
+      fullName: obj.fullNameRLT,
+      phoneNumber: obj.phoneNumberRLT,
+      address: obj.addressRLT,
+      relations: obj.relations,
+    });
+  }
 }
 
 module.exports = RelativeRepository;
