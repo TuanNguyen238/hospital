@@ -47,7 +47,7 @@ class PatientService {
   }
 
   async getPatientByUserId(id) {
-    return this.#patientRepository.getPatientByUserId(id);
+    return this.#patientRepository.getPatientsByUserId(id);
   }
 }
 module.exports = PatientService;
