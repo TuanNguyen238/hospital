@@ -16,22 +16,34 @@ class PatientService {
   }
 
   async createPatient(obj) {
-    const relative = await this.#relativeRepository.createEntity(obj);
-    const savedRelative = await this.#relativeRepository.saveRelative(relative);
-    const user = await this.#userRepository.findByPhoneNumber(
-      obj.phoneNumberUser
-    );
-    const code = await this.#patientRepository.generatePatientCode();
-    const patient = await this.#patientRepository.createEntity(
-      obj,
-      code,
-      savedRelative,
-      user
-    );
-    await this.#patientRepository.savePatient(patient);
-    return {
-      message: ErrorCode.PATIENT_CREATED,
-    };
+    let savedRelative = null;
+    try {
+      const relative = await this.#relativeRepository.createEntity(obj);
+      savedRelative = await this.#relativeRepository.saveRelative(relative);
+      const user = await this.#userRepository.findByPhoneNumber(
+        obj.phoneNumberUser
+      );
+      const code = await this.#patientRepository.generatePatientCode();
+      const patient = await this.#patientRepository.createEntity(
+        obj,
+        code,
+        savedRelative,
+        user
+      );
+      await this.#patientRepository.savePatient(patient);
+      return {
+        message: ErrorCode.PATIENT_CREATED,
+      };
+    } catch (err) {
+      if (savedRelative) {
+        try {
+          await this.#relativeRepository.deleteRelative(savedRelative.id);
+        } catch (deleteError) {
+          console.error(`Error deleting relative: ${deleteError}`);
+        }
+      }
+      throw new Error(err);
+    }
   }
 
   async getPatientById(id) {

@@ -16,7 +16,6 @@ const Relative = new EntitySchema({
     phoneNumber: {
       type: "varchar",
       length: 20,
-      unique: true,
       nullable: false,
     },
     address: {

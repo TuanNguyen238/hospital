@@ -20,6 +20,10 @@ class RelativeRepository {
       relations: obj.relations,
     });
   }
+
+  async delete(id) {
+    await this.#repository.delete({ id: id });
+  }
 }
 
 module.exports = RelativeRepository;
