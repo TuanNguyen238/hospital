@@ -27,8 +27,11 @@ class PatientRepository {
     await this.#repository.save(patient);
   }
 
-  async getPatientById(id) {
-    return await this.#repository.findBy({ userId: id });
+  async getPatientByUserId(id) {
+    return await this.#repository.find({
+      where: { user: { userId: id } },
+      relations: ["user"],
+    });
   }
 
   async createEntity(obj, code, savedRelative, user) {
