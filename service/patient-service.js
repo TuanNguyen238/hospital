@@ -13,7 +13,12 @@ class PatientService {
   }
 
   async createPatient(obj) {
-    const relative = await this.#relativeRepository.createEntity(obj);
+    const relative = {
+      fullName: obj.fullNameRLT,
+      phoneNumber: obj.phoneNumberRLT,
+      address: obj.addressRLT,
+      relations: obj.relations,
+    };
     const id = await this.#relativeRepository.saveRelative(relative);
     console.log(id);
     const code = await this.#patientRepository.generatePatientCode();
@@ -24,9 +29,9 @@ class PatientService {
       identifyCard: obj.identifyCard,
       dateOfBirth: obj.dateOfBirth,
       userId: obj.userId,
+      relativesId: obj.relativesId,
+      userId: id,
     };
-    patient.relativesId = id;
-    patient.patientCode = code;
     console.log(patient);
     await this.#patientRepository.savePatient(patient);
     return {

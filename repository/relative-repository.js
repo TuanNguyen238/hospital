@@ -12,15 +12,6 @@ class RelativeRepository {
     const new_relative = await this.#repository.save(relative);
     return new_relative.id;
   }
-
-  async createEntity(obj) {
-    return await this.#repository.create({
-      fullName: obj.fullNameRLT,
-      phoneNumber: obj.phoneNumberRLT,
-      address: obj.addressRLT,
-      relations: obj.relations,
-    });
-  }
 }
 
 module.exports = RelativeRepository;
