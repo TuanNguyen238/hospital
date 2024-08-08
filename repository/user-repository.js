@@ -33,7 +33,7 @@ class UserRepository {
 
   async getCount(role) {
     return await this.#repository.count({
-      role: { name: role },
+      where: { role: { name: role } },
     });
   }
 }
