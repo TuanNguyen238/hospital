@@ -21,7 +21,7 @@ router.put("/updatepass", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.put(
   "/updatepassadmin",
   UserMiddleware.authenticateTokenAdmin,
-  (req, req) => userController.updatePassAdmin(req, res)
+  (req, res) => userController.updatePassAdmin(req, res)
 );
 router.put("/updateinfo", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.updateInfo(req, res)
