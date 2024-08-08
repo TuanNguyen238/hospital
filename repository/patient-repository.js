@@ -35,8 +35,13 @@ class PatientRepository {
 
     return patients.map((patient) => ({
       ...patient,
-      dateOfBirth: format(new Date(patient.dateOfBirth), "dd/MM/yyyy"),
+      dateOfBirth: formatDate(patient.dateOfBirth),
     }));
+  }
+
+  async formatDate(dateString) {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
   }
 
   async createEntity(obj, code, savedRelative, user) {
@@ -53,5 +58,3 @@ class PatientRepository {
     });
   }
 }
-
-module.exports = PatientRepository;
