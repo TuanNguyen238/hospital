@@ -18,6 +18,11 @@ router.put("/forgotpass", (req, res) => userController.forgotPass(req, res));
 router.put("/updatepass", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.updatePass(req, res)
 );
+router.put(
+  "/updatepassadmin",
+  UserMiddleware.authenticateTokenAdmin,
+  (req, req) => userController.updatePassAdmin(req, res)
+);
 router.put("/updateinfo", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.updateInfo(req, res)
 );
