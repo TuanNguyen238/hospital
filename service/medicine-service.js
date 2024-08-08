@@ -11,5 +11,12 @@ class MedicineService {
   async getCount() {
     return await this.#medicineRepository.getCount();
   }
+
+  async createMedicine(medicine) {
+    await this.#medicineRepository.saveMedicine(medicine);
+    return {
+      message: ErrorCode.MEDICINE_CREATED,
+    };
+  }
 }
 module.exports = MedicineService;

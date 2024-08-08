@@ -15,6 +15,7 @@ const ErrorCode = {
   TOKEN_EXPIRED: "Phiên xác thực hết hạn",
   PATIENT_CREATED: "Tạo bệnh nhân thành công",
   PRIVACY: "Vi phạm quyền riêng tư người dùng",
+  MEDICINE_CREATED: "Tạo thuốc thành công",
 };
 
 module.exports = ErrorCode;
