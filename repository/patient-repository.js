@@ -57,3 +57,5 @@ class PatientRepository {
     });
   }
 }
+
+module.exports = PatientRepository;
