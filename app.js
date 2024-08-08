@@ -32,7 +32,7 @@ AppDataSource.initialize()
     app.use("/auth", authenticationRoutes);
     app.use("/otp", otpRoutes);
     app.use("/patient", patientRoutes);
-    app.user("/medicine", medicineRoutes);
+    app.use("/medicine", medicineRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
