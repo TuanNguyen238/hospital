@@ -12,6 +12,10 @@ class MedicineRepository {
     return await this.#repository.findOne({ where: { name } });
   }
 
+  async getCount() {
+    return await this.#repository.count();
+  }
+
   async saveMedicine(medicine) {
     return await this.#repository.save(medicine);
   }

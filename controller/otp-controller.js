@@ -9,9 +9,8 @@ class OtpController {
 
   async createOtp(req, res) {
     try {
-      const otp = req.body;
-      console.log(otp);
-      const message = await this.#otpService.createOtp(otp);
+      console.log(req.body);
+      const message = await this.#otpService.createOtp(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -29,9 +28,8 @@ class OtpController {
 
   async requestOtp(req, res) {
     try {
-      const otp = req.body;
-      console.log(otp);
-      const message = await this.#otpService.requestOtp(otp);
+      console.log(req.body);
+      const message = await this.#otpService.requestOtp(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -40,9 +38,8 @@ class OtpController {
 
   async verifyOtp(req, res) {
     try {
-      const otp = req.body;
-      console.log(otp);
-      const valid = await this.#otpService.verifyOtp(otp);
+      console.log(req.body);
+      const valid = await this.#otpService.verifyOtp(req.body);
       console.log(valid);
       res.status(valid.statusCode).json({ message: valid.message });
     } catch (err) {
