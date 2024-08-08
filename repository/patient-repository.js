@@ -38,11 +38,6 @@ class PatientRepository {
     }));
   }
 
-  async formatDate(dateString) {
-    const [year, month, day] = dateString.split("-");
-    return `${day}/${month}/${year}`;
-  }
-
   async createEntity(obj, code, savedRelative, user) {
     return await this.#repository.create({
       fullName: obj.fullName,
@@ -56,6 +51,11 @@ class PatientRepository {
       user: user,
     });
   }
+}
+
+function formatDate(dateString) {
+  const [year, month, day] = dateString.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 module.exports = PatientRepository;
