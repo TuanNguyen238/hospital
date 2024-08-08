@@ -27,8 +27,7 @@ class UserController {
 
   async createUser(req, res) {
     try {
-      const user = req.body;
-      const message = await this.#userService.createUser(user);
+      const message = await this.#userService.createUser(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -37,8 +36,7 @@ class UserController {
 
   async forgotPass(req, res) {
     try {
-      const { phoneNumber, password } = req.body;
-      const message = await this.#userService.forgotPass(phoneNumber, password);
+      const message = await this.#userService.forgotPass(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -47,8 +45,7 @@ class UserController {
 
   async updatePass(req, res) {
     try {
-      const obj = req.body;
-      const message = await this.#userService.updatePass(obj);
+      const message = await this.#userService.updatePass(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -57,17 +54,25 @@ class UserController {
 
   async updateInfo(req, res) {
     try {
-      const obj = req.body;
-      const message = await this.#userService.updateInfo(obj);
+      const message = await this.#userService.updateInfo(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   }
 
-  async getCount(req, res) {
+  async getCountUser(req, res) {
     try {
-      const count = await this.#userService.getCount();
+      const count = await this.#userService.getCountUser();
+      res.status(200).json({ message: count });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  async getCountDoctor(req, res) {
+    try {
+      const count = await this.#userService.getCountDoctor();
       res.status(200).json({ message: count });
     } catch (err) {
       res.status(500).json({ error: err.message });

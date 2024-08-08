@@ -1,3 +1,4 @@
+const EnumRole = require("../enum/enum-role.js");
 const User = require("../models/user.js");
 const AppDataSource = require("../utils/configs.js");
 
@@ -30,8 +31,10 @@ class UserRepository {
     });
   }
 
-  async getCount() {
-    return await this.#repository.count();
+  async getCount(role) {
+    return await this.#repository.count({
+      role: { name: role },
+    });
   }
 }
 

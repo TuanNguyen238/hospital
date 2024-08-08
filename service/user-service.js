@@ -23,70 +23,54 @@ class UserService {
     const checkUser = await this.#userRepository.findByPhoneNumber(
       user.phoneNumber
     );
-
     if (checkUser) throw new Error(ErrorCode.USER_ALREADY_EXISTS);
 
     user.password = await bcrypt.hash(user.password, 10);
-
     const userRole = await this.#roleRepository.getRole(user.role);
     if (!userRole) throw new Error(ErrorCode.ROLE_NOT_EXISTED);
 
     user.role = userRole;
-
     await this.#userRepository.saveUser(user);
-
     return {
       message: ErrorCode.REGISTED,
     };
   }
 
-  async forgotPass(obj) {
-    const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
+  async forgotPass({ phoneNumber, password }) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
 
-    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name !== EnumRole.USER)
+    if (!user || user.role.name !== EnumRole.USER)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    user.password = await bcrypt.hash(obj.password, 10);
-
+    user.password = await bcrypt.hash(password, 10);
     await this.#userRepository.saveUser(user);
-
     return {
       message: ErrorCode.PASS_UPDATED,
     };
   }
 
-  async updatePass(obj) {
-    const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
-
-    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name === EnumRole.ADMIN)
+  async updatePass({ phoneNumber, password, newPass }) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+    if (!user || user.role.name === EnumRole.ADMIN)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    const authenticated = await bcrypt.compare(obj.password, user.password);
-
+    const authenticated = await bcrypt.compare(password, user.password);
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
-    user.password = await bcrypt.hash(obj.newPass, 10);
+    user.password = await bcrypt.hash(newPass, 10);
 
     await this.#userRepository.saveUser(user);
-
     return {
       message: ErrorCode.PASS_UPDATED,
     };
   }
 
-  async updateInfo(obj) {
-    const user = await this.#userRepository.findByPhoneNumber(obj.phoneNumber);
-
-    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    if (user.role.name !== EnumRole.USER)
+  async updateInfo({ phoneNumber, username, email, identifyCard }) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+    if (!user || user.role.name !== EnumRole.USER)
       throw new Error(ErrorCode.USER_NOT_EXISTED);
 
-    user.username = obj.username;
-    user.email = obj.email;
-    user.identifyCard = obj.identifyCard;
-
+    Object.assign(user, { username, email, identifyCard });
     await this.#userRepository.saveUser(user);
 
     return {
@@ -98,9 +82,17 @@ class UserService {
     return this.#userRepository.getAllUsers();
   }
 
-  async getCount() {
+  async getCountUser() {
     try {
-      return await this.#userRepository.getCount();
+      return await this.#userRepository.getCount(EnumRole.USER);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  async getCountDoctor() {
+    try {
+      return await this.#userRepository.getCount(EnumRole.DOCTOR);
     } catch (err) {
       throw new Error(err.message);
     }
