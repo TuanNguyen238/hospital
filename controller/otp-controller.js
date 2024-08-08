@@ -46,7 +46,7 @@ class OtpController {
       console.log(valid);
       res.status(valid.statusCode).json({ message: valid.message });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ message: err.message });
     }
   }
 }
