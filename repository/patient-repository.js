@@ -28,9 +28,14 @@ class PatientRepository {
   }
 
   async getPatientsByUserId(id) {
-    return await this.#repository.findBy({
+    const patients = await this.#repository.findBy({
       user: { id: id },
     });
+
+    return patients.map((patient) => ({
+      ...patient,
+      dateOfBirth: format(new Date(patient.dateOfBirth), "dd/MM/yyyy"),
+    }));
   }
 
   async createEntity(obj, code, savedRelative, user) {
