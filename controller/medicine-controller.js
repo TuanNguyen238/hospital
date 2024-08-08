@@ -24,6 +24,15 @@ class MedicineController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async getAllMedicine(req, res) {
+    try {
+      const medicines = await this.#medicineService.getAllMedicine();
+      res.status(200).json(medicines);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = MedicineController;

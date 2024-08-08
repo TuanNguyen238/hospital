@@ -19,6 +19,10 @@ class MedicineRepository {
   async saveMedicine(medicine) {
     return await this.#repository.save(medicine);
   }
+
+  async getAllMedicine() {
+    return await this.#repository.find();
+  }
 }
 
 module.exports = MedicineRepository;

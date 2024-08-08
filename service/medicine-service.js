@@ -18,5 +18,9 @@ class MedicineService {
       message: ErrorCode.MEDICINE_CREATED,
     };
   }
+
+  async getAllMedicine() {
+    return await this.#medicineRepository.getAllMedicine();
+  }
 }
 module.exports = MedicineService;
