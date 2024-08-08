@@ -9,7 +9,7 @@ class MedicineController {
 
   async getCount(req, res) {
     try {
-      const message = await this.#medicineService.getCount();
+      const count = await this.#medicineService.getCount();
       res.status(200).json({ message: count });
     } catch (err) {
       res.status(500).json({ error: err.message });
