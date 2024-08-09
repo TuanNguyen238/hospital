@@ -29,7 +29,7 @@ class PatientRepository {
 
   async getPatientsByUserId(id) {
     const patients = await this.#repository.findBy({
-      user: { id: id },
+      user: { phoneNumber: id },
     });
 
     return patients.map((patient) => ({

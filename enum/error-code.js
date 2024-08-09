@@ -16,6 +16,8 @@ const ErrorCode = {
   PATIENT_CREATED: "Tạo bệnh nhân thành công",
   PRIVACY: "Vi phạm quyền riêng tư người dùng",
   MEDICINE_CREATED: "Tạo thuốc thành công",
+  MEDICINE_NOT_EXISTED: "Thuốc không tồn tại",
+  MEDICINE_DELETED: "Xóa thuốc thành công",
 };
 
 module.exports = ErrorCode;

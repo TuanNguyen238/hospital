@@ -23,6 +23,14 @@ class MedicineRepository {
   async getAllMedicine() {
     return await this.#repository.find();
   }
+
+  async deleteMedicine(id) {
+    await this.#repository.delete({ id: id });
+  }
+
+  async getMedicineById(id) {
+    return await this.#repository.findOneBy({ id: id });
+  }
 }
 
 module.exports = MedicineRepository;

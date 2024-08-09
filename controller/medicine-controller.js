@@ -33,6 +33,12 @@ class MedicineController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async deleteMedicine(req, res) {
+    try {
+      const message = await this.#medicineService.deleteMedicine(req.body);
+    } catch (err) {}
+  }
 }
 
 module.exports = MedicineController;

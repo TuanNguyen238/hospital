@@ -22,5 +22,14 @@ class MedicineService {
   async getAllMedicine() {
     return await this.#medicineRepository.getAllMedicine();
   }
+
+  async deleteMedicine(id) {
+    const medicine = await this.#medicineRepository.getMedicineById(id);
+    if (!medicine) throw new Error(ErrorCode.MEDICINE_NOT_EXISTED);
+    await this.#medicineRepository.deleteMedicine(id);
+    return {
+      message: ErrorCode.MEDICINE_DELETED,
+    };
+  }
 }
 module.exports = MedicineService;
