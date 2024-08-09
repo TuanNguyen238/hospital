@@ -48,7 +48,7 @@ class UserMiddleware {
 
       if (
         user.sub !== req.body.phoneNumber &&
-        user.sub !== req.params.phoneNumber &&
+        user.sub !== req.query.phoneNumber &&
         user.scope !== EnumRole.ADMIN
       )
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
