@@ -28,14 +28,9 @@ class PatientRepository {
   }
 
   async getPatientsByPhoneNumber(phoneNumber) {
-    const patients = await this.#repository.findBy({
+    return await this.#repository.findBy({
       user: { phoneNumber: phoneNumber },
     });
-
-    return patients.map((patient) => ({
-      ...patient,
-      dateOfBirth: formatDate(patient.dateOfBirth),
-    }));
   }
 
   async createEntity(obj, code, savedRelative, user) {
@@ -51,11 +46,6 @@ class PatientRepository {
       user: user,
     });
   }
-}
-
-function formatDate(dateString) {
-  const [year, month, day] = dateString.split("-");
-  return `${day}/${month}/${year}`;
 }
 
 module.exports = PatientRepository;

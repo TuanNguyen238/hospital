@@ -3,6 +3,7 @@ const ErrorCode = require("../enum/error-code.js");
 const RelativeRepository = require("../repository/relative-repository.js");
 const PatientRepository = require("../repository/patient-repository.js");
 const UserRepository = require("../repository/user-repository.js");
+const formatDate = require("../utils/const.js");
 
 class PatientService {
   #patientRepository;
@@ -46,8 +47,15 @@ class PatientService {
     }
   }
 
-  async getPatientByPhoneNumber(phoneNumber) {
-    return this.#patientRepository.getPatientsByPhoneNumber(phoneNumber);
+  async getPatientsByPhoneNumber(phoneNumber) {
+    const patients = await this.#patientRepository.getPatientsByPhoneNumber(
+      phoneNumber
+    );
+
+    return patients.map((patient) => ({
+      ...patient,
+      dateOfBirth: formatDate(patient.dateOfBirth),
+    }));
   }
 }
 module.exports = PatientService;

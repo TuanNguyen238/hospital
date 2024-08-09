@@ -16,9 +16,9 @@ class PatientController {
     }
   }
 
-  async getPatientByPhoneNumber(req, res) {
+  async getPatientsByPhoneNumber(req, res) {
     try {
-      const patients = await this.#patientService.getPatientByPhoneNumber(
+      const patients = await this.#patientService.getPatientsByPhoneNumber(
         req.query.phoneNumber
       );
       res.status(200).json(patients);
