@@ -4,16 +4,19 @@ const RelativeRepository = require("../repository/relative-repository.js");
 const PatientRepository = require("../repository/patient-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const formatDate = require("../utils/const.js");
+const RecordRepository = require("../repository/record-repository.js");
 
 class PatientService {
   #patientRepository;
   #relativeRepository;
   #userRepository;
+  #recordRepository;
 
   constructor() {
     this.#patientRepository = new PatientRepository();
     this.#relativeRepository = new RelativeRepository();
     this.#userRepository = new UserRepository();
+    this.#recordRepository = new RecordRepository();
   }
 
   async createPatient(obj) {
@@ -52,10 +55,18 @@ class PatientService {
       phoneNumber
     );
 
-    return patients.map((patient) => ({
-      ...patient,
-      dateOfBirth: formatDate(patient.dateOfBirth),
-    }));
+    return await Promise.all(
+      patients.map(async (patient) => {
+        const recordCount = await this.#recordRepository.getCountById(
+          patient.id
+        );
+        return {
+          ...patient,
+          dateOfBirth: formatDate(patient.dateOfBirth),
+          recordCount: recordCount,
+        };
+      })
+    );
   }
 }
 module.exports = PatientService;

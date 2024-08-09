@@ -9,14 +9,14 @@ const MedicalRecord = new EntitySchema({
       type: "uuid",
       generated: "uuid",
     },
-    examDate: {
-      type: "date",
-      nullable: false,
-    },
-    diagnosis: {
+    reasonForVisit: {
       type: "varchar",
       length: 255,
-      nullable: true,
+      nullable: false,
+    },
+    examDate: {
+      type: "timestamp",
+      nullable: false,
     },
     examResult: {
       type: "varchar",
@@ -32,6 +32,11 @@ const MedicalRecord = new EntitySchema({
     },
     prescription: {
       target: "Prescription",
+      type: "one-to-one",
+      joinColumn: true,
+    },
+    detailedRecord: {
+      target: "DetailedRecord",
       type: "one-to-one",
       joinColumn: true,
     },
