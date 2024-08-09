@@ -12,4 +12,8 @@ router.post("/create", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.getAllMedicine(req, res)
 );
+router.delete("/delete", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  medicineController.deleteMedicine(req, res)
+);
+
 module.exports = router;
