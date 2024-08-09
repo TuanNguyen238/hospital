@@ -46,8 +46,11 @@ class UserMiddleware {
       if (user.exp < currentTime)
         return res.status(500).json({ error: ErrorCode.TOKEN_EXPIRED });
 
-      const obj = req.body;
-      if (user.sub !== obj.phoneNumber && user.scope !== EnumRole.ADMIN)
+      if (
+        user.sub !== req.body.phoneNumber &&
+        user.sub !== req.params.phoneNumber &&
+        user.scope !== EnumRole.ADMIN
+      )
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
 
       next();

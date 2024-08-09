@@ -16,10 +16,11 @@ class PatientController {
     }
   }
 
-  async getPatientByUserId(req, res) {
+  async getPatientByPhoneNumber(req, res) {
     try {
-      const obj = req.body;
-      const patients = await this.#patientService.getPatientByUserId(obj.id);
+      const patients = await this.#patientService.getPatientByPhoneNumber(
+        req.params.phoneNumber
+      );
       res.status(200).json(patients);
     } catch (err) {
       res.status(500).json({ error: err.message });

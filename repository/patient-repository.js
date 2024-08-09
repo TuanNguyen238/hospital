@@ -27,9 +27,9 @@ class PatientRepository {
     await this.#repository.save(patient);
   }
 
-  async getPatientsByUserId(id) {
+  async getPatientsByPhoneNumber(phoneNumber) {
     const patients = await this.#repository.findBy({
-      user: { phoneNumber: id },
+      user: { phoneNumber: phoneNumber },
     });
 
     return patients.map((patient) => ({

@@ -46,8 +46,8 @@ class PatientService {
     }
   }
 
-  async getPatientByUserId(id) {
-    return this.#patientRepository.getPatientsByUserId(id);
+  async getPatientByPhoneNumber(phoneNumber) {
+    return this.#patientRepository.getPatientsByPhoneNumber(phoneNumber);
   }
 }
 module.exports = PatientService;
