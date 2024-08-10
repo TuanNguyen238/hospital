@@ -40,7 +40,7 @@ const MedicalRecord = new EntitySchema({
     },
     examRoom: {
       target: "ExamRoom",
-      typw: "many-to-one",
+      type: "many-to-one",
       joinColumn: true,
     },
   },
