@@ -12,16 +12,14 @@ const MedicalRecord = new EntitySchema({
     reasonForVisit: {
       type: "varchar",
       length: 255,
-      nullable: false,
     },
-    examDate: {
-      type: "timestamp",
-      nullable: false,
+    diagnosis: {
+      type: "varchar",
+      length: 255,
     },
     examResult: {
       type: "varchar",
       length: 255,
-      nullable: true,
     },
   },
   relations: {
@@ -38,6 +36,11 @@ const MedicalRecord = new EntitySchema({
     detailedRecord: {
       target: "DetailedRecord",
       type: "one-to-one",
+      joinColumn: true,
+    },
+    examRoom: {
+      target: "ExamRoom",
+      typw: "many-to-one",
       joinColumn: true,
     },
   },
