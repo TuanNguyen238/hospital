@@ -18,5 +18,9 @@ class ExamRoomService {
       message: ErrorCode.EXAMROOM_CREATED,
     };
   }
+
+  async getAllExamRoom() {
+    return this.#examRoomRepository.getAllExamRoom();
+  }
 }
 module.exports = ExamRoomService;

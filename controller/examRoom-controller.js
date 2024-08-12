@@ -15,6 +15,15 @@ class ExamRoomcontroller {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async getAllExamRoom(req, res) {
+    try {
+      const examroom = await this.#examRoomService.getAllExamRoom();
+      res.status(200).json(examroom);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = ExamRoomcontroller;

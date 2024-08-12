@@ -20,6 +20,10 @@ class ExamRoomRepository {
   async saveExamRoom(examRoom) {
     return await this.#repository.save(examRoom);
   }
+
+  async getAllExamRoom() {
+    return await this.#repository.find();
+  }
 }
 
 module.exports = ExamRoomRepository;
