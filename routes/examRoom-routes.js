@@ -9,6 +9,6 @@ router.post("/create", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   examRoomcontroller.createExamRoom(req, res)
 );
 router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
-  examRoomcontroller.getExamRoom(req, res)
+  examRoomcontroller.getAllExamRoom(req, res)
 );
 module.exports = router;
