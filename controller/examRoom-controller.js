@@ -7,7 +7,7 @@ class ExamRoomcontroller {
     this.#examRoomService = new ExamRoomService();
   }
 
-  async createMedicine(req, res) {
+  async createExamRoom(req, res) {
     try {
       const message = await this.#examRoomService.createExamRoom(req.body);
       res.status(200).json(message);
