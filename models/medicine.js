@@ -20,10 +20,10 @@ const Medicine = new EntitySchema({
     },
   },
   relations: {
-    prescription: {
-      target: "Prescription",
-      type: "many-to-many",
-      inverseSide: "medicines",
+    dosages: {
+      target: "Dosage",
+      type: "one-to-many",
+      inverseSide: "medicine",
     },
   },
 });
