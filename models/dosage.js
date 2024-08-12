@@ -9,10 +9,17 @@ const Dosage = new EntitySchema({
       type: "uuid",
       generated: "uuid",
     },
-    timeOfDay: {
-      type: "enum",
-      enum: ["morning", "afternoon", "evening"],
-      nullable: false,
+    morning: {
+      type: "int",
+      nullable: true,
+    },
+    afternoon: {
+      type: "int",
+      nullable: true,
+    },
+    evening: {
+      type: "int",
+      nullable: true,
     },
     quantity: {
       type: "int",
