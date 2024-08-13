@@ -12,7 +12,6 @@ class ExamRoomRepository {
     return await this.#repository.findOneBy({
       examDate: examRoom.examDate,
       examTime: examRoom.examTime,
-      maxPatients: examRoom.maxPatients,
       roomNumber: examRoom.roomNumber,
     });
   }

@@ -53,7 +53,7 @@ class UserMiddleware {
       req,
       res,
       next,
-      [EnumRole.USER, EnumRole.ADMIN],
+      [EnumRole.USER, EnumRole.DOCTOR, EnumRole.ADMIN],
       true
     );
   }
