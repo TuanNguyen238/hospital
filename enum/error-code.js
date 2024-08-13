@@ -18,6 +18,7 @@ const ErrorCode = {
   MEDICINE_CREATED: "Tạo thuốc thành công",
   MEDICINE_NOT_EXISTED: "Thuốc không tồn tại",
   MEDICINE_DELETED: "Xóa thuốc thành công",
+  MEDICINE_UPDATED: "Cập nhật thuốc thành công",
   EXAMROOM_CREATED: "Tạo phòng khám thành công",
   EXAMROOM_EXISTED: "Phòng khám đã tồn tại",
 };

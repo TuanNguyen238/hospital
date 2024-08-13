@@ -8,8 +8,8 @@ class MedicineRepository {
     this.#repository = AppDataSource.getRepository(Medicine);
   }
 
-  async findByName(name) {
-    return await this.#repository.findOne({ where: { name } });
+  async findById(id) {
+    return await this.#repository.findOne({ where: { id } });
   }
 
   async getCount() {
