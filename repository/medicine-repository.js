@@ -9,7 +9,11 @@ class MedicineRepository {
   }
 
   async findById(id) {
-    return await this.#repository.findOne({ where: { id } });
+    return await this.#repository.findOneBy({ id: id });
+  }
+
+  async findByName(name) {
+    return await this.#repository.findOneBy({ name: name });
   }
 
   async getCount() {
