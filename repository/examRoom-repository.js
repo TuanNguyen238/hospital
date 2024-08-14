@@ -26,8 +26,8 @@ class ExamRoomRepository {
   }
 
   async getAvailableTimes(date) {
-    const examRooms = await examRoomRepository.find({
-      where: { examDate: date },
+    const examRooms = await this.#repository.findBy({
+      examDate: date,
     });
 
     const availableTimes = timeSlots.map((time) => {
