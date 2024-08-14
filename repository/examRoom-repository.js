@@ -29,6 +29,7 @@ class ExamRoomRepository {
     const examRooms = await this.#repository.findBy({
       examDate: date,
     });
+    console.log(examRooms);
 
     const availableTimes = timeSlots.map((time) => {
       const matchingExamRooms = examRooms.filter(
