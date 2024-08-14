@@ -46,7 +46,7 @@ class ExamRoomRepository {
       };
     });
 
-    return { availableTimes, examRooms, date };
+    return availableTimes;
   }
 }
 
