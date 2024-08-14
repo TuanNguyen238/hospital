@@ -28,7 +28,9 @@ class ExamRoomcontroller {
 
   async getAvailableTimes(req, res) {
     try {
-      const times = await this.#examRoomService.getAvailableTimes(req.body);
+      const times = await this.#examRoomService.getAvailableTimes(
+        req.body.examDate
+      );
       res.status(200).json(times);
     } catch (err) {
       res.status(500).json({ error: err.message });
