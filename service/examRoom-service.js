@@ -22,5 +22,9 @@ class ExamRoomService {
   async getAllExamRoom() {
     return this.#examRoomRepository.getAllExamRoom();
   }
+
+  async getAvailableTimes(date) {
+    return this.#examRoomRepository.getAvailableTimes(date);
+  }
 }
 module.exports = ExamRoomService;

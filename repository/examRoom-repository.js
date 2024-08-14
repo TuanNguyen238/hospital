@@ -1,5 +1,6 @@
 const ExamRoom = require("../models/exam-room.js");
 const AppDataSource = require("../utils/configs.js");
+const { timeSlots } = require("../utils/const.js");
 
 class ExamRoomRepository {
   #repository;
@@ -22,6 +23,30 @@ class ExamRoomRepository {
 
   async getAllExamRoom() {
     return await this.#repository.find();
+  }
+
+  async getAvailableTimes(date) {
+    const examRooms = await examRoomRepository.find({
+      where: { examDate: date },
+    });
+
+    const availableTimes = timeSlots.map((time) => {
+      const matchingExamRooms = examRooms.filter(
+        (room) => room.examTime === time
+      );
+
+      const availableSlots = matchingExamRooms.reduce(
+        (total, room) => total + (room.maxPatients - room.currentPatients),
+        0
+      );
+
+      return {
+        time: time,
+        count: availableSlots,
+      };
+    });
+
+    return availableTimes;
   }
 }
 

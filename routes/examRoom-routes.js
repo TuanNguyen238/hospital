@@ -11,4 +11,7 @@ router.post("/create", UserMiddleware.authenticationTokenDoctor, (req, res) =>
 router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   examRoomcontroller.getAllExamRoom(req, res)
 );
+router.post("/time", (req, res) =>
+  examRoomcontroller.getAvailableTimes(req, res)
+);
 module.exports = router;
