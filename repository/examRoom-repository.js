@@ -41,7 +41,7 @@ class ExamRoomRepository {
       );
 
       return {
-        time: time,
+        time: time.substring(0, 5),
         count: availableSlots,
       };
     });
