@@ -1,9 +1,8 @@
-const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const RelativeRepository = require("../repository/relative-repository.js");
 const PatientRepository = require("../repository/patient-repository.js");
 const UserRepository = require("../repository/user-repository.js");
-const formatDate = require("../utils/const.js");
+const { formatDate } = require("../utils/const.js");
 const RecordRepository = require("../repository/record-repository.js");
 
 class PatientService {
