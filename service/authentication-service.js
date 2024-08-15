@@ -43,12 +43,12 @@ class AuthenticationService {
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
     const token = this.#generateToken(user);
+    const refrestToken = this.#generateRefreshToken(user);
 
     return {
       message: ErrorCode.AUTHENTICATED,
       user: user,
       token: token,
-      isAuthenticated: true,
     };
   }
 
@@ -58,6 +58,18 @@ class AuthenticationService {
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      scope: user.role.name,
+    };
+
+    return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
+  }
+
+  #generateRefreshToken(user) {
+    const payload = {
+      sub: user.phoneNumber,
+      iss: "hospital",
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
       scope: user.role.name,
     };
 

@@ -49,6 +49,11 @@ const User = new EntitySchema({
       type: "one-to-many",
       inverseSide: "users",
     },
+    token: {
+      target: "RefreshToken",
+      type: "one-to-one",
+      inverseSide: "users",
+    },
   },
 });
 
