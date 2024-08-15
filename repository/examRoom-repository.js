@@ -46,7 +46,7 @@ class ExamRoomRepository {
       };
     });
 
-    return availableTimes;
+    return availableTimes.filter((availableTime) => availableTime.count > 0);
   }
 }
 
