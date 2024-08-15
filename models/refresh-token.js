@@ -13,14 +13,6 @@ const RefreshToken = new EntitySchema({
       type: "varchar",
       length: 255,
     },
-    expiresAt: {
-      type: "timestamp",
-      nullable: false,
-    },
-    createdAt: {
-      type: "timestamp",
-      nullable: false,
-    },
   },
   relations: {
     user: {
@@ -31,4 +23,4 @@ const RefreshToken = new EntitySchema({
   },
 });
 
-module.exports = Role;
+module.exports = RefreshToken;
