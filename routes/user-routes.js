@@ -26,5 +26,8 @@ router.put(
 router.put("/updateinfo", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.updateInfo(req, res)
 );
+router.post("/introspect", UserMiddleware.authenticationTokenUser, (req, res) =>
+  res.status(200).json("")
+);
 
 module.exports = router;
