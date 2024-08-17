@@ -87,31 +87,32 @@ class AuthenticationService {
 
   async refreshToken(refreshToken) {
     try {
-      const user = jwt.verify(refreshToken, process.env.SIGNER_KEY);
+      const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
 
       const currentTime = Math.floor(Date.now() / 1000);
 
-      if (user.exp < currentTime) throw new Error(ErrorCode.TOKEN_EXPIRED);
+      if (userToken.exp < currentTime) throw new Error(ErrorCode.TOKEN_EXPIRED);
 
       const isValid = await this.#refreshTokenRepository.findRefreshToken(
-        user.sub,
+        userToken.sub,
         refreshToken
       );
 
       if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
-      return { isValid: isValid, refreshToken: refreshToken };
-      // const newAccessToken = this.#generateToken(user);
-      // const newRefreshToken = this.#generateRefreshToken(user);
 
-      // await this.#refreshTokenRepository.saveRefreshToken({
-      //   token: newRefreshToken,
-      //   user: user,
-      // });
+      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+      const newAccessToken = this.#generateToken(user);
+      const newRefreshToken = this.#generateRefreshToken(user);
 
-      // return {
-      //   token: newAccessToken,
-      //   refreshToken: newRefreshToken,
-      // };
+      await this.#refreshTokenRepository.saveRefreshToken({
+        token: newRefreshToken,
+        user: user,
+      });
+
+      return {
+        token: newAccessToken,
+        refreshToken: newRefreshToken,
+      };
     } catch (err) {
       throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
     }
