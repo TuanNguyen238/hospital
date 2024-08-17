@@ -45,10 +45,13 @@ class AuthenticationService {
 
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
-    const token = this.#generateToken(user);
+    const token = awaitthis.#generateToken(user);
     const refreshToken = this.#generateRefreshToken(user);
 
-    await this.#refreshTokenRepository.saveRefreshToken({ refreshToken, user });
+    await this.#refreshTokenRepository.saveRefreshToken({
+      token: refreshToken,
+      user: user,
+    });
 
     return {
       message: ErrorCode.AUTHENTICATED,
