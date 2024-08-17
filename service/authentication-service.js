@@ -80,6 +80,31 @@ class AuthenticationService {
 
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
   }
+
+  async refreshToken(refreshToken) {
+    try {
+      const user = jwt.verify(refreshToken, process.env.SIGNER_KEY);
+
+      const isValid = await this.#refreshTokenRepository.findRefreshToken(
+        user.sub,
+        refreshToken
+      );
+      return isValid;
+      /*if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
+
+      const newAccessToken = this.#generateToken(user);
+      const newRefreshToken = this.#generateRefreshToken(user);
+
+      await this.#userRepository.saveRefreshToken(user.id, newRefreshToken);
+
+      return {
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      };*/
+    } catch (err) {
+      throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
+    }
+  }
 }
 
 module.exports = AuthenticationService;
