@@ -57,6 +57,7 @@ class AuthenticationService {
       message: ErrorCode.AUTHENTICATED,
       user: user,
       token: token,
+      refreshToken: refreshToken,
     };
   }
 
@@ -92,18 +93,20 @@ class AuthenticationService {
         user.sub,
         refreshToken
       );
-      return { message: isValid, user: user };
-      /*if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
+      if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
 
       const newAccessToken = this.#generateToken(user);
       const newRefreshToken = this.#generateRefreshToken(user);
 
-      await this.#userRepository.saveRefreshToken(user.id, newRefreshToken);
+      await this.#refreshTokenRepository.saveRefreshToken({
+        token: newRefreshToken,
+        user: user,
+      });
 
       return {
-        accessToken: newAccessToken,
+        token: newAccessToken,
         refreshToken: newRefreshToken,
-      };*/
+      };
     } catch (err) {
       throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
     }
