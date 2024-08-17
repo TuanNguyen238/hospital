@@ -13,7 +13,7 @@ class RefreshTokenRepository {
   }
 
   async findRefreshToken(phoneNumber, refreshToken) {
-    await this.#repository.findOneBy({
+    return await this.#repository.findOneBy({
       user: { phoneNumber: phoneNumber },
       token: refreshToken,
     });
