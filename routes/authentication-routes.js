@@ -10,5 +10,8 @@ router.post("/web", (req, res) => authenticationController.authWeb(req, res));
 router.post("/introspect", UserMiddleware.authenticationTokenUser, (req, res) =>
   res.status(200).json("")
 );
+router.post("/refreshToken", (req, res) =>
+  authenticationController.refreshToken(req, res)
+);
 
 module.exports = router;

@@ -26,6 +26,17 @@ class AuthenticationController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async refreshToken(req, res) {
+    try {
+      const message = await this.#authenticationService.refreshToken(
+        req.body.refreshToken
+      );
+      res.status(200).json(message);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = AuthenticationController;
