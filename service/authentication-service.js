@@ -97,9 +97,9 @@ class AuthenticationService {
         user.sub,
         refreshToken
       );
-      return isValid;
-      // if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
 
+      if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
+      return isValid;
       // const newAccessToken = this.#generateToken(user);
       // const newRefreshToken = this.#generateRefreshToken(user);
 
