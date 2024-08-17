@@ -99,19 +99,18 @@ class AuthenticationService {
       );
 
       if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
-      return isValid;
-      // const newAccessToken = this.#generateToken(user);
-      // const newRefreshToken = this.#generateRefreshToken(user);
+      const newAccessToken = this.#generateToken(user);
+      const newRefreshToken = this.#generateRefreshToken(user);
 
-      // await this.#refreshTokenRepository.saveRefreshToken({
-      //   token: newRefreshToken,
-      //   user: user,
-      // });
+      await this.#refreshTokenRepository.saveRefreshToken({
+        token: newRefreshToken,
+        user: user,
+      });
 
-      // return {
-      //   token: newAccessToken,
-      //   refreshToken: newRefreshToken,
-      // };
+      return {
+        token: newAccessToken,
+        refreshToken: newRefreshToken,
+      };
     } catch (err) {
       throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
     }
