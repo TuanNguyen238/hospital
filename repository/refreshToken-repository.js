@@ -14,7 +14,7 @@ class RefreshTokenRepository {
     });
 
     if (existingToken) {
-      existingToken.refreshToken = refreshToken.token;
+      existingToken.token = refreshToken.token;
       await this.#repository.save(existingToken);
     } else await this.#repository.save(refreshToken);
   }
