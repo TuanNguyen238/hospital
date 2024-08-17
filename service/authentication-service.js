@@ -45,7 +45,7 @@ class AuthenticationService {
 
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
-    const token = awaitthis.#generateToken(user);
+    const token = this.#generateToken(user);
     const refreshToken = this.#generateRefreshToken(user);
 
     await this.#refreshTokenRepository.saveRefreshToken({
