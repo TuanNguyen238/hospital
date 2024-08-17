@@ -86,37 +86,32 @@ class AuthenticationService {
   }
 
   async refreshToken(refreshToken) {
-    try {
-      const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
+    const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
 
-      const currentTime = Math.floor(Date.now() / 1000);
+    const currentTime = Math.floor(Date.now() / 1000);
 
-      if (userToken.exp < currentTime) throw new Error(ErrorCode.TOKEN_EXPIRED);
+    if (userToken.exp < currentTime) throw new Error(ErrorCode.TOKEN_EXPIRED);
 
-      const isValid = await this.#refreshTokenRepository.findRefreshToken(
-        userToken.sub,
-        refreshToken
-      );
+    const isValid = await this.#refreshTokenRepository.findRefreshToken(
+      userToken.sub,
+      refreshToken
+    );
 
-      if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
+    if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
 
-      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
-      return { user: user };
-      // const newAccessToken = this.#generateToken(user);
-      // const newRefreshToken = this.#generateRefreshToken(user);
+    const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+    const newAccessToken = this.#generateToken(user);
+    const newRefreshToken = this.#generateRefreshToken(user);
 
-      // await this.#refreshTokenRepository.saveRefreshToken({
-      //   token: newRefreshToken,
-      //   user: user,
-      // });
+    await this.#refreshTokenRepository.saveRefreshToken({
+      token: newRefreshToken,
+      user: user,
+    });
 
-      // return {
-      //   token: newAccessToken,
-      //   refreshToken: newRefreshToken,
-      // };
-    } catch (err) {
-      throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
-    }
+    return {
+      token: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
   }
 }
 
