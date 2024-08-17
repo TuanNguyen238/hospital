@@ -11,6 +11,13 @@ class RefreshTokenRepository {
   async saveRefreshToken(refreshToken) {
     await this.#repository.save(refreshToken);
   }
+
+  async findRefreshToken(phoneNumber, refreshToken) {
+    await this.#repository.findOneBy({
+      user: { phoneNumber: phoneNumber },
+      token: refreshToken,
+    });
+  }
 }
 
 module.exports = RefreshTokenRepository;
