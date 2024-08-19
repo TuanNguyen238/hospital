@@ -42,7 +42,9 @@ class RecordService {
     randomRoom.currentPatients++;
     this.#examRoomRepository.saveExamRoom(randomRoom);
 
-    return { patient: patient, room: randomRoom, rooms: availableRooms };
+    return {
+      message: ErrorCode.RECORD_BOOKED,
+    };
   }
 }
 
