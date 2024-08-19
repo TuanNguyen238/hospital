@@ -39,6 +39,9 @@ class RecordService {
       examRoom: randomRoom,
     });
 
+    randomRoom.currentPatients++;
+    this.#examRoomRepository.saveExamRoom(randomRoom);
+
     return { patient: patient, room: randomRoom, rooms: availableRooms };
   }
 }
