@@ -9,7 +9,7 @@ class RecordController {
 
   async bookRecord(req, res) {
     try {
-      const record = await this.#recordService.bookRecord(req.body.patientCode);
+      const record = await this.#recordService.bookRecord(req.body);
       res.status(200).json(record);
     } catch (err) {
       res.status(500).json(err);

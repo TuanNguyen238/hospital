@@ -13,7 +13,7 @@ class RecordService {
     this.#patientRepository = new PatientRepository();
   }
 
-  async bookRecord(patientCode, examDate, examTime) {
+  async bookRecord({ patientCode, examDate, examTime }) {
     const patient = await this.#patientRepository.getPatientByPatientCode(
       patientCode
     );
