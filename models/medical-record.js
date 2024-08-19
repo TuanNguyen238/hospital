@@ -12,6 +12,7 @@ const MedicalRecord = new EntitySchema({
     reasonForVisit: {
       type: "varchar",
       length: 255,
+      nullable: true,
     },
     diagnosis: {
       type: "varchar",
