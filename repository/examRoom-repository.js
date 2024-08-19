@@ -48,6 +48,13 @@ class ExamRoomRepository {
 
     return availableTimes.filter((availableTime) => availableTime.count > 0);
   }
+
+  async getExamRoomsByDateTime(examDate, examTime) {
+    return await this.#repository.findBy({
+      examDate: examDate,
+      examTime: examTime,
+    });
+  }
 }
 
 module.exports = ExamRoomRepository;

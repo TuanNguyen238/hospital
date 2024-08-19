@@ -21,6 +21,7 @@ const ErrorCode = {
   MEDICINE_UPDATED: "Cập nhật thuốc thành công",
   EXAMROOM_CREATED: "Tạo phòng khám thành công",
   EXAMROOM_EXISTED: "Phòng khám đã tồn tại",
+  EXAMROOM_NOT_AVAILABLE: "Phòng khám đã đầy",
 };
 
 module.exports = ErrorCode;

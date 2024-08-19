@@ -7,6 +7,7 @@ const otpRoutes = require("./routes/otp-routes.js");
 const patientRoutes = require("./routes/patient-routes.js");
 const medicineRoutes = require("./routes/medicine-routes.js");
 const examRoomRoutes = require("./routes/examRoom-routes.js");
+const recordRoutes = require("./routes/record-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
 const serviceAccount = require("./service-account.json");
@@ -43,6 +44,7 @@ AppDataSource.initialize()
     app.use("/patient", patientRoutes);
     app.use("/medicine", medicineRoutes);
     app.use("/examroom", examRoomRoutes);
+    app.use("/record", recordRoutes);
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);

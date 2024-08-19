@@ -33,8 +33,14 @@ class PatientRepository {
     });
   }
 
+  async getPatientByPatientCode(patientCode) {
+    return await this.#repository.findOneBy({
+      patientCode: patientCode,
+    });
+  }
+
   async createEntity(obj, code, savedRelative, user) {
-    return await this.#repository.create({
+    return this.#repository.create({
       fullName: obj.fullName,
       phoneNumber: obj.phoneNumberPatient,
       address: obj.address,
