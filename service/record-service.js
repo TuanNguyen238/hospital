@@ -18,7 +18,12 @@ class RecordService {
       patientCode
     );
 
-    return { patient: patient };
+    const rooms = await this.#examRoomRepository.getExamRoomsByDateTime(
+      examDate,
+      examTime
+    );
+
+    return { patient: patient, rooms: rooms };
   }
 }
 
