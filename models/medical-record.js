@@ -17,10 +17,12 @@ const MedicalRecord = new EntitySchema({
     diagnosis: {
       type: "varchar",
       length: 255,
+      nullable: true,
     },
     examResult: {
       type: "varchar",
       length: 255,
+      nullable: true,
     },
   },
   relations: {
