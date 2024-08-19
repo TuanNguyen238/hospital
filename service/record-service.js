@@ -34,6 +34,11 @@ class RecordService {
     const randomRoom =
       availableRooms[Math.floor(Math.random() * availableRooms.length)];
 
+    await this.#recordRepository.saveRecord({
+      patient: patient,
+      examRoom: randomRoom,
+    });
+
     return { patient: patient, room: randomRoom, rooms: availableRooms };
   }
 }

@@ -13,6 +13,10 @@ class RecordRepository {
       where: { patient: { id: id } },
     });
   }
+
+  async saveRecord(record) {
+    await this.#repository.save(record);
+  }
 }
 
 module.exports = RecordRepository;
