@@ -113,3 +113,5 @@ class AuthenticationService {
     } else await this.#refreshTokenRepository.saveRefreshToken(refreshToken);
   }
 }
+
+module.exports = AuthenticationService;
