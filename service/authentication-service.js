@@ -103,10 +103,11 @@ class AuthenticationService {
     const newAccessToken = this.#generateToken(user);
     const newRefreshToken = this.#generateRefreshToken(user);
 
-    await this.#refreshTokenRepository.saveRefreshToken({
-      token: newRefreshToken,
-      user: user,
-    });
+    const existingToken = await this.#refreshTokenRepository.findByUser(user);
+    if (existingToken) {
+      existingToken.token = newRefreshToken.token;
+      await this.#refreshTokenRepository.saveRefreshToken(existingToken);
+    } else await this.#refreshTokenRepository.save(newRefreshToken);
 
     return {
       token: newAccessToken,

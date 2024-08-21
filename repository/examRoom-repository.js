@@ -25,28 +25,10 @@ class ExamRoomRepository {
     return await this.#repository.find();
   }
 
-  async getAvailableTimes(date) {
-    const examRooms = await this.#repository.findBy({
-      examDate: date,
+  async getExamRoomsByDate(examDate) {
+    return await this.#repository.findBy({
+      examDate: examDate,
     });
-
-    const availableTimes = timeSlots.map((time) => {
-      const matchingExamRooms = examRooms.filter(
-        (room) => room.examTime === time
-      );
-
-      const availableSlots = matchingExamRooms.reduce(
-        (total, room) => total + (room.maxPatients - room.currentPatients),
-        0
-      );
-
-      return {
-        time: time.substring(0, 5),
-        count: availableSlots,
-      };
-    });
-
-    return availableTimes.filter((availableTime) => availableTime.count > 0);
   }
 
   async getExamRoomsByDateTime(examDate, examTime) {

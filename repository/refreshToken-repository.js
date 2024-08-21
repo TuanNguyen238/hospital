@@ -9,14 +9,13 @@ class RefreshTokenRepository {
   }
 
   async saveRefreshToken(refreshToken) {
-    const existingToken = await this.#repository.findOne({
-      where: { user: refreshToken.user },
-    });
+    await this.#repository.save(refreshToken);
+  }
 
-    if (existingToken) {
-      existingToken.token = refreshToken.token;
-      await this.#repository.save(existingToken);
-    } else await this.#repository.save(refreshToken);
+  async findByUser(user) {
+    return await this.#repository.findOne({
+      where: { user: user },
+    });
   }
 
   async findRefreshToken(phoneNumber, refreshToken) {
