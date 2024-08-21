@@ -9,7 +9,7 @@ class RefreshTokenRepository {
   }
 
   async saveRefreshToken(refreshToken) {
-    await this.#repository.save(refreshToken);
+    return await this.#repository.save(refreshToken);
   }
 
   async findByUser(user) {

@@ -108,17 +108,22 @@ class AuthenticationService {
   }
 
   async #saveRefreshToken(refreshToken, user) {
+    let savedToken;
     const existingToken = await this.#refreshTokenRepository.findByUser(user);
+
     if (existingToken) {
-      existingToken.token = refreshToken.token;
-      await this.#refreshTokenRepository.saveRefreshToken(existingToken);
-    } else
-      await this.#refreshTokenRepository.saveRefreshToken({
+      existingToken.token = refreshToken;
+      savedToken = await this.#refreshTokenRepository.saveRefreshToken(
+        existingToken
+      );
+    } else {
+      savedToken = await this.#refreshTokenRepository.saveRefreshToken({
         token: refreshToken,
         user: user,
       });
+    }
 
-    return { token: existingToken.token, user: existingToken.user };
+    return savedToken;
   }
 }
 
