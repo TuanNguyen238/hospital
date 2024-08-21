@@ -73,11 +73,12 @@ class AuthenticationService {
     const newAccessToken = this.#generateToken(user);
     const newRefreshToken = this.#generateRefreshToken(user);
 
-    this.#saveRefreshToken(newRefreshToken, user);
+    const t = this.#saveRefreshToken(newRefreshToken, user);
 
     return {
       token: newAccessToken,
       refreshToken: newRefreshToken,
+      t: t,
     };
   }
 
@@ -115,6 +116,8 @@ class AuthenticationService {
         token: refreshToken,
         user: user,
       });
+
+    return existingToken;
   }
 }
 
