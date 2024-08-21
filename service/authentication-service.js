@@ -29,20 +29,17 @@ class AuthenticationService {
     const user = await this.#userRepository.findByPhoneNumber(
       authentication.phoneNumber
     );
-
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const hasCorrectRole = isMobile
       ? user.role.name === EnumRole.USER
       : user.role.name !== EnumRole.USER;
-
     if (!hasCorrectRole) throw new Error(ErrorCode.USER_NOT_EXISTED);
 
     const authenticated = await bcrypt.compare(
       authentication.password,
       user.password
     );
-
     if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
 
     const token = this.#generateToken(user);
@@ -62,11 +59,11 @@ class AuthenticationService {
     const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
     const currentTime = Math.floor(Date.now() / 1000);
     if (userToken.exp < currentTime) throw new Error(ErrorCode.TOKEN_EXPIRED);
+
     const isValid = await this.#refreshTokenRepository.findRefreshToken(
       userToken.sub,
       refreshToken
     );
-
     if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
 
     const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
