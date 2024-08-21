@@ -13,8 +13,8 @@ class RefreshTokenRepository {
   }
 
   async findByUser(user) {
-    return await this.#repository.findOne({
-      where: { user: user },
+    return await this.#repository.findOneBy({
+      user: user,
     });
   }
 
