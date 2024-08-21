@@ -118,7 +118,7 @@ class AuthenticationService {
         user: user,
       });
 
-    return existingToken;
+    return { token: existingToken.token, user: existingToken.user };
   }
 }
 
