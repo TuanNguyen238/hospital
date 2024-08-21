@@ -48,13 +48,14 @@ class AuthenticationService {
     const token = this.#generateToken(user);
     const refreshToken = this.#generateRefreshToken(user);
 
-    await this.#saveRefreshToken(refreshToken, user);
+    const t = await this.#saveRefreshToken(refreshToken, user);
 
     return {
       message: ErrorCode.AUTHENTICATED,
       user: user,
       token: token,
       refreshToken: refreshToken,
+      t: t,
     };
   }
 
