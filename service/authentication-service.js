@@ -110,7 +110,11 @@ class AuthenticationService {
     if (existingToken) {
       existingToken.token = refreshToken.token;
       await this.#refreshTokenRepository.saveRefreshToken(existingToken);
-    } else await this.#refreshTokenRepository.saveRefreshToken(refreshToken);
+    } else
+      await this.#refreshTokenRepository.saveRefreshToken({
+        token: refreshToken,
+        user: user,
+      });
   }
 }
 
