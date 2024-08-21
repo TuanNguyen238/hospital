@@ -48,14 +48,13 @@ class AuthenticationService {
     const token = this.#generateToken(user);
     const refreshToken = this.#generateRefreshToken(user);
 
-    const t = await this.#saveRefreshToken(refreshToken, user);
+    await this.#saveRefreshToken(refreshToken, user);
 
     return {
       message: ErrorCode.AUTHENTICATED,
       user: user,
       token: token,
       refreshToken: refreshToken,
-      t: t,
     };
   }
 
@@ -74,12 +73,11 @@ class AuthenticationService {
     const newAccessToken = this.#generateToken(user);
     const newRefreshToken = this.#generateRefreshToken(user);
 
-    const t = this.#saveRefreshToken(newRefreshToken, user);
+    await this.#saveRefreshToken(newRefreshToken, user);
 
     return {
       token: newAccessToken,
       refreshToken: newRefreshToken,
-      t: t,
     };
   }
 
@@ -108,22 +106,16 @@ class AuthenticationService {
   }
 
   async #saveRefreshToken(refreshToken, user) {
-    let savedToken;
     const existingToken = await this.#refreshTokenRepository.findByUser(user);
 
     if (existingToken) {
       existingToken.token = refreshToken;
-      savedToken = await this.#refreshTokenRepository.saveRefreshToken(
-        existingToken
-      );
-    } else {
-      savedToken = await this.#refreshTokenRepository.saveRefreshToken({
+      await this.#refreshTokenRepository.saveRefreshToken(existingToken);
+    } else
+      await this.#refreshTokenRepository.saveRefreshToken({
         token: refreshToken,
         user: user,
       });
-    }
-
-    return savedToken;
   }
 }
 
