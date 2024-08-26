@@ -38,6 +38,11 @@ const ExamRoom = new EntitySchema({
       type: "one-to-many",
       inverseSide: "examRoom",
     },
+    department: {
+      target: "Department",
+      type: "many-to-one",
+      joinColumn: true,
+    },
   },
 });
 
