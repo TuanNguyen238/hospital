@@ -49,7 +49,7 @@ class OtpRepository {
         otp_request: "true",
       },
     };
-    await getMessaging().send(message);
+    //await getMessaging().send(message);
   }
 }
 
