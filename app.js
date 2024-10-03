@@ -10,7 +10,7 @@ const examRoomRoutes = require("./routes/examRoom-routes.js");
 const recordRoutes = require("./routes/record-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
-const serviceAccount = require("./service-account.json");
+//const serviceAccount = require("./service-account.json");
 const { default: rateLimit } = require("express-rate-limit");
 
 dotenv.config();
