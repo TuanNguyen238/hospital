@@ -10,7 +10,6 @@ const examRoomRoutes = require("./routes/examRoom-routes.js");
 const recordRoutes = require("./routes/record-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
-//const serviceAccount = require("./service-account.json");
 const { default: rateLimit } = require("express-rate-limit");
 
 dotenv.config();
@@ -20,7 +19,6 @@ const limiter = rateLimit({
   max: 100,
   message: "Too many request from this IP, please try again later",
 });
-console.log(process.env.API_KEY);
 
 admin.initializeApp({
   credential: admin.credential.cert(JSON.parse(process.env.API_KEY)),
