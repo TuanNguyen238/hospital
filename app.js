@@ -20,9 +20,10 @@ const limiter = rateLimit({
   max: 100,
   message: "Too many request from this IP, please try again later",
 });
+console.log(process.env.API_KEY);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(JSON.parse(process.env.API_KEY)),
 });
 
 AppDataSource.initialize()
