@@ -53,3 +53,5 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Database connection or setup error:", err);
   });
+
+//fcmToken: eVWALXEaTJ67vgV2ijSHZd:APA91bH9d4y9rfFe7xDaf1HAxTsH5WWPpmxSVgB1OM7kJh3vpoWYgp55oAqOwZjFHv1OxpbQWA1xHtasnnbNkHvj7uycTbyJObdIr6_GZ2bwXXB9J4DEc-0YAdUI8bjTj34rG6jwbFJk
