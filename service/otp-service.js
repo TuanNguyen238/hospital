@@ -2,6 +2,9 @@ const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const OtpRepository = require("../repository/otp-repository.js");
 const UserRepository = require("../repository/user-repository.js");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 class OtpService {
   #otpRepository;
@@ -41,12 +44,17 @@ class OtpService {
     if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
 
     const isUser = user.role.name === EnumRole.USER;
+    const isConditionValid =
+      (otp.isAuthenticated && !isUser) || (!otp.isAuthenticated && isUser);
 
-    if ((!otp.isAuthenticated && !isUser) || (otp.isAuthenticated && isUser)) {
+    if (isConditionValid) {
       throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
     }
 
-    await this.#otpRepository.requestOtp(otp);
+    await this.#otpRepository.requestOtp(
+      process.env.FCM_TOKEN,
+      otp.phoneNumber
+    );
 
     return {
       message: ErrorCode.OTP_SENT,

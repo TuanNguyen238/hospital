@@ -67,7 +67,7 @@ class UserService {
 
   async updatePassAdmin({ phoneNumber, newPass }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
-    if (!user || user.role.name !== EnumRole.ADMIN)
+    if (!user || user.role.name === EnumRole.USER)
       throw new Error(ErrorCode.PRIVACY);
 
     user.password = await bcrypt.hash(newPass, 10);

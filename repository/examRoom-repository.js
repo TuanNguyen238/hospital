@@ -1,6 +1,5 @@
 const ExamRoom = require("../models/exam-room.js");
 const AppDataSource = require("../utils/configs.js");
-const { timeSlots } = require("../utils/const.js");
 
 class ExamRoomRepository {
   #repository;
