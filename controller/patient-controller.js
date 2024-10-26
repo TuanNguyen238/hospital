@@ -22,7 +22,7 @@ class PatientController {
   async getPatientsByPhoneNumber(req, res) {
     try {
       const patients = await this.#patientService.getPatientsByPhoneNumber(
-        req.query.phoneNumber
+        req.sub
       );
       res.status(200).json(patients);
     } catch (err) {
