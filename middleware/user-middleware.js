@@ -7,13 +7,7 @@ dotenv.config();
 const SECRET_KEY = process.env.SIGNER_KEY;
 
 class UserMiddleware {
-  static authenticateToken(
-    req,
-    res,
-    next,
-    allowedRoles = [],
-    validateUser = false
-  ) {
+  static authenticateToken(req, res, next, allowedRoles = []) {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -40,16 +34,8 @@ class UserMiddleware {
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
       }
 
-      if (
-        validateUser &&
-        user.sub !== req.body.phoneNumber &&
-        user.sub !== req.query.phoneNumber &&
-        user.scope !== EnumRole.ADMIN
-      ) {
-        console.log("Unauthorized access. User ID mismatch:", user.sub);
-        return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
-      }
       req.userId = user.id;
+      req.sub = user.sub;
       console.log("User authenticated successfully. User ID:", req.userId);
       next();
     });
@@ -60,23 +46,18 @@ class UserMiddleware {
   }
 
   static authenticationTokenUser(req, res, next) {
-    UserMiddleware.authenticateToken(
-      req,
-      res,
-      next,
-      [EnumRole.USER, EnumRole.DOCTOR, EnumRole.ADMIN],
-      true
-    );
+    UserMiddleware.authenticateToken(req, res, next, [
+      EnumRole.USER,
+      EnumRole.DOCTOR,
+      EnumRole.ADMIN,
+    ]);
   }
 
   static authenticationTokenDoctor(req, res, next) {
-    UserMiddleware.authenticateToken(
-      req,
-      res,
-      next,
-      [EnumRole.DOCTOR, EnumRole.ADMIN],
-      true
-    );
+    UserMiddleware.authenticateToken(req, res, next, [
+      EnumRole.DOCTOR,
+      EnumRole.ADMIN,
+    ]);
   }
 }
 

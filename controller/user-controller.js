@@ -45,7 +45,7 @@ class UserController {
 
   async updatePass(req, res) {
     try {
-      const message = await this.#userService.updatePass(req.body);
+      const message = await this.#userService.updatePass(req.sub, req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });
