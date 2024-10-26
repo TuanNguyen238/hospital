@@ -39,7 +39,7 @@ class UserMiddleware {
         user.scope !== EnumRole.ADMIN
       )
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
-
+      req.userId = user.id;
       next();
     });
   }

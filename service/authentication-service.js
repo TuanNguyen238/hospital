@@ -80,6 +80,7 @@ class AuthenticationService {
 
   #generateToken(user) {
     const payload = {
+      id: user.id,
       sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
@@ -92,6 +93,7 @@ class AuthenticationService {
 
   #generateRefreshToken(user) {
     const payload = {
+      id: user.id,
       sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
