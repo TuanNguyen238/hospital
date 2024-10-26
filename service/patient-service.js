@@ -18,14 +18,12 @@ class PatientService {
     this.#recordRepository = new RecordRepository();
   }
 
-  async createPatient(obj) {
+  async createPatient(phoneNumber, obj) {
     let savedRelative = null;
     try {
       const relative = await this.#relativeRepository.createEntity(obj);
       savedRelative = await this.#relativeRepository.saveRelative(relative);
-      const user = await this.#userRepository.findByPhoneNumber(
-        obj.phoneNumber
-      );
+      const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
       const code = await this.#patientRepository.generatePatientCode();
       const patient = await this.#patientRepository.createEntity(
         obj,

@@ -78,7 +78,7 @@ class UserService {
     };
   }
 
-  async updateInfo({ phoneNumber, username, email, identifyCard }) {
+  async updateInfo(phoneNumber, { username, email, identifyCard }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user || user.role.name !== EnumRole.USER)
       throw new Error(ErrorCode.USER_NOT_EXISTED);

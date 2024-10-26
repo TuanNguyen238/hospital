@@ -9,8 +9,7 @@ class ExamRoomcontroller {
 
   async createExamRoom(req, res) {
     try {
-      const { phoneNumber, ...examRoom } = req.body;
-      const message = await this.#examRoomService.createExamRoom(examRoom);
+      const message = await this.#examRoomService.createExamRoom(req.body);
       res.status(200).json(message);
     } catch (err) {
       res.status(500).json({ error: err.message });

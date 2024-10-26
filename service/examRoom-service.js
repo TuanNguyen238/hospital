@@ -1,5 +1,6 @@
 const ErrorCode = require("../enum/error-code.js");
 const ExamRoomRepository = require("../repository/examRoom-repository.js");
+const { timeSlots } = require("../utils/const.js");
 
 class ExamRoomService {
   #examRoomRepository;
