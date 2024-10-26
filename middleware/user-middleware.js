@@ -17,29 +17,40 @@ class UserMiddleware {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (!token)
+    if (!token) {
+      console.log("No token provided.");
       return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+    }
 
     jwt.verify(token, SECRET_KEY, (err, user) => {
-      if (err)
+      if (err) {
+        console.log("Token verification error:", err);
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+      }
 
       const currentTime = Math.floor(Date.now() / 1000);
 
-      if (user.exp < currentTime)
+      if (user.exp < currentTime) {
+        console.log("Token expired.");
         return res.status(500).json({ error: ErrorCode.TOKEN_EXPIRED });
+      }
 
-      if (allowedRoles.length && !allowedRoles.includes(user.scope))
+      if (allowedRoles.length && !allowedRoles.includes(user.scope)) {
+        console.log("Insufficient permissions. User role:", user.scope);
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+      }
 
       if (
         validateUser &&
         user.sub !== req.body.phoneNumber &&
         user.sub !== req.query.phoneNumber &&
         user.scope !== EnumRole.ADMIN
-      )
+      ) {
+        console.log("Unauthorized access. User ID mismatch:", user.sub);
         return res.status(500).json({ error: ErrorCode.TOKEN_UNAUTHENTICATED });
+      }
       req.userId = user.id;
+      console.log("User authenticated successfully. User ID:", req.userId);
       next();
     });
   }
