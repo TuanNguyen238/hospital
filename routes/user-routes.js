@@ -12,7 +12,9 @@ router.get("/countDoctor", (req, res) =>
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   userController.getAllUsers(req, res)
 );
-router.get("/current", (req, res) => userController.getUserById(req, res));
+router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
+  userController.getUserById(req, res)
+);
 router.post("/", (req, res) => userController.createUser(req, res));
 router.put("/forgotpass", (req, res) => userController.forgotPass(req, res));
 router.put("/updatepass", UserMiddleware.authenticationTokenUser, (req, res) =>
