@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const Setup = require("./setup.js");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/user-routes.js");
@@ -11,6 +12,7 @@ const recordRoutes = require("./routes/record-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
 const { default: rateLimit } = require("express-rate-limit");
+const timeout = require("connect-timeout");
 
 dotenv.config();
 
@@ -33,7 +35,13 @@ AppDataSource.initialize()
   .then(() => {
     console.log("Database setup complete");
     const app = express();
+    app.use(cors());
+    app.use(timeout("5s"));
     const PORT = process.env.PORT || 3000;
+
+    app.use((req, res, next) => {
+      if (!req.timedout) next();
+    });
 
     app.use(express.json());
     app.use(limiter);
@@ -45,6 +53,16 @@ AppDataSource.initialize()
     app.use("/examroom", examRoomRoutes);
     app.use("/record", recordRoutes);
 
+    app.use((err, req, res, next) => {
+      if (err.timeout) {
+        res.status(500).json({
+          error: "Kết nối thất bại, vui lòng kiểm tra lại đường truyền mạng",
+        });
+      } else {
+        next(err);
+      }
+    });
+
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
     });
@@ -52,5 +70,3 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Database connection or setup error:", err);
   });
-
-//fcmToken: eVWALXEaTJ67vgV2ijSHZd:APA91bH9d4y9rfFe7xDaf1HAxTsH5WWPpmxSVgB1OM7kJh3vpoWYgp55oAqOwZjFHv1OxpbQWA1xHtasnnbNkHvj7uycTbyJObdIr6_GZ2bwXXB9J4DEc-0YAdUI8bjTj34rG6jwbFJk
