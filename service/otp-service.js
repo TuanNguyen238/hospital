@@ -1,5 +1,6 @@
 const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
+const StatusCode = require("../enum/status-code.js");
 const OtpRepository = require("../repository/otp-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const dotenv = require("dotenv");
@@ -17,38 +18,49 @@ class OtpService {
 
   async createOtp(otp) {
     const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
-    if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+    if (!user)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PHONE_NUMBER_NOT_EXISTED,
+      };
     await this.#otpRepository.deleteOtp(otp.phoneNumber);
     await this.#otpRepository.createOtp(otp);
-    return {
-      message: ErrorCode.OTP_SENT,
-    };
+    return { message: ErrorCode.OTP_SENT };
   }
 
   async getAllOtp() {
-    return this.#otpRepository.getAllOtp();
+    const otps = await this.#otpRepository.getAllOtp();
+    return { message: ErrorCode.SUCCESS, data: otps };
   }
 
   async verifyOtp(otp) {
     const isValid = await this.#otpRepository.verifyOtp(otp);
-    const statusCode = isValid ? 200 : 400;
-    const message = isValid ? ErrorCode.OTP_VERIFIED : ErrorCode.INVALID_OTP;
-    return {
-      message: message,
-      statusCode: statusCode,
-    };
+    if (!isValid) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_OTP,
+      };
+    }
+    return { message: ErrorCode.OTP_VERIFIED };
   }
 
   async requestOtp(otp) {
     const user = await this.#userRepository.findByPhoneNumber(otp.phoneNumber);
-    if (!user) throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+    if (!user)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PHONE_NUMBER_NOT_EXISTED,
+      };
 
     const isUser = user.role.name === EnumRole.USER;
     const isConditionValid =
       (otp.isAuthenticated && !isUser) || (!otp.isAuthenticated && isUser);
 
     if (isConditionValid) {
-      throw new Error(ErrorCode.PHONE_NUMBER_NOT_EXISTED);
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PHONE_NUMBER_NOT_EXISTED,
+      };
     }
 
     await this.#otpRepository.requestOtp(
@@ -56,9 +68,7 @@ class OtpService {
       otp.phoneNumber
     );
 
-    return {
-      message: ErrorCode.OTP_SENT,
-    };
+    return { message: ErrorCode.OTP_SENT };
   }
 }
 

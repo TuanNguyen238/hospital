@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const RefreshTokenRepository = require("../repository/refreshToken-repository.js");
+const StatusCode = require("../enum/status-code.js");
 
 dotenv.config();
 
@@ -59,7 +60,6 @@ class AuthenticationService {
     await this.#saveRefreshToken(refreshToken, user);
 
     return {
-      status: "success",
       message: ErrorCode.AUTHENTICATED,
       data: { user, token, refreshToken },
     };
@@ -92,7 +92,6 @@ class AuthenticationService {
       await this.#saveRefreshToken(newRefreshToken, user);
 
       return {
-        status: "success",
         message: ErrorCode.AUTHENTICATED,
         data: { token: newAccessToken, refreshToken: newRefreshToken },
       };

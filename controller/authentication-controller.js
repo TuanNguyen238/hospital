@@ -1,3 +1,5 @@
+const Status = require("../enum/status");
+const StatusCode = require("../enum/status-code");
 const AuthenticationService = require("../service/authentication-service");
 
 class AuthenticationController {
@@ -18,23 +20,37 @@ class AuthenticationController {
   async #handleAuthentication(req, res, isMobile) {
     try {
       const authentication = req.body;
-      const isAuthenticated = isMobile
+      const result = isMobile
         ? await this.#authenticationService.authenticate(authentication)
         : await this.#authenticationService.authWeb(authentication);
-      res.status(200).json(isAuthenticated);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error("Error: ", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async refreshToken(req, res) {
     try {
-      const message = await this.#authenticationService.refreshToken(
-        req.body.refreshToken
-      );
-      res.status(200).json(message);
+      const result = await this.#authenticationService.refreshToken(req.body);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error("Error: ", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 }
