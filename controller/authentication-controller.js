@@ -26,7 +26,7 @@ class AuthenticationController {
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
-        data: isAuthenticated.data,
+        data: result.data,
       });
     } catch (err) {
       console.error("Error: ", err);
