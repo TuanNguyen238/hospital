@@ -1,3 +1,5 @@
+const { SUCCESS } = require("./status");
+
 const ErrorCode = {
   USER_NOT_EXISTED: "Người dùng không tồn tại",
   USER_ALREADY_EXISTS: "Người dùng đã tồn tại",
@@ -23,6 +25,9 @@ const ErrorCode = {
   EXAMROOM_EXISTED: "Phòng khám đã tồn tại",
   EXAMROOM_NOT_AVAILABLE: "Phòng khám đã đầy",
   RECORD_BOOKED: "Đặt phòng khám thành công",
+  SUCCESS: "Thành công",
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+  INSUFFICIENT_PERMISSION: "Lỗi Quyền truy cập",
 };
 
 module.exports = ErrorCode;

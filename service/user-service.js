@@ -16,7 +16,7 @@ class UserService {
   async getUserById(id) {
     const user = await this.#userRepository.getUserById(id);
     if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
-    return user;
+    return { message: ErrorCode.SUCCESS, data: user };
   }
 
   async createUser(user) {
@@ -31,9 +31,7 @@ class UserService {
 
     user.role = userRole;
     await this.#userRepository.saveUser(user);
-    return {
-      message: ErrorCode.REGISTED,
-    };
+    return { message: ErrorCode.REGISTED };
   }
 
   async forgotPass({ phoneNumber, password }) {
@@ -44,9 +42,7 @@ class UserService {
 
     user.password = await bcrypt.hash(password, 10);
     await this.#userRepository.saveUser(user);
-    return {
-      message: ErrorCode.PASS_UPDATED,
-    };
+    return { message: ErrorCode.PASS_UPDATED };
   }
 
   async updatePass(phoneNumber, { password, newPass }) {
@@ -60,9 +56,7 @@ class UserService {
     user.password = await bcrypt.hash(newPass, 10);
 
     await this.#userRepository.saveUser(user);
-    return {
-      message: ErrorCode.PASS_UPDATED,
-    };
+    return { message: ErrorCode.PASS_UPDATED };
   }
 
   async updatePassAdmin({ phoneNumber, newPass }) {
@@ -73,9 +67,7 @@ class UserService {
     user.password = await bcrypt.hash(newPass, 10);
 
     await this.#userRepository.saveUser(user);
-    return {
-      message: ErrorCode.PASS_UPDATED,
-    };
+    return { message: ErrorCode.PASS_UPDATED };
   }
 
   async updateInfo(phoneNumber, { username, email, identifyCard }) {
@@ -86,29 +78,22 @@ class UserService {
     Object.assign(user, { username, email, identifyCard });
     await this.#userRepository.saveUser(user);
 
-    return {
-      message: ErrorCode.UPDATE_INFO,
-    };
+    return { message: ErrorCode.UPDATE_INFO };
   }
 
   async getAllUsers() {
-    return this.#userRepository.getAllUsers();
+    const users = await this.#userRepository.getAllUsers();
+    return { message: ErrorCode.SUCCESS, data: users };
   }
 
   async getCountUser() {
-    try {
-      return await this.#userRepository.getCount(EnumRole.USER);
-    } catch (err) {
-      throw new Error(err.message);
-    }
+    const count = await this.#userRepository.getCount(EnumRole.USER);
+    return { message: ErrorCode.SUCCESS, data: count };
   }
 
   async getCountDoctor() {
-    try {
-      return await this.#userRepository.getCount(EnumRole.DOCTOR);
-    } catch (err) {
-      throw new Error(err.message);
-    }
+    const count = await this.#userRepository.getCount(EnumRole.DOCTOR);
+    return { message: ErrorCode.SUCCESS, data: count };
   }
 }
 
