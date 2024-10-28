@@ -65,7 +65,7 @@ class AuthenticationService {
     };
   }
 
-  async refreshToken(refreshToken) {
+  async refreshToken({ refreshToken }) {
     try {
       const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
       const currentTime = Math.floor(Date.now() / 1000);
