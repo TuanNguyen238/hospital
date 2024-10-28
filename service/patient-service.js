@@ -4,6 +4,7 @@ const PatientRepository = require("../repository/patient-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const { formatDate } = require("../utils/const.js");
 const RecordRepository = require("../repository/record-repository.js");
+const StatusCode = require("../enum/status-code.js");
 
 class PatientService {
   #patientRepository;
@@ -21,9 +22,16 @@ class PatientService {
   async createPatient(phoneNumber, obj) {
     let savedRelative = null;
     try {
+      const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+      if (!user)
+        throw {
+          status: StatusCode.HTTP_404_NOT_FOUND,
+          message: ErrorCode.USER_NOT_EXISTED,
+        };
+
       const relative = await this.#relativeRepository.createEntity(obj);
       savedRelative = await this.#relativeRepository.saveRelative(relative);
-      const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+
       const code = await this.#patientRepository.generatePatientCode();
       const patient = await this.#patientRepository.createEntity(
         obj,
@@ -32,9 +40,8 @@ class PatientService {
         user
       );
       await this.#patientRepository.savePatient(patient);
-      return {
-        message: ErrorCode.PATIENT_CREATED,
-      };
+
+      return { message: ErrorCode.PATIENT_CREATED };
     } catch (err) {
       if (savedRelative) {
         try {
@@ -43,7 +50,7 @@ class PatientService {
           console.error(`Error deleting relative: ${deleteError}`);
         }
       }
-      throw new Error(err);
+      throw err;
     }
   }
 
@@ -52,7 +59,7 @@ class PatientService {
       phoneNumber
     );
 
-    return await Promise.all(
+    const patientData = await Promise.all(
       patients.map(async (patient) => {
         const recordCount = await this.#recordRepository.getCountById(
           patient.id
@@ -64,6 +71,11 @@ class PatientService {
         };
       })
     );
+
+    return {
+      message: ErrorCode.SUCCESS,
+      data: patientData,
+    };
   }
 }
 module.exports = PatientService;

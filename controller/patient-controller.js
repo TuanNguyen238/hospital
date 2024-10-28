@@ -1,3 +1,5 @@
+const StatusCode = require("../enum/status-code.js");
+const Status = require("../enum/status.js");
 const PatientService = require("../service/patient-service.js");
 
 class PatientController {
@@ -9,24 +11,39 @@ class PatientController {
 
   async createPatient(req, res) {
     try {
-      const message = await this.#patientService.createPatient(
+      const result = await this.#patientService.createPatient(
         req.sub,
         req.body
       );
-      res.status(200).json(message);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async getPatientsByPhoneNumber(req, res) {
     try {
-      const patients = await this.#patientService.getPatientsByPhoneNumber(
+      const result = await this.#patientService.getPatientsByPhoneNumber(
         req.sub
       );
-      res.status(200).json(patients);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: "success",
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 }
