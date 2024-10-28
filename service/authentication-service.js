@@ -29,53 +29,76 @@ class AuthenticationService {
     const user = await this.#userRepository.findByPhoneNumber(
       authentication.phoneNumber
     );
-    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    if (!user)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
 
     const hasCorrectRole = isMobile
       ? user.role.name === EnumRole.USER
       : user.role.name !== EnumRole.USER;
-    if (!hasCorrectRole) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    if (!hasCorrectRole)
+      throw {
+        status: StatusCode.HTTP_403_FORBIDDEN,
+        message: ErrorCode.INSUFFICIENT_PERMISSION,
+      };
 
     const authenticated = await bcrypt.compare(
       authentication.password,
       user.password
     );
-    if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
+    if (!authenticated)
+      throw {
+        status: StatusCode.HTTP_401_UNAUTHORIZED,
+        message: ErrorCode.UNAUTHENTICATED,
+      };
 
     const token = this.#generateToken(user);
     const refreshToken = this.#generateRefreshToken(user);
-
     await this.#saveRefreshToken(refreshToken, user);
 
     return {
+      status: "success",
       message: ErrorCode.AUTHENTICATED,
-      user: user,
-      token: token,
-      refreshToken: refreshToken,
+      data: { user, token, refreshToken },
     };
   }
 
   async refreshToken(refreshToken) {
-    const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
-    const currentTime = Math.floor(Date.now() / 1000);
-    if (userToken.exp < currentTime) throw new Error(ErrorCode.TOKEN_EXPIRED);
+    try {
+      const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (userToken.exp < currentTime)
+        throw {
+          status: StatusCode.HTTP_401_UNAUTHORIZED,
+          message: ErrorCode.TOKEN_EXPIRED,
+        };
 
-    const isValid = await this.#refreshTokenRepository.findRefreshToken(
-      userToken.sub,
-      refreshToken
-    );
-    if (!isValid) throw new Error(ErrorCode.TOKEN_UNAUTHENTICATED);
+      const isValid = await this.#refreshTokenRepository.findRefreshToken(
+        userToken.sub,
+        refreshToken
+      );
+      if (!isValid)
+        throw {
+          status: StatusCode.HTTP_401_UNAUTHORIZED,
+          message: ErrorCode.TOKEN_UNAUTHENTICATED,
+        };
 
-    const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
-    const newAccessToken = this.#generateToken(user);
-    const newRefreshToken = this.#generateRefreshToken(user);
+      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+      const newAccessToken = this.#generateToken(user);
+      const newRefreshToken = this.#generateRefreshToken(user);
 
-    await this.#saveRefreshToken(newRefreshToken, user);
+      await this.#saveRefreshToken(newRefreshToken, user);
 
-    return {
-      token: newAccessToken,
-      refreshToken: newRefreshToken,
-    };
+      return {
+        status: "success",
+        message: ErrorCode.AUTHENTICATED,
+        data: { token: newAccessToken, refreshToken: newRefreshToken },
+      };
+    } catch (err) {
+      throw err;
+    }
   }
 
   #generateToken(user) {

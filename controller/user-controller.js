@@ -35,18 +35,11 @@ class UserController {
         data: result.data,
       });
     } catch (err) {
-      if (err.message === ErrorCode.USER_NOT_EXISTED) {
-        res.status(StatusCode.HTTP_404_NOT_FOUND).json({
-          status: Status.ERROR,
-          message: ErrorCode.USER_NOT_EXISTED,
-        });
-      } else {
-        console.error("Server error:", err);
-        res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
-          status: Status.ERROR,
-          message: ErrorCode.INTERNAL_SERVER_ERROR,
-        });
-      }
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
@@ -58,21 +51,11 @@ class UserController {
         message: result.message,
       });
     } catch (err) {
-      if (
-        err.message === ErrorCode.USER_ALREADY_EXISTS ||
-        err.message === ErrorCode.ROLE_NOT_EXISTED
-      ) {
-        res.status(StatusCode.HTTP_400_BAD_REQUEST).json({
-          status: Status.ERROR,
-          message: err.message,
-        });
-      } else {
-        console.error("Server error:", err);
-        res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
-          status: Status.ERROR,
-          message: ErrorCode.INTERNAL_SERVER_ERROR,
-        });
-      }
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
@@ -84,10 +67,10 @@ class UserController {
         message: result.message,
       });
     } catch (err) {
-      console.error("Server error:", err);
-      res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
         status: Status.ERROR,
-        message: err.message,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
       });
     }
   }
@@ -100,21 +83,11 @@ class UserController {
         message: result.message,
       });
     } catch (err) {
-      if (
-        err.message === ErrorCode.UNAUTHENTICATED ||
-        err.message === ErrorCode.USER_NOT_EXISTED
-      ) {
-        res.status(StatusCode.HTTP_400_BAD_REQUEST).json({
-          status: Status.ERROR,
-          message: err.message,
-        });
-      } else {
-        console.error("Server error:", err);
-        res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
-          status: Status.ERROR,
-          message: ErrorCode.INTERNAL_SERVER_ERROR,
-        });
-      }
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
@@ -126,9 +99,10 @@ class UserController {
         message: result.message,
       });
     } catch (err) {
-      res.status(StatusCode.HTTP_400_BAD_REQUEST).json({
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
         status: Status.ERROR,
-        message: err.message,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
       });
     }
   }
@@ -141,18 +115,11 @@ class UserController {
         message: result.message,
       });
     } catch (err) {
-      if (err.message === ErrorCode.USER_NOT_EXISTED) {
-        res.status(StatusCode.HTTP_404_NOT_FOUND).json({
-          status: Status.ERROR,
-          message: ErrorCode.USER_NOT_EXISTED,
-        });
-      } else {
-        console.error("Server error:", err);
-        res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
-          status: Status.ERROR,
-          message: ErrorCode.INTERNAL_SERVER_ERROR,
-        });
-      }
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
@@ -165,10 +132,10 @@ class UserController {
         data: result.data,
       });
     } catch (err) {
-      console.error("Server error:", err);
-      res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
         status: Status.ERROR,
-        message: err.message,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
       });
     }
   }
@@ -182,10 +149,10 @@ class UserController {
         data: result.data,
       });
     } catch (err) {
-      console.error("Server error:", err);
-      res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
         status: Status.ERROR,
-        message: err.message,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
       });
     }
   }

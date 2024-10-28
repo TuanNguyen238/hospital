@@ -1,5 +1,6 @@
 const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
+const StatusCode = require("../enum/status-code.js");
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
@@ -15,7 +16,11 @@ class UserService {
 
   async getUserById(id) {
     const user = await this.#userRepository.getUserById(id);
-    if (!user) throw new Error(ErrorCode.USER_NOT_EXISTED);
+    if (!user)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
     return { message: ErrorCode.SUCCESS, data: user };
   }
 
@@ -23,11 +28,19 @@ class UserService {
     const checkUser = await this.#userRepository.findByPhoneNumber(
       user.phoneNumber
     );
-    if (checkUser) throw new Error(ErrorCode.USER_ALREADY_EXISTS);
-
+    if (checkUser)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.USER_ALREADY_EXISTS,
+      };
     user.password = await bcrypt.hash(user.password, 10);
     const userRole = await this.#roleRepository.getRole(user.role);
-    if (!userRole) throw new Error(ErrorCode.ROLE_NOT_EXISTED);
+
+    if (!userRole)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.ROLE_NOT_EXISTED,
+      };
 
     user.role = userRole;
     await this.#userRepository.saveUser(user);
@@ -38,7 +51,10 @@ class UserService {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
 
     if (!user || user.role.name !== EnumRole.USER)
-      throw new Error(ErrorCode.USER_NOT_EXISTED);
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
 
     user.password = await bcrypt.hash(password, 10);
     await this.#userRepository.saveUser(user);
@@ -48,10 +64,17 @@ class UserService {
   async updatePass(phoneNumber, { password, newPass }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user || user.role.name === EnumRole.ADMIN)
-      throw new Error(ErrorCode.USER_NOT_EXISTED);
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
 
     const authenticated = await bcrypt.compare(password, user.password);
-    if (!authenticated) throw new Error(ErrorCode.UNAUTHENTICATED);
+    if (!authenticated)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.UNAUTHENTICATED,
+      };
 
     user.password = await bcrypt.hash(newPass, 10);
 
@@ -62,7 +85,10 @@ class UserService {
   async updatePassAdmin({ phoneNumber, newPass }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user || user.role.name === EnumRole.USER)
-      throw new Error(ErrorCode.PRIVACY);
+      throw {
+        status: StatusCode.HTTP_403_FORBIDDEN,
+        message: ErrorCode.PRIVACY,
+      };
 
     user.password = await bcrypt.hash(newPass, 10);
 
@@ -73,7 +99,10 @@ class UserService {
   async updateInfo(phoneNumber, { username, email, identifyCard }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user || user.role.name !== EnumRole.USER)
-      throw new Error(ErrorCode.USER_NOT_EXISTED);
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
 
     Object.assign(user, { username, email, identifyCard });
     await this.#userRepository.saveUser(user);
