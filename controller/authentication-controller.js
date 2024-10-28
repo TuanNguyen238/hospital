@@ -1,3 +1,4 @@
+const ErrorCode = require("../enum/error-code");
 const Status = require("../enum/status");
 const StatusCode = require("../enum/status-code");
 const AuthenticationService = require("../service/authentication-service");

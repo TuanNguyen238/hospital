@@ -1,4 +1,5 @@
 const ErrorCode = require("../enum/error-code");
+const StatusCode = require("../enum/status-code");
 const ExamRoomRepository = require("../repository/examRoom-repository");
 const PatientRepository = require("../repository/patient-repository");
 const RecordRepository = require("../repository/record-repository");
@@ -19,6 +20,13 @@ class RecordService {
       patientCode
     );
 
+    if (!patient) {
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PATIENT_NOT_EXISTED,
+      };
+    }
+
     const rooms = await this.#examRoomRepository.getExamRoomsByDateTime(
       examDate,
       examTime
@@ -29,7 +37,10 @@ class RecordService {
     );
 
     if (availableRooms.length == 0)
-      throw new Error(ErrorCode.EXAMROOM_NOT_AVAILABLE);
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EXAMROOM_NOT_AVAILABLE,
+      };
 
     const randomRoom =
       availableRooms[Math.floor(Math.random() * availableRooms.length)];
@@ -43,9 +54,7 @@ class RecordService {
     randomRoom.currentPatients++;
     this.#examRoomRepository.saveExamRoom(randomRoom);
 
-    return {
-      message: ErrorCode.RECORD_BOOKED,
-    };
+    return { message: ErrorCode.RECORD_BOOKED };
   }
 }
 

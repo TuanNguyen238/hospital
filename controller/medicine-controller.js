@@ -1,3 +1,6 @@
+const ErrorCode = require("../enum/error-code");
+const Status = require("../enum/status");
+const StatusCode = require("../enum/status-code");
 const MedicineService = require("../service/medicine-service");
 
 class MedicineController {
@@ -9,46 +12,83 @@ class MedicineController {
 
   async getCount(req, res) {
     try {
-      const count = await this.#medicineService.getCount();
-      res.status(200).json({ message: count });
+      const result = await this.#medicineService.getCount();
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async createMedicine(req, res) {
     try {
-      const message = await this.#medicineService.createMedicine(req.body);
-      res.status(200).json(message);
+      const result = await this.#medicineService.createMedicine(req.body);
+      res.status(StatusCode.HTTP_201_CREATED).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async getAllMedicine(req, res) {
     try {
-      const medicines = await this.#medicineService.getAllMedicine();
-      res.status(200).json(medicines);
+      const result = await this.#medicineService.getAllMedicine();
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async deleteMedicine(req, res) {
     try {
-      const message = await this.#medicineService.deleteMedicine(req.query.id);
-      res.status(200).json(message);
+      const result = await this.#medicineService.deleteMedicine(req.query.id);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async updateMedicine(req, res) {
     try {
-      const message = await this.#medicineService.updateMedicine(req.body);
-      res.status(200).json(message);
+      const result = await this.#medicineService.updateMedicine(req.body);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 }

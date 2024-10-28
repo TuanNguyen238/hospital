@@ -1,3 +1,4 @@
+const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
 const OtpService = require("../service/otp-service.js");
@@ -13,7 +14,7 @@ class OtpController {
     try {
       console.log(req.body);
       const result = await this.#otpService.createOtp(req.body);
-      res.status(StatusCode.HTTP_200_OK).json({
+      res.status(StatusCode.HTTP_201_CREATED).json({
         status: Status.SUCCESS,
         message: result.message,
       });

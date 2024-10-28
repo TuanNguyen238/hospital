@@ -1,3 +1,6 @@
+const ErrorCode = require("../enum/error-code.js");
+const StatusCode = require("../enum/status-code.js");
+const Status = require("../enum/status.js");
 const ExamRoomService = require("../service/examRoom-service.js");
 
 class ExamRoomcontroller {
@@ -9,30 +12,51 @@ class ExamRoomcontroller {
 
   async createExamRoom(req, res) {
     try {
-      const message = await this.#examRoomService.createExamRoom(req.body);
-      res.status(200).json(message);
+      const result = await this.#examRoomService.createExamRoom(req.body);
+      res.status(StatusCode.HTTP_201_CREATED).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async getAllExamRoom(req, res) {
     try {
-      const examroom = await this.#examRoomService.getAllExamRoom();
-      res.status(200).json(examroom);
+      const result = await this.#examRoomService.getAllExamRoom();
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 
   async getAvailableTimes(req, res) {
     try {
-      const times = await this.#examRoomService.getAvailableTimes(
-        req.body.examDate
-      );
-      res.status(200).json(times);
+      const result = await this.#examRoomService.getAvailableTimes(req.body);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 }

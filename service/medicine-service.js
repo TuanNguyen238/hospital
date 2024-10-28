@@ -9,23 +9,33 @@ class MedicineService {
   }
 
   async getCount() {
-    return await this.#medicineRepository.getCount();
+    const count = await this.#medicineRepository.getCount();
+    return {
+      message: ErrorCode.SUCCESS,
+      data: count,
+    };
   }
 
   async createMedicine(medicine) {
     await this.#medicineRepository.saveMedicine(medicine);
-    return {
-      message: ErrorCode.MEDICINE_CREATED,
-    };
+    return { message: ErrorCode.MEDICINE_CREATED };
   }
 
   async getAllMedicine() {
-    return await this.#medicineRepository.getAllMedicine();
+    const medicines = await this.#medicineRepository.getAllMedicine();
+    return {
+      message: ErrorCode.SUCCESS,
+      data: medicines,
+    };
   }
 
   async deleteMedicine(id) {
     const medicine = await this.#medicineRepository.getMedicineById(id);
-    if (!medicine) throw new Error(ErrorCode.MEDICINE_NOT_EXISTED);
+    if (!medicine)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.MEDICINE_NOT_EXISTED,
+      };
     await this.#medicineRepository.deleteMedicine(id);
     return {
       message: ErrorCode.MEDICINE_DELETED,
@@ -34,14 +44,16 @@ class MedicineService {
 
   async updateMedicine({ id, name, description }) {
     const medicine = await this.#medicineRepository.findById(id);
-    if (!medicine) throw new Error(ErrorCode.MEDICINE_NOT_EXISTED);
+    if (!medicine)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.MEDICINE_NOT_EXISTED,
+      };
 
     Object.assign(medicine, { name, description });
     await this.#medicineRepository.saveMedicine(medicine);
 
-    return {
-      message: ErrorCode.MEDICINE_UPDATED,
-    };
+    return { message: ErrorCode.MEDICINE_UPDATED };
   }
 }
 module.exports = MedicineService;

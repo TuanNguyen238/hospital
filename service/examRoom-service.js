@@ -12,19 +12,22 @@ class ExamRoomService {
   async createExamRoom(examRoom) {
     const room = await this.#examRoomRepository.getExamRoomByField(examRoom);
 
-    if (room) throw new Error(ErrorCode.EXAMROOM_EXISTED);
+    if (room)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EXAMROOM_EXISTED,
+      };
 
     await this.#examRoomRepository.saveExamRoom(examRoom);
-    return {
-      message: ErrorCode.EXAMROOM_CREATED,
-    };
+    return { message: ErrorCode.EXAMROOM_CREATED };
   }
 
   async getAllExamRoom() {
-    return this.#examRoomRepository.getAllExamRoom();
+    const examRoom = await this.#examRoomRepository.getAllExamRoom();
+    return { message: ErrorCode.SUCCESS, data: examRoom };
   }
 
-  async getAvailableTimes(date) {
+  async getAvailableTimes({ date }) {
     const examRooms = await this.#examRoomRepository.getExamRoomsByDate(date);
 
     const availableTimes = timeSlots.map((time) => {
@@ -43,7 +46,10 @@ class ExamRoomService {
       };
     });
 
-    return availableTimes.filter((availableTime) => availableTime.count > 0);
+    const times = availableTimes.filter(
+      (availableTime) => availableTime.count > 0
+    );
+    return { message: ErrorCode.SUCCESS, data: times };
   }
 }
 module.exports = ExamRoomService;

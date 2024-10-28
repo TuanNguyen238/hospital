@@ -1,3 +1,4 @@
+const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
 const PatientService = require("../service/patient-service.js");
@@ -15,7 +16,7 @@ class PatientController {
         req.sub,
         req.body
       );
-      res.status(StatusCode.HTTP_200_OK).json({
+      res.status(StatusCode.HTTP_201_CREATED).json({
         status: Status.SUCCESS,
         message: result.message,
       });
