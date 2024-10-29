@@ -11,7 +11,7 @@ const RefreshToken = new EntitySchema({
     },
     token: {
       type: "varchar",
-      length: 512,
+      length: 255,
     },
   },
   relations: {

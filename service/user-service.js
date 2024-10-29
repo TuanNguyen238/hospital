@@ -14,8 +14,8 @@ class UserService {
     this.#roleRepository = new RoleRepository();
   }
 
-  async getUserById(id) {
-    const user = await this.#userRepository.getUserById(id);
+  async getUserById(phoneNumber) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,

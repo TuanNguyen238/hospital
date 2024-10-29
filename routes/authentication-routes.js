@@ -7,12 +7,15 @@ const router = express.Router();
 const authenticationController = new AuthenticationController();
 
 router.post("/", (req, res) => authenticationController.authenticate(req, res));
+router.post("/logout", (req, res) => authenticationController.logout(req, res));
 router.post("/web", (req, res) => authenticationController.authWeb(req, res));
 router.post("/introspect", UserMiddleware.authenticationTokenUser, (req, res) =>
   res.status(StatusCode.HTTP_200_OK).json("")
 );
-router.post("/refreshToken", (req, res) =>
-  authenticationController.refreshToken(req, res)
+router.post(
+  "/refreshToken",
+  UserMiddleware.authenticationTokenUser,
+  (req, res) => authenticationController.refreshToken(req, res)
 );
 
 module.exports = router;

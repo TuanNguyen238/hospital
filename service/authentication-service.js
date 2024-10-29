@@ -106,58 +106,30 @@ class AuthenticationService {
   }
 
   async refreshToken({ refreshToken }) {
-    if (!refreshToken) {
+    const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+
+    const isValid = await this.#refreshTokenRepository.findRefreshToken(
+      user,
+      refreshToken
+    );
+    if (!isValid)
       throw {
         status: StatusCode.HTTP_401_UNAUTHORIZED,
         message: ErrorCode.TOKEN_UNAUTHENTICATED,
       };
-    }
 
-    try {
-      const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
-      const currentTime = Math.floor(Date.now() / 1000);
+    const newAccessToken = this.#generateToken(user);
+    const newRefreshToken = this.#generateRefreshToken(user);
+    await this.#saveRefreshToken(newRefreshToken, user);
 
-      if (userToken.exp < currentTime) {
-        throw {
-          status: StatusCode.HTTP_401_UNAUTHORIZED,
-          message: ErrorCode.TOKEN_EXPIRED,
-        };
-      }
-
-      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
-
-      const isValid = await this.#refreshTokenRepository.findRefreshToken(
-        user,
-        refreshToken
-      );
-      if (!isValid)
-        throw {
-          status: StatusCode.HTTP_401_UNAUTHORIZED,
-          message: ErrorCode.TOKEN_UNAUTHENTICATED,
-        };
-
-      const newAccessToken = this.#generateToken(user);
-      const newRefreshToken = this.#generateRefreshToken(user);
-      await this.#saveRefreshToken(newRefreshToken, user);
-
-      return {
-        message: ErrorCode.AUTHENTICATED,
-        data: { token: newAccessToken, refreshToken: newRefreshToken },
-      };
-    } catch (err) {
-      if (err instanceof jwt.JsonWebTokenError) {
-        throw {
-          status: StatusCode.HTTP_401_UNAUTHORIZED,
-          message: ErrorCode.TOKEN_UNAUTHENTICATED,
-        };
-      }
-      throw err;
-    }
+    return {
+      message: ErrorCode.AUTHENTICATED,
+      data: { token: newAccessToken, refreshToken: newRefreshToken },
+    };
   }
 
   #generateToken(user) {
     const payload = {
-      id: user.id,
       sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
@@ -170,7 +142,6 @@ class AuthenticationService {
 
   #generateRefreshToken(user) {
     const payload = {
-      id: user.id,
       sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),

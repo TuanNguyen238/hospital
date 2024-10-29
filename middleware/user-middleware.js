@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const EnumRole = require("../enum/enum-role");
 const StatusCode = require("../enum/status-code");
 const Status = require("../enum/status");
+const RefreshTokenRepository = require("../repository/refreshToken-repository");
+const UserRepository = require("../repository/user-repository");
 
 dotenv.config();
 const SECRET_KEY = process.env.SIGNER_KEY;
@@ -21,7 +23,7 @@ class UserMiddleware {
       });
     }
 
-    jwt.verify(token, SECRET_KEY, (err, user) => {
+    jwt.verify(token, SECRET_KEY, async (err, user) => {
       if (err) {
         console.log("Token verification error:", err);
         return res.status(StatusCode.HTTP_401_UNAUTHORIZED).json({
@@ -47,8 +49,17 @@ class UserMiddleware {
           message: ErrorCode.INSUFFICIENT_PERMISSION,
         });
       }
+      const userRepository = new UserRepository();
+      const userData = await userRepository.findByPhoneNumber(user.sub);
 
-      req.userId = user.id;
+      const refreshTokenRepository = new RefreshTokenRepository();
+      const isValid = await refreshTokenRepository.findByUser(userData);
+      if (!isValid)
+        throw {
+          status: StatusCode.HTTP_401_UNAUTHORIZED,
+          message: ErrorCode.TOKEN_UNAUTHENTICATED,
+        };
+
       req.sub = user.sub;
       console.log("User authenticated successfully. User ID:", req.userId);
       next();
