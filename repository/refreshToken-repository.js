@@ -24,6 +24,12 @@ class RefreshTokenRepository {
       token: refreshToken,
     });
   }
+
+  async deleteByToken(token) {
+    await this.#repository.delete({
+      token: token,
+    });
+  }
 }
 
 module.exports = RefreshTokenRepository;

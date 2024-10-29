@@ -18,6 +18,14 @@ class AuthenticationService {
     this.#refreshTokenRepository = new RefreshTokenRepository();
   }
 
+  async logout(token) {
+    await this.#refreshTokenRepository.deleteByToken(token);
+    return {
+      status: ErrorCode.SUCCESS,
+      message: ErrorCode.LOGOUTED,
+    };
+  }
+
   async authenticate(authentication) {
     return this.#authenticateUser(authentication, true);
   }

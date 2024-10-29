@@ -29,6 +29,7 @@ const ErrorCode = {
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
   INSUFFICIENT_PERMISSION: "Lỗi quyền truy cập",
   PATIENT_NOT_EXISTED: "Bệnh nhân không tồn tại",
+  LOGOUTED: "Đăng xuất thành công",
 };
 
 module.exports = ErrorCode;
