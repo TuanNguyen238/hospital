@@ -28,7 +28,8 @@ class UserController {
 
   async getUserById(req, res) {
     try {
-      const result = await this.#userService.getUserById(req.userid);
+      console.log(req.userId);
+      const result = await this.#userService.getUserById(req.userId);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
