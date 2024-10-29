@@ -56,7 +56,12 @@ class AuthenticationController {
 
   async refreshToken(req, res) {
     try {
-      const result = await this.#authenticationService.refreshToken(req.body);
+      const authHeader = req.headers["authorization"];
+      const refreshToken = authHeader && authHeader.split(" ")[1];
+      const result = await this.#authenticationService.refreshToken(
+        req.sub,
+        refreshToken
+      );
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

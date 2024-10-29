@@ -105,8 +105,8 @@ class AuthenticationService {
     };
   }
 
-  async refreshToken({ refreshToken }) {
-    const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+  async refreshToken(phoneNumber, refreshToken) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
 
     const isValid = await this.#refreshTokenRepository.findRefreshToken(
       user,
