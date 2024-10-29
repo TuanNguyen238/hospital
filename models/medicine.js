@@ -20,10 +20,12 @@ const Medicine = new EntitySchema({
     },
     level: {
       type: "int",
-      default: 0,
+      default: 1,
     },
     price: {
       type: "decimal",
+      precision: 10,
+      scale: 2,
       default: 0,
     },
   },
