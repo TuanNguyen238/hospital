@@ -27,7 +27,7 @@ const ErrorCode = {
   RECORD_BOOKED: "Đặt phòng khám thành công",
   SUCCESS: "Thành công",
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
-  INSUFFICIENT_PERMISSION: "Lỗi Quyền truy cập",
+  INSUFFICIENT_PERMISSION: "Lỗi quyền truy cập",
   PATIENT_NOT_EXISTED: "Bệnh nhân không tồn tại",
 };
 

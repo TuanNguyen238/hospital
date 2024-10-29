@@ -18,6 +18,14 @@ const Medicine = new EntitySchema({
       type: "varchar",
       length: 255,
     },
+    level: {
+      type: "int",
+      default: 0,
+    },
+    price: {
+      type: "decimal",
+      default: 0,
+    },
   },
   relations: {
     dosages: {
