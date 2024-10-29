@@ -18,12 +18,44 @@ class AuthenticationService {
     this.#refreshTokenRepository = new RefreshTokenRepository();
   }
 
-  async logout(token) {
-    await this.#refreshTokenRepository.deleteByToken(token);
-    return {
-      status: ErrorCode.SUCCESS,
-      message: ErrorCode.LOGOUTED,
-    };
+  async logout({ refreshToken }) {
+    if (!refreshToken) {
+      throw {
+        status: StatusCode.HTTP_401_UNAUTHORIZED,
+        message: ErrorCode.TOKEN_UNAUTHENTICATED,
+      };
+    }
+
+    try {
+      const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
+
+      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+
+      const isValid = await this.#refreshTokenRepository.findRefreshToken(
+        user,
+        refreshToken
+      );
+
+      if (!isValid)
+        throw {
+          status: StatusCode.HTTP_401_UNAUTHORIZED,
+          message: ErrorCode.TOKEN_UNAUTHENTICATED,
+        };
+
+      await this.#refreshTokenRepository.deleteByToken(refreshToken);
+      return {
+        status: ErrorCode.SUCCESS,
+        message: ErrorCode.LOGOUTED,
+      };
+    } catch (err) {
+      if (err instanceof jwt.JsonWebTokenError) {
+        throw {
+          status: StatusCode.HTTP_401_UNAUTHORIZED,
+          message: ErrorCode.TOKEN_UNAUTHENTICATED,
+        };
+      }
+      throw err;
+    }
   }
 
   async authenticate(authentication) {
@@ -74,17 +106,28 @@ class AuthenticationService {
   }
 
   async refreshToken({ refreshToken }) {
+    if (!refreshToken) {
+      throw {
+        status: StatusCode.HTTP_401_UNAUTHORIZED,
+        message: ErrorCode.TOKEN_UNAUTHENTICATED,
+      };
+    }
+
     try {
       const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
       const currentTime = Math.floor(Date.now() / 1000);
-      if (userToken.exp < currentTime)
+
+      if (userToken.exp < currentTime) {
         throw {
           status: StatusCode.HTTP_401_UNAUTHORIZED,
           message: ErrorCode.TOKEN_EXPIRED,
         };
+      }
+
+      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
 
       const isValid = await this.#refreshTokenRepository.findRefreshToken(
-        userToken.sub,
+        user,
         refreshToken
       );
       if (!isValid)
@@ -93,10 +136,8 @@ class AuthenticationService {
           message: ErrorCode.TOKEN_UNAUTHENTICATED,
         };
 
-      const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
       const newAccessToken = this.#generateToken(user);
       const newRefreshToken = this.#generateRefreshToken(user);
-
       await this.#saveRefreshToken(newRefreshToken, user);
 
       return {
@@ -104,6 +145,12 @@ class AuthenticationService {
         data: { token: newAccessToken, refreshToken: newRefreshToken },
       };
     } catch (err) {
+      if (err instanceof jwt.JsonWebTokenError) {
+        throw {
+          status: StatusCode.HTTP_401_UNAUTHORIZED,
+          message: ErrorCode.TOKEN_UNAUTHENTICATED,
+        };
+      }
       throw err;
     }
   }
@@ -123,6 +170,7 @@ class AuthenticationService {
 
   #generateRefreshToken(user) {
     const payload = {
+      id: user.id,
       sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),

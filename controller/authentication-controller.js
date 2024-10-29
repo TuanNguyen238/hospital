@@ -10,8 +10,8 @@ class AuthenticationController {
     this.#authenticationService = new AuthenticationService();
   }
 
-  async logout() {
-    const result = await this.#authenticationService.logout();
+  async logout(req, res) {
+    const result = await this.#authenticationService.logout(req.body);
     try {
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
