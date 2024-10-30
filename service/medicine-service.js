@@ -37,7 +37,15 @@ class MedicineService {
     };
   }
 
-  async deleteMedicine({ id }) {
+  async deleteMedicine(data) {
+    const { id } = data;
+    if (!id) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_REQUEST,
+      };
+    }
+    console.log(id);
     const medicine = await this.#medicineRepository.getMedicineById(id);
     if (!medicine)
       throw {
