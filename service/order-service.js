@@ -26,7 +26,7 @@ class OrderService {
       };
     }
 
-    const clientId = idUserCreate;
+    let clientId = idUserCreate;
 
     if (order.clientId) clientId = order.clientId;
 
