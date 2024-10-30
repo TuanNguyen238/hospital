@@ -17,7 +17,7 @@ class OrderMedicineRepository {
   }
 
   async getAllOrderMedicine() {
-    return await this.#repository.find();
+    return await this.#repository.find({ relations: ["medicine"] });
   }
 }
 

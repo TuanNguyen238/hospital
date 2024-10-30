@@ -92,23 +92,33 @@ class OrderService {
       orders.map(async (order) => {
         const orderMedicines =
           await this.#orderMedicineRepository.getAllOrderMedicine();
-        const totalPrice = orderMedicines.reduce(
-          async (total, orderMedicine) => {
-            const medicine = await this.#medicineRepository.findById(
-              orderMedicine.medicine.id
-            );
-            return total + medicine.price * orderMedicine.quantity;
-          },
-          0
-        );
+
+        const medicinePromises = orderMedicines.map(async (orderMedicine) => {
+          const medicine = await this.#medicineRepository.findById(
+            orderMedicine.medicine.id
+          );
+          console.log(medicine);
+          return {
+            quantity: orderMedicine.quantity,
+            price: medicine.price,
+            total: medicine.price * orderMedicine.quantity,
+          };
+        });
+
+        const medicinesWithTotal = await Promise.all(medicinePromises);
+
+        const totalPrice = medicinesWithTotal.reduce((total, medicine) => {
+          return total + medicine.total;
+        }, 0);
 
         return {
           ...order,
           totalPrice,
-          orderMedicines,
+          orderMedicines: medicinesWithTotal,
         };
       })
     );
+
     return {
       message: ErrorCode.SUCCESS,
       data: fullOrders,
