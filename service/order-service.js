@@ -53,7 +53,7 @@ class OrderService {
 
     const newOrder = {
       clientId: client,
-      doctorId: doctor,
+      idUserCreate: doctor,
       createdAt: new Date(),
     };
 
