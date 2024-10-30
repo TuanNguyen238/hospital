@@ -37,7 +37,7 @@ class MedicineService {
     };
   }
 
-  async deleteMedicine(id) {
+  async deleteMedicine({ id }) {
     const medicine = await this.#medicineRepository.getMedicineById(id);
     if (!medicine)
       throw {
