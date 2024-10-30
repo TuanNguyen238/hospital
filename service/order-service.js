@@ -62,8 +62,8 @@ class OrderService {
     for (const medicine of order.medicines) {
       const medicineData = this.#medicineRepository.findById(medicine.id);
       await this.#orderMedicineRepository.saveOrderMedicine({
-        orderId: savedOrder.id,
-        medicineId: medicineData,
+        order: savedOrder,
+        medicine: medicineData,
         quantity: medicine.quantity,
       });
     }

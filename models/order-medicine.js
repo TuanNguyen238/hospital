@@ -23,9 +23,7 @@ const OrderMedicine = new EntitySchema({
     medicine: {
       target: "Medicine",
       type: "many-to-one",
-      joinColumn: {
-        name: "medicineId",
-      },
+      joinColumn: true,
     },
   },
 });
