@@ -21,10 +21,6 @@ const Dosage = new EntitySchema({
       type: "int",
       nullable: true,
     },
-    quantity: {
-      type: "int",
-      nullable: false,
-    },
   },
   relations: {
     prescription: {
