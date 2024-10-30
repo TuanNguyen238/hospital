@@ -61,7 +61,7 @@ class UserMiddleware {
         };
 
       req.sub = user.sub;
-      console.log("User authenticated successfully. User ID:", req.userId);
+      console.log("User authenticated successfully. User ID:", req.sub);
       next();
     });
   }
