@@ -133,7 +133,7 @@ class AuthenticationService {
       sub: user.phoneNumber,
       iss: "hospital",
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      exp: Math.floor(Date.now() / 1000) + 2 * 60,
       scope: user.role.name,
     };
 
