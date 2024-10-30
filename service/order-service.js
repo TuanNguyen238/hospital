@@ -18,7 +18,7 @@ class OrderService {
     this.#medicineRepository = new MedicineRepository();
   }
 
-  async createOrder(order) {
+  async createOrder(order, idUserCreate) {
     if (order.id) {
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
@@ -26,19 +26,9 @@ class OrderService {
       };
     }
 
-    if (!order.clientId) {
-      throw {
-        status: StatusCode.HTTP_400_BAD_REQUEST,
-        message: ErrorCode.INVALID_REQUEST,
-      };
-    }
+    const clientId = idUserCreate;
 
-    if (!order.idUserCreate) {
-      throw {
-        status: StatusCode.HTTP_400_BAD_REQUEST,
-        message: ErrorCode.INVALID_REQUEST,
-      };
-    }
+    if (order.clientId) clientId = order.clientId;
 
     if (!Array.isArray(order.medicines) || order.medicines.length === 0) {
       throw {
@@ -47,12 +37,8 @@ class OrderService {
       };
     }
 
-    const client = await this.#userRepository.findByPhoneNumber(order.clientId);
-    const doctor = await this.#userRepository.findByPhoneNumber(
-      order.idUserCreate
-    );
-
-    //const newOrder = await this.#orderRepository.createEntity(client, doctor);
+    const client = await this.#userRepository.findByPhoneNumber(clientId);
+    const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
     const savedOrder = await this.#orderRepository.saveOrder({
       client: client,

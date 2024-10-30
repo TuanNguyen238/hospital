@@ -19,14 +19,6 @@ class OrderRepository {
   async getAllOrder() {
     return await this.#repository.find();
   }
-
-  async createEntity(client, doctor) {
-    return this.#repository.create({
-      client: client,
-      doctor: doctor,
-      createdAt: new Date(),
-    });
-  }
 }
 
 module.exports = OrderRepository;

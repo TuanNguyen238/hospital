@@ -12,7 +12,7 @@ class OrderController {
 
   async createOrder(req, res) {
     try {
-      const result = await this.#orderService.createOrder(req.body);
+      const result = await this.#orderService.createOrder(req.body, req.sub);
       res.status(StatusCode.HTTP_201_CREATED).json({
         status: Status.SUCCESS,
         message: result.message,
