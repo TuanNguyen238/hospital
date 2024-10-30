@@ -6,6 +6,7 @@ const OrderRepository = require("../repository/order-repository.js");
 const OrderMedicineRepository = require("../repository/orderMedicine-repository.js");
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
+const bcrypt = require("bcrypt");
 
 class OrderService {
   #orderRepository;

@@ -45,7 +45,6 @@ class MedicineService {
         message: ErrorCode.INVALID_REQUEST,
       };
     }
-    console.log(id);
     const medicine = await this.#medicineRepository.findById(id);
     if (!medicine)
       throw {
