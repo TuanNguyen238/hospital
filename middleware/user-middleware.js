@@ -32,16 +32,6 @@ class UserMiddleware {
         });
       }
 
-      const currentTime = Math.floor(Date.now() / 1000);
-
-      if (user.exp < currentTime) {
-        console.log("Token expired.");
-        return res.status(StatusCode.HTTP_401_UNAUTHORIZED).json({
-          status: Status.ERROR,
-          message: ErrorCode.TOKEN_EXPIRED,
-        });
-      }
-
       if (allowedRoles.length && !allowedRoles.includes(user.scope)) {
         console.log("Insufficient permissions. User role:", user.scope);
         return res.status(StatusCode.HTTP_403_FORBIDDEN).json({

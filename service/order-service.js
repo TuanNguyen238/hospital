@@ -48,11 +48,9 @@ class OrderService {
     }
 
     const client = await this.#userRepository.findByPhoneNumber(order.clientId);
-    console.log(client);
     const doctor = await this.#userRepository.findByPhoneNumber(
       order.idUserCreate
     );
-    console.log(doctor);
 
     //const newOrder = await this.#orderRepository.createEntity(client, doctor);
 
