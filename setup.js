@@ -87,6 +87,7 @@ class Setup {
             "A pain reliever and anti-inflammatory drug that helps prevent blood clots, used in the prevention of heart attacks and strokes.",
           level: 1,
           price: 5000.0,
+          quantity: 5,
         },
         {
           name: "Atorvastatin (Lipitor)",
@@ -101,6 +102,7 @@ class Setup {
             "An ACE inhibitor that lowers blood pressure and is used in the treatment of heart failure.",
           level: 1,
           price: 5000.0,
+          quantity: 5,
         },
         {
           name: "Metoprolol (Lopressor, Toprol XL)",
@@ -129,6 +131,7 @@ class Setup {
             "An anticoagulant that helps prevent blood clots, often used in conditions like atrial fibrillation or after heart valve surgery.",
           level: 1,
           price: 5000.0,
+          quantity: 5,
         },
         {
           name: "Clopidogrel (Plavix)",
@@ -150,6 +153,7 @@ class Setup {
             "A vasodilator used to treat acute chest pain (angina) and to prevent angina attacks by relaxing blood vessels.",
           level: 1,
           price: 5000.0,
+          quantity: 4,
         },
       ];
 
