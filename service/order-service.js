@@ -44,12 +44,12 @@ class OrderService {
       };
     }
 
-    clientId = this.#userRepository.findByPhoneNumber(order.clientId);
-    doctorId = this.#userRepository.findByPhoneNumber(order.idUserCreate);
+    const client = this.#userRepository.findByPhoneNumber(order.clientId);
+    const doctor = this.#userRepository.findByPhoneNumber(order.idUserCreate);
 
     const newOrder = {
-      clientId: order.clientId,
-      doctorId: order.doctorId,
+      clientId: client,
+      doctorId: doctor,
       createdAt: new Date(),
     };
 
