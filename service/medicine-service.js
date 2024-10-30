@@ -50,16 +50,16 @@ class MedicineService {
     };
   }
 
-  async updateMedicine({ id, name, description }) {
-    const medicine = await this.#medicineRepository.findById(id);
-    if (!medicine)
+  async updateMedicine({ id, name, description, level, price, quantity }) {
+    const medicineData = await this.#medicineRepository.findById(id);
+    if (!medicineData)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.MEDICINE_NOT_EXISTED,
       };
 
-    Object.assign(medicine, { name, description });
-    await this.#medicineRepository.saveMedicine(medicine);
+    Object.assign(medicineData, { name, description, level, price, quantity });
+    await this.#medicineRepository.saveMedicine(medicineData);
 
     return { message: ErrorCode.MEDICINE_UPDATED };
   }

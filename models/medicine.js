@@ -28,6 +28,10 @@ const Medicine = new EntitySchema({
       scale: 2,
       default: 0,
     },
+    quantity: {
+      type: "int",
+      default: 0,
+    },
   },
   relations: {
     dosages: {
