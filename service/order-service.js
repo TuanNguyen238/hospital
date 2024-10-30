@@ -35,14 +35,7 @@ class OrderService {
     if (order.clientId && order.clientId.trim() !== "")
       clientId = order.clientId;
 
-    if (!Array.isArray(order.medicines) || order.medicines.length === 0) {
-      throw {
-        status: StatusCode.HTTP_400_BAD_REQUEST,
-        message: ErrorCode.INVALID_REQUEST,
-      };
-    }
-
-    const client = await this.#userRepository.findByPhoneNumber(clientId);
+    let client = await this.#userRepository.findByPhoneNumber(clientId);
     if (!client) {
       const password = await bcrypt.hash(clientId, 10);
       const userRole = await this.#roleRepository.getRole(EnumRole.USER);
@@ -53,7 +46,7 @@ class OrderService {
           message: ErrorCode.ROLE_NOT_EXISTED,
         };
 
-      await this.#userRepository.saveUser({
+      client = await this.#userRepository.saveUser({
         username: clientId,
         email: clientId + "@gmail.com",
         password: password,
@@ -69,7 +62,7 @@ class OrderService {
     const savedOrder = await this.#orderRepository.saveOrder({
       client: client,
       doctor: doctor,
-      createAt: new Date(),
+      //createAt: new Date(),
     });
     for (const medicine of order.medicines) {
       const medicineData = await this.#medicineRepository.findById(
