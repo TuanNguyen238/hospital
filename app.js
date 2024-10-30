@@ -9,6 +9,7 @@ const patientRoutes = require("./routes/patient-routes.js");
 const medicineRoutes = require("./routes/medicine-routes.js");
 const examRoomRoutes = require("./routes/examRoom-routes.js");
 const recordRoutes = require("./routes/record-routes.js");
+const orderRoutes = require("./routes/order-routes.js");
 const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
 const { default: rateLimit } = require("express-rate-limit");
@@ -52,6 +53,7 @@ AppDataSource.initialize()
     app.use("/medicine", medicineRoutes);
     app.use("/examroom", examRoomRoutes);
     app.use("/record", recordRoutes);
+    app.use("/order", orderRoutes);
 
     app.use((err, req, res, next) => {
       if (err.timeout) {

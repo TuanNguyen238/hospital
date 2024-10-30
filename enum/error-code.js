@@ -18,6 +18,7 @@ const ErrorCode = {
   PATIENT_CREATED: "Tạo bệnh nhân thành công",
   PRIVACY: "Vi phạm quyền riêng tư người dùng",
   MEDICINE_CREATED: "Tạo thuốc thành công",
+  ORDER_CREATED: "Tạo đơn hàng thành công",
   MEDICINE_NOT_EXISTED: "Thuốc không tồn tại",
   MEDICINE_DELETED: "Xóa thuốc thành công",
   MEDICINE_UPDATED: "Cập nhật thuốc thành công",

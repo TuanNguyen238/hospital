@@ -46,7 +46,7 @@ class MedicineService {
       };
     }
     console.log(id);
-    const medicine = await this.#medicineRepository.getMedicineById(id);
+    const medicine = await this.#medicineRepository.findById(id);
     if (!medicine)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,

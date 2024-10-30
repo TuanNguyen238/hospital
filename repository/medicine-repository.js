@@ -31,10 +31,6 @@ class MedicineRepository {
   async deleteMedicine(id) {
     await this.#repository.delete({ id: id });
   }
-
-  async getMedicineById(id) {
-    return await this.#repository.findOneBy({ id: id });
-  }
 }
 
 module.exports = MedicineRepository;
