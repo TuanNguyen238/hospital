@@ -18,17 +18,13 @@ const Order = new EntitySchema({
     client: {
       target: "User",
       type: "many-to-one",
-      joinColumn: {
-        name: "clientId",
-      },
+      joinColumn: true,
       nullable: true,
     },
     doctor: {
       target: "User",
       type: "many-to-one",
-      joinColumn: {
-        name: "idUserCreate",
-      },
+      joinColumn: true,
       nullable: false,
     },
     medicines: {
