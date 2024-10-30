@@ -1,8 +1,10 @@
+const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 const OrderRepository = require("../repository/order-repository.js");
 const OrderMedicineRepository = require("../repository/orderMedicine-repository.js");
+const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 
 class OrderService {
@@ -10,12 +12,14 @@ class OrderService {
   #orderMedicineRepository;
   #userRepository;
   #medicineRepository;
+  #roleRepository;
 
   constructor() {
     this.#orderRepository = new OrderRepository();
     this.#orderMedicineRepository = new OrderMedicineRepository();
     this.#userRepository = new UserRepository();
     this.#medicineRepository = new MedicineRepository();
+    this.#roleRepository = new RoleRepository();
   }
 
   async createOrder(order, idUserCreate) {
@@ -28,7 +32,8 @@ class OrderService {
 
     let clientId = idUserCreate;
 
-    if (order.clientId) clientId = order.clientId;
+    if (order.clientId && order.clientId.trim() !== "")
+      clientId = order.clientId;
 
     if (!Array.isArray(order.medicines) || order.medicines.length === 0) {
       throw {
@@ -38,6 +43,27 @@ class OrderService {
     }
 
     const client = await this.#userRepository.findByPhoneNumber(clientId);
+    if (!client) {
+      const password = await bcrypt.hash(clientId, 10);
+      const userRole = await this.#roleRepository.getRole(EnumRole.USER);
+
+      if (!userRole)
+        throw {
+          status: StatusCode.HTTP_400_BAD_REQUEST,
+          message: ErrorCode.ROLE_NOT_EXISTED,
+        };
+
+      await this.#userRepository.saveUser({
+        username: clientId,
+        email: clientId + "@gmail.com",
+        password: password,
+        phoneNumber: clientId,
+        identifyCard: clientId,
+        status: "active",
+        role: userRole,
+      });
+    }
+
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
     const savedOrder = await this.#orderRepository.saveOrder({
@@ -49,7 +75,12 @@ class OrderService {
       const medicineData = await this.#medicineRepository.findById(
         medicine.medicineId
       );
-      console.log(medicineData);
+      if (!medicineData) {
+        throw {
+          status: StatusCode.HTTP_400_BAD_REQUEST,
+          message: ErrorCode.MEDICINE_NOT_EXISTED,
+        };
+      }
       await this.#orderMedicineRepository.saveOrderMedicine({
         order: savedOrder,
         medicine: medicineData,
