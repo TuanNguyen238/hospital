@@ -17,7 +17,7 @@ class OrderRepository {
   }
 
   async getAllOrder() {
-    return await this.#repository.find();
+    return await this.#repository.find({ relations: ["client", "doctor"] });
   }
 }
 

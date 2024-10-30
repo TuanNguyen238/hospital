@@ -87,9 +87,31 @@ class OrderService {
 
   async getAllOrder() {
     const orders = await this.#orderRepository.getAllOrder();
+
+    const fullOrders = await Promise.all(
+      orders.map(async (order) => {
+        const orderMedicines =
+          await this.#orderMedicineRepository.getAllOrderMedicine();
+        const totalPrice = orderMedicines.reduce(
+          async (total, orderMedicine) => {
+            const medicine = await this.#medicineRepository.findById(
+              orderMedicine.medicine.id
+            );
+            return total + medicine.price * orderMedicine.quantity;
+          },
+          0
+        );
+
+        return {
+          ...order,
+          totalPrice,
+          orderMedicines,
+        };
+      })
+    );
     return {
       message: ErrorCode.SUCCESS,
-      data: orders,
+      data: fullOrders,
     };
   }
 }
