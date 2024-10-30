@@ -70,3 +70,7 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Database connection or setup error:", err);
   });
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
