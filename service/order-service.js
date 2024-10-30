@@ -44,8 +44,12 @@ class OrderService {
       };
     }
 
-    const client = this.#userRepository.findByPhoneNumber(order.clientId);
-    const doctor = this.#userRepository.findByPhoneNumber(order.idUserCreate);
+    const client = await this.#userRepository.findByPhoneNumber(order.clientId);
+    console.log(client);
+    const doctor = await this.#userRepository.findByPhoneNumber(
+      order.idUserCreate
+    );
+    console.log(doctor);
 
     const newOrder = {
       clientId: client,
