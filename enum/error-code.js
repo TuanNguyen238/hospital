@@ -30,6 +30,7 @@ const ErrorCode = {
   INSUFFICIENT_PERMISSION: "Lỗi quyền truy cập",
   PATIENT_NOT_EXISTED: "Bệnh nhân không tồn tại",
   LOGOUTED: "Đăng xuất thành công",
+  INVALID_REQUEST: "Yêu cầu không hợp lệ",
 };
 
 module.exports = ErrorCode;

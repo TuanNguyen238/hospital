@@ -1,4 +1,5 @@
 const ErrorCode = require("../enum/error-code.js");
+const StatusCode = require("../enum/status-code.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 
 class MedicineService {
@@ -17,6 +18,13 @@ class MedicineService {
   }
 
   async createMedicine(medicine) {
+    if (medicine.id) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_REQUEST,
+      };
+    }
+
     await this.#medicineRepository.saveMedicine(medicine);
     return { message: ErrorCode.MEDICINE_CREATED };
   }
