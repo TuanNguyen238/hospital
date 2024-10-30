@@ -12,7 +12,7 @@ router.post("/create", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.getAllMedicine(req, res)
 );
-router.delete("/delete", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+router.post("/delete", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.deleteMedicine(req, res)
 );
 router.put("/update", UserMiddleware.authenticateTokenAdmin, (req, res) =>
