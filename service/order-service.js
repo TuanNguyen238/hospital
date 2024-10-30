@@ -57,13 +57,14 @@ class OrderService {
         role: userRole,
       });
     }
+    client = await this.#userRepository.findByPhoneNumber(clientId);
 
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
     const savedOrder = await this.#orderRepository.saveOrder({
       client: client,
       doctor: doctor,
-      //createAt: new Date(),
+      createAt: new Date(),
     });
     for (const medicine of order.medicines) {
       const medicineData = await this.#medicineRepository.findById(
