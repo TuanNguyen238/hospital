@@ -60,7 +60,10 @@ class OrderService {
       createAt: new Date(),
     });
     for (const medicine of order.medicines) {
-      const medicineData = await this.#medicineRepository.findById(medicine.id);
+      const medicineData = await this.#medicineRepository.findById(
+        medicine.medicineId
+      );
+      console.log(medicineData);
       await this.#orderMedicineRepository.saveOrderMedicine({
         order: savedOrder,
         medicine: medicineData,
