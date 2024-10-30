@@ -51,11 +51,7 @@ class OrderService {
     );
     console.log(doctor);
 
-    const newOrder = {
-      clientId: client,
-      idUserCreate: doctor,
-      createdAt: new Date(),
-    };
+    const newOrder = await this.#orderRepository.createEntity(client, doctor);
 
     const savedOrder = await this.#orderRepository.saveOrder(newOrder);
     for (const medicine of order.medicines) {
