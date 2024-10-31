@@ -20,8 +20,8 @@ class OrderRepository {
     return await this.#repository.find({
       relations: ["client", "doctor"],
       select: {
-        client: { name: true },
-        doctor: { name: true },
+        client: { username: true },
+        doctor: { username: true },
       },
     });
   }

@@ -99,6 +99,9 @@ class OrderService {
           );
           console.log(medicine);
           return {
+            id: medicine.id,
+            name: medicine.name,
+            description: medicine.description,
             quantity: orderMedicine.quantity,
             price: medicine.price,
             total: medicine.price * orderMedicine.quantity,
