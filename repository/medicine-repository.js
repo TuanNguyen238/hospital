@@ -12,6 +12,10 @@ class MedicineRepository {
     return await this.#repository.findOneBy({ id: id });
   }
 
+  async findByIds(ids) {
+    return await this.#repository.findBy({ id: In(ids) });
+  }
+
   async findByName(name) {
     return await this.#repository.findOneBy({ name: name });
   }

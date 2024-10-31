@@ -50,7 +50,7 @@ const User = new EntitySchema({
       inverseSide: "users",
     },
     token: {
-      target: "RefreshToken",
+      target: "token",
       type: "one-to-one",
       inverseSide: "users",
     },

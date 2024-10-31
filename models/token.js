@@ -1,8 +1,8 @@
 const { EntitySchema } = require("typeorm");
 
-const RefreshToken = new EntitySchema({
-  name: "RefreshToken",
-  tableName: "refreshTokens",
+const Token = new EntitySchema({
+  name: "token",
+  tableName: "tokens",
   columns: {
     id: {
       primary: true,
@@ -23,4 +23,4 @@ const RefreshToken = new EntitySchema({
   },
 });
 
-module.exports = RefreshToken;
+module.exports = Token;

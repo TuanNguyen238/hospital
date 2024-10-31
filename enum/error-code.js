@@ -32,6 +32,7 @@ const ErrorCode = {
   PATIENT_NOT_EXISTED: "Bệnh nhân không tồn tại",
   LOGOUTED: "Đăng xuất thành công",
   INVALID_REQUEST: "Yêu cầu không hợp lệ",
+  TIMEOUT_REQUEST: "Kết nối thất bại, vui lòng kiểm tra lại đường truyền mạng",
 };
 
 module.exports = ErrorCode;

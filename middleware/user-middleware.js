@@ -4,11 +4,10 @@ const dotenv = require("dotenv");
 const EnumRole = require("../enum/enum-role");
 const StatusCode = require("../enum/status-code");
 const Status = require("../enum/status");
-const RefreshTokenRepository = require("../repository/refreshToken-repository");
 const UserRepository = require("../repository/user-repository");
+const TokenRepository = require("../repository/token-repository");
 
 dotenv.config();
-const SECRET_KEY = process.env.SIGNER_KEY;
 
 class UserMiddleware {
   static authenticateToken(req, res, next, allowedRoles = []) {
@@ -23,7 +22,7 @@ class UserMiddleware {
       });
     }
 
-    jwt.verify(token, SECRET_KEY, async (err, user) => {
+    jwt.verify(token, process.env.SIGNER_KEY, async (err, user) => {
       if (err) {
         console.log("Token verification error:", err);
         return res.status(StatusCode.HTTP_401_UNAUTHORIZED).json({
@@ -42,13 +41,13 @@ class UserMiddleware {
       const userRepository = new UserRepository();
       const userData = await userRepository.findByPhoneNumber(user.sub);
 
-      const refreshTokenRepository = new RefreshTokenRepository();
-      const isValid = await refreshTokenRepository.findByUser(userData);
+      const tokenRepository = new TokenRepository();
+      const isValid = await tokenRepository.findByUser(userData);
       if (!isValid)
-        throw {
-          status: StatusCode.HTTP_401_UNAUTHORIZED,
+        return res.status(StatusCode.HTTP_401_UNAUTHORIZED).json({
+          status: Status.ERROR,
           message: ErrorCode.TOKEN_UNAUTHENTICATED,
-        };
+        });
 
       req.sub = user.sub;
       console.log("User authenticated successfully. User ID:", req.sub);

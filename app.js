@@ -14,6 +14,9 @@ const AppDataSource = require("./utils/configs.js");
 const admin = require("firebase-admin");
 const { default: rateLimit } = require("express-rate-limit");
 const timeout = require("connect-timeout");
+const StatusCode = require("./enum/status-code.js");
+const Status = require("./enum/status");
+const ErrorCode = require("./enum/error-code.js");
 
 dotenv.config();
 
@@ -57,8 +60,9 @@ AppDataSource.initialize()
 
     app.use((err, req, res, next) => {
       if (err.timeout) {
-        res.status(500).json({
-          error: "Kết nối thất bại, vui lòng kiểm tra lại đường truyền mạng",
+        res.status(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+          status: Status.ERROR,
+          message: ErrorCode.TIMEOUT_REQUEST,
         });
       } else {
         next(err);

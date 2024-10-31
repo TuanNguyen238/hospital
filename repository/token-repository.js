@@ -1,15 +1,15 @@
-const RefreshToken = require("../models/refresh-token.js");
+const Token = require("../models/token.js");
 const AppDataSource = require("../utils/configs.js");
 
-class RefreshTokenRepository {
+class TokenRepository {
   #repository;
 
   constructor() {
-    this.#repository = AppDataSource.getRepository(RefreshToken);
+    this.#repository = AppDataSource.getRepository(Token);
   }
 
-  async saveRefreshToken(refreshToken) {
-    await this.#repository.save(refreshToken);
+  async saveToken(token) {
+    await this.#repository.save(token);
   }
 
   async findByUser(user) {
@@ -18,10 +18,10 @@ class RefreshTokenRepository {
     });
   }
 
-  async findRefreshToken(user, refreshToken) {
+  async findToken(user, token) {
     return await this.#repository.findOneBy({
       user: user,
-      token: refreshToken,
+      token: token,
     });
   }
 
@@ -32,4 +32,4 @@ class RefreshTokenRepository {
   }
 }
 
-module.exports = RefreshTokenRepository;
+module.exports = TokenRepository;

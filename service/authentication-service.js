@@ -4,56 +4,58 @@ const UserRepository = require("../repository/user-repository.js");
 const dotenv = require("dotenv");
 const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
-const RefreshTokenRepository = require("../repository/refreshToken-repository.js");
 const StatusCode = require("../enum/status-code.js");
+const TokenRepository = require("../repository/token-repository.js");
 
 dotenv.config();
 
 class AuthenticationService {
   #userRepository;
-  #refreshTokenRepository;
+  #tokenRepository;
 
   constructor() {
     this.#userRepository = new UserRepository();
-    this.#refreshTokenRepository = new RefreshTokenRepository();
+    this.#tokenRepository = new TokenRepository();
   }
 
-  async logout({ refreshToken }) {
-    if (!refreshToken) {
+  async logout({ token }) {
+    if (!token)
       throw {
         status: StatusCode.HTTP_401_UNAUTHORIZED,
         message: ErrorCode.TOKEN_UNAUTHENTICATED,
       };
-    }
 
     try {
-      const userToken = jwt.verify(refreshToken, process.env.SIGNER_KEY);
+      const userToken = jwt.verify(token, process.env.SIGNER_KEY);
 
       const user = await this.#userRepository.findByPhoneNumber(userToken.sub);
+      const isValid = await this.#tokenRepository.findToken(user, token);
 
-      const isValid = await this.#refreshTokenRepository.findRefreshToken(
-        user,
-        refreshToken
-      );
+      if (isValid) await this.#tokenRepository.deleteByToken(token);
 
-      if (!isValid)
-        throw {
-          status: StatusCode.HTTP_401_UNAUTHORIZED,
-          message: ErrorCode.TOKEN_UNAUTHENTICATED,
-        };
-
-      await this.#refreshTokenRepository.deleteByToken(refreshToken);
       return {
-        status: ErrorCode.SUCCESS,
-        message: ErrorCode.LOGOUTED,
+        status: StatusCode.HTTP_200_OK,
+        message: isValid ? ErrorCode.LOGOUTED : ErrorCode.SUCCESS,
       };
     } catch (err) {
-      if (err instanceof jwt.JsonWebTokenError) {
-        throw {
-          status: StatusCode.HTTP_401_UNAUTHORIZED,
-          message: ErrorCode.TOKEN_UNAUTHENTICATED,
+      if (err instanceof jwt.TokenExpiredError) {
+        const userToken = jwt.decode(token);
+        const user = await this.#userRepository.findByPhoneNumber(
+          userToken.sub
+        );
+        const isValid = await this.#tokenRepository.findToken(user, token);
+
+        if (isValid) await this.#tokenRepository.deleteByToken(token);
+
+        return {
+          status: StatusCode.HTTP_200_OK,
+          message: isValid ? ErrorCode.LOGOUTED : ErrorCode.SUCCESS,
         };
-      }
+      } else if (err instanceof jwt.JsonWebTokenError)
+        return {
+          status: StatusCode.HTTP_200_OK,
+          message: ErrorCode.SUCCESS,
+        };
       throw err;
     }
   }
@@ -96,8 +98,7 @@ class AuthenticationService {
       };
 
     const token = this.#generateToken(user);
-    const refreshToken = this.#generateRefreshToken(user);
-    await this.#saveRefreshToken(refreshToken, user);
+    await this.#saveToken(token, user);
 
     return {
       message: ErrorCode.AUTHENTICATED,
@@ -105,42 +106,7 @@ class AuthenticationService {
     };
   }
 
-  async refreshToken(phoneNumber, refreshToken) {
-    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
-
-    const isValid = await this.#refreshTokenRepository.findRefreshToken(
-      user,
-      refreshToken
-    );
-    if (!isValid)
-      throw {
-        status: StatusCode.HTTP_401_UNAUTHORIZED,
-        message: ErrorCode.TOKEN_UNAUTHENTICATED,
-      };
-
-    const newAccessToken = this.#generateToken(user);
-    const newRefreshToken = this.#generateRefreshToken(user);
-    await this.#saveRefreshToken(newRefreshToken, user);
-
-    return {
-      message: ErrorCode.AUTHENTICATED,
-      data: { token: newAccessToken, refreshToken: newRefreshToken },
-    };
-  }
-
   #generateToken(user) {
-    const payload = {
-      sub: user.phoneNumber,
-      iss: "hospital",
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 2 * 60,
-      scope: user.role.name,
-    };
-
-    return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
-  }
-
-  #generateRefreshToken(user) {
     const payload = {
       sub: user.phoneNumber,
       iss: "hospital",
@@ -152,15 +118,15 @@ class AuthenticationService {
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
   }
 
-  async #saveRefreshToken(refreshToken, user) {
-    const existingToken = await this.#refreshTokenRepository.findByUser(user);
+  async #saveToken(token, user) {
+    const existingToken = await this.#tokenRepository.findByUser(user);
 
     if (existingToken) {
-      existingToken.token = refreshToken;
-      await this.#refreshTokenRepository.saveRefreshToken(existingToken);
+      existingToken.token = token;
+      await this.#tokenRepository.saveToken(existingToken);
     } else
-      await this.#refreshTokenRepository.saveRefreshToken({
-        token: refreshToken,
+      await this.#tokenRepository.saveToken({
+        token: token,
         user: user,
       });
   }

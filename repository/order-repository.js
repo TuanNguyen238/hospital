@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const OrderMedicine = require("../models/order-medicine");
 const AppDataSource = require("../utils/configs");
 
 class OrderRepository {
@@ -14,6 +15,25 @@ class OrderRepository {
 
   async saveOrder(order) {
     return await this.#repository.save(order);
+  }
+
+  async createOrderWithTransaction(orderData, orderMedicinesData) {
+    return await AppDataSource.transaction(
+      async (transactionalEntityManager) => {
+        const savedOrder = await transactionalEntityManager.save(
+          Order,
+          orderData
+        );
+        const orderMedicines = orderMedicinesData.map((orderMed) => ({
+          ...orderMed,
+          order: savedOrder,
+        }));
+
+        await transactionalEntityManager.save(OrderMedicine, orderMedicines);
+
+        return savedOrder;
+      }
+    );
   }
 
   async getAllOrder() {

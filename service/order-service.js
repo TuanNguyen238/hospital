@@ -7,6 +7,7 @@ const OrderMedicineRepository = require("../repository/orderMedicine-repository.
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
+const AppDataSource = require("../utils/configs.js");
 
 class OrderService {
   #orderRepository;
@@ -23,6 +24,67 @@ class OrderService {
     this.#roleRepository = new RoleRepository();
   }
 
+  // async createOrder(order, idUserCreate) {
+  //   if (order.id) {
+  //     throw {
+  //       status: StatusCode.HTTP_400_BAD_REQUEST,
+  //       message: ErrorCode.INVALID_REQUEST,
+  //     };
+  //   }
+
+  //   const clientId =
+  //     order.clientId && order.clientId.trim() !== ""
+  //       ? order.clientId
+  //       : idUserCreate;
+
+  //   let client = await this.#userRepository.findByPhoneNumber(clientId);
+  //   if (!client) {
+  //     const password = await bcrypt.hash(clientId, 10);
+  //     const userRole = await this.#roleRepository.getRole(EnumRole.USER);
+
+  //     if (!userRole)
+  //       throw {
+  //         status: StatusCode.HTTP_400_BAD_REQUEST,
+  //         message: ErrorCode.ROLE_NOT_EXISTED,
+  //       };
+
+  //     client = await this.#userRepository.saveUser({
+  //       username: clientId,
+  //       email: `${clientId}@gmail.com`,
+  //       password: password,
+  //       phoneNumber: clientId,
+  //       identifyCard: clientId,
+  //       status: "active",
+  //       role: userRole,
+  //     });
+  //   }
+
+  //   const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
+
+  //   const savedOrder = await this.#orderRepository.saveOrder({
+  //     client: client,
+  //     doctor: doctor,
+  //     createAt: new Date(),
+  //   });
+  //   for (const medicine of order.medicines) {
+  //     const medicineData = await this.#medicineRepository.findById(
+  //       medicine.medicineId
+  //     );
+  //     if (!medicineData) {
+  //       throw {
+  //         status: StatusCode.HTTP_400_BAD_REQUEST,
+  //         message: ErrorCode.MEDICINE_NOT_EXISTED,
+  //       };
+  //     }
+  //     await this.#orderMedicineRepository.saveOrderMedicine({
+  //       order: savedOrder,
+  //       medicine: medicineData,
+  //       quantity: medicine.quantity,
+  //     });
+  //   }
+  //   return { message: ErrorCode.ORDER_CREATED };
+  // }
+
   async createOrder(order, idUserCreate) {
     if (order.id) {
       throw {
@@ -31,25 +93,26 @@ class OrderService {
       };
     }
 
-    let clientId = idUserCreate;
-
-    if (order.clientId && order.clientId.trim() !== "")
-      clientId = order.clientId;
+    const clientId =
+      order.clientId && order.clientId.trim() !== ""
+        ? order.clientId
+        : idUserCreate;
 
     let client = await this.#userRepository.findByPhoneNumber(clientId);
     if (!client) {
       const password = await bcrypt.hash(clientId, 10);
       const userRole = await this.#roleRepository.getRole(EnumRole.USER);
 
-      if (!userRole)
+      if (!userRole) {
         throw {
           status: StatusCode.HTTP_400_BAD_REQUEST,
           message: ErrorCode.ROLE_NOT_EXISTED,
         };
+      }
 
       client = await this.#userRepository.saveUser({
         username: clientId,
-        email: clientId + "@gmail.com",
+        email: `${clientId}@gmail.com`,
         password: password,
         phoneNumber: clientId,
         identifyCard: clientId,
@@ -57,32 +120,35 @@ class OrderService {
         role: userRole,
       });
     }
-    client = await this.#userRepository.findByPhoneNumber(clientId);
 
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
-    const savedOrder = await this.#orderRepository.saveOrder({
-      client: client,
-      doctor: doctor,
-      createAt: new Date(),
-    });
-    for (const medicine of order.medicines) {
-      const medicineData = await this.#medicineRepository.findById(
-        medicine.medicineId
+    const medicineIds = order.medicines.map((med) => med.medicineId);
+    const medicines = await this.#medicineRepository.findByIds(medicineIds);
+
+    if (medicines.length !== medicineIds.length) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.MEDICINE_NOT_EXISTED,
+      };
+    }
+
+    const orderMedicinesData = order.medicines.map((medicine) => {
+      const medicineData = medicines.find(
+        (med) => med.id === medicine.medicineId
       );
-      if (!medicineData) {
-        throw {
-          status: StatusCode.HTTP_400_BAD_REQUEST,
-          message: ErrorCode.MEDICINE_NOT_EXISTED,
-        };
-      }
-      await this.#orderMedicineRepository.saveOrderMedicine({
-        order: savedOrder,
+      return {
         medicine: medicineData,
         quantity: medicine.quantity,
-      });
-    }
-    return { message: ErrorCode.ORDER_CREATED };
+      };
+    });
+
+    const savedOrder = await this.#orderRepository.createOrderWithTransaction(
+      { client, doctor, createAt: new Date() },
+      orderMedicinesData
+    );
+
+    return { message: ErrorCode.ORDER_CREATED, data: savedOrder };
   }
 
   async getAllOrder() {
