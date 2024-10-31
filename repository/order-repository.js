@@ -25,8 +25,8 @@ class OrderRepository {
         "orderMedicines.medicine",
       ],
       select: {
-        client: { name: true },
-        doctor: { name: true },
+        client: { username: true },
+        doctor: { username: true },
         orderMedicines: {
           id: true,
           quantity: true,
