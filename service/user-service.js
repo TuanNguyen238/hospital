@@ -96,7 +96,11 @@ class UserService {
     return { message: ErrorCode.PASS_UPDATED };
   }
 
-  async updateInfo(phoneNumber, { username, email, identifyCard }) {
+  async updateInfo(phoneNumber, param, role) {
+    if (role == EnumRole.ADMIN) {
+      phoneNumber = param.phoneNumber;
+    }
+
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user || user.role.name !== EnumRole.USER)
       throw {

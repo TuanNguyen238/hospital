@@ -38,6 +38,7 @@ class UserMiddleware {
           message: ErrorCode.INSUFFICIENT_PERMISSION,
         });
       }
+
       const userRepository = new UserRepository();
       const userData = await userRepository.findByPhoneNumber(user.sub);
 
@@ -49,8 +50,13 @@ class UserMiddleware {
           message: ErrorCode.TOKEN_UNAUTHENTICATED,
         });
 
+      req.scope = user.scope;
       req.sub = user.sub;
-      console.log("User authenticated successfully. User ID:", req.sub);
+      console.log(
+        "User authenticated successfully. User ID:",
+        req.sub,
+        req.scope
+      );
       next();
     });
   }

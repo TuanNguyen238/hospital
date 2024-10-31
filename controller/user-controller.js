@@ -109,7 +109,11 @@ class UserController {
 
   async updateInfo(req, res) {
     try {
-      const result = await this.#userService.updateInfo(req.sub, req.body);
+      const result = await this.#userService.updateInfo(
+        req.sub,
+        req.body,
+        req.scope
+      );
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

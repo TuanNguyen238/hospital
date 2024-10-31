@@ -72,6 +72,7 @@ class AuthenticationService {
     const user = await this.#userRepository.findByPhoneNumber(
       authentication.phoneNumber
     );
+
     if (!user)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,
@@ -81,6 +82,7 @@ class AuthenticationService {
     const hasCorrectRole = isMobile
       ? user.role.name === EnumRole.USER
       : user.role.name !== EnumRole.USER;
+
     if (!hasCorrectRole)
       throw {
         status: StatusCode.HTTP_403_FORBIDDEN,
@@ -91,6 +93,7 @@ class AuthenticationService {
       authentication.password,
       user.password
     );
+
     if (!authenticated)
       throw {
         status: StatusCode.HTTP_401_UNAUTHORIZED,
@@ -98,7 +101,16 @@ class AuthenticationService {
       };
 
     const token = this.#generateToken(user);
-    await this.#saveToken(token, user);
+    const existingToken = await this.#tokenRepository.findByUser(user);
+
+    if (existingToken) {
+      existingToken.token = token;
+      await this.#tokenRepository.saveToken(existingToken);
+    } else
+      await this.#tokenRepository.saveToken({
+        token: token,
+        user: user,
+      });
 
     return {
       message: ErrorCode.AUTHENTICATED,
@@ -116,19 +128,6 @@ class AuthenticationService {
     };
 
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
-  }
-
-  async #saveToken(token, user) {
-    const existingToken = await this.#tokenRepository.findByUser(user);
-
-    if (existingToken) {
-      existingToken.token = token;
-      await this.#tokenRepository.saveToken(existingToken);
-    } else
-      await this.#tokenRepository.saveToken({
-        token: token,
-        user: user,
-      });
   }
 }
 
