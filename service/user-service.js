@@ -107,7 +107,9 @@ class UserService {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.USER_NOT_EXISTED,
       };
-
+    const username = param.username;
+    const email = param.email;
+    const identifyCard = param.identifyCard;
     Object.assign(user, { username, email, identifyCard });
     await this.#userRepository.saveUser(user);
 
