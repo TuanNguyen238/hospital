@@ -93,31 +93,25 @@ class OrderService {
         const orderMedicines =
           await this.#orderMedicineRepository.getAllOrderMedicine();
 
-        const medicinePromises = orderMedicines.map(async (orderMedicine) => {
-          const medicine = await this.#medicineRepository.findById(
-            orderMedicine.medicine.id
-          );
-          console.log(medicine);
-          return {
-            id: medicine.id,
-            name: medicine.name,
-            description: medicine.description,
-            quantity: orderMedicine.quantity,
-            price: medicine.price,
-            total: medicine.price * orderMedicine.quantity,
-          };
-        });
+        // const medicinePromises = orderMedicines.map(async (orderMedicine) => {
+        //   return {
+        //     id: orderMedicine.id,
+        //     name: orderMedicine.name,
+        //     description: orderMedicine.description,
+        //     quantity: orderMedicine.quantity,
+        //     price: orderMedicine.price,
+        //   };
+        // });
 
-        const medicinesWithTotal = await Promise.all(medicinePromises);
+        // const medicinesWithTotal = await Promise.all(medicinePromises);
 
-        const totalPrice = medicinesWithTotal.reduce((total, medicine) => {
-          return total + medicine.total;
-        }, 0);
+        // const totalPrice = medicinesWithTotal.reduce((total, medicine) => {
+        //   return total + medicine.total;
+        // }, 0);
 
         return {
           ...order,
-          totalPrice,
-          orderMedicines: medicinesWithTotal,
+          orderMedicines: orderMedicines,
         };
       })
     );
