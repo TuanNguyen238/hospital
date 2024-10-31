@@ -18,10 +18,25 @@ class OrderRepository {
 
   async getAllOrder() {
     return await this.#repository.find({
-      relations: ["client", "doctor"],
+      relations: [
+        "client",
+        "doctor",
+        "orderMedicines",
+        "orderMedicines.medicine",
+      ],
       select: {
-        client: { username: true },
-        doctor: { username: true },
+        client: { name: true },
+        doctor: { name: true },
+        orderMedicines: {
+          id: true,
+          quantity: true,
+          medicine: {
+            id: true,
+            name: true,
+            description: true,
+            price: true,
+          },
+        },
       },
     });
   }
