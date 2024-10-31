@@ -102,7 +102,7 @@ class AuthenticationService {
 
     return {
       message: ErrorCode.AUTHENTICATED,
-      data: { user, token, refreshToken },
+      data: { user, token },
     };
   }
 
