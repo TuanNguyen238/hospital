@@ -33,6 +33,8 @@ const ErrorCode = {
   LOGOUTED: "Đăng xuất thành công",
   INVALID_REQUEST: "Yêu cầu không hợp lệ",
   TIMEOUT_REQUEST: "Kết nối thất bại, vui lòng kiểm tra lại đường truyền mạng",
+  USER_DISABLED: "Tài khoản đã bị vô hiệu hóa",
+  STATUS_UPDATED: "Cập nhật trạng thái thành công",
 };
 
 module.exports = ErrorCode;

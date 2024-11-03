@@ -28,5 +28,7 @@ router.put(
 router.put("/updateinfo", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.updateInfo(req, res)
 );
-
+router.put("/updatestatus", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  userController.updateInfo(req, res)
+);
 module.exports = router;

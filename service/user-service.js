@@ -116,6 +116,21 @@ class UserService {
     return { message: ErrorCode.UPDATE_INFO };
   }
 
+  async updateStatus({ phoneNumber }) {
+    const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
+    if (!user)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
+
+    const status = user.status === "active" ? "inactive" : "active";
+    Object.assign(user, { status });
+    await this.#userRepository.saveUser(user);
+
+    return { message: ErrorCode.STATUS_UPDATED };
+  }
+
   async getAllUsers() {
     const users = await this.#userRepository.getAllUsers();
     return { message: ErrorCode.SUCCESS, data: users };
