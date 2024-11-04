@@ -1,6 +1,6 @@
 const AppDataSource = require("../utils/configs");
 const Medicine = require("../models/medicine.js");
-const { In } = require("typeorm");
+const { In, Between } = require("typeorm");
 
 class MedicineRepository {
   #repository;
