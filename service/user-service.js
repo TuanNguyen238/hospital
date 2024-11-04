@@ -45,7 +45,7 @@ class UserService {
 
     user.role = userRole;
     user.status = Status.ACTIVE;
-    user.createAt = new Date();
+    user.createdAt = new Date();
     await this.#userRepository.saveUser(user);
     return { message: ErrorCode.REGISTED };
   }
@@ -145,13 +145,8 @@ class UserService {
     return { message: ErrorCode.SUCCESS, data: users };
   }
 
-  async getCountUser() {
-    const count = await this.#userRepository.getCount(EnumRole.USER);
-    return { message: ErrorCode.SUCCESS, data: count };
-  }
-
-  async getCountDoctor() {
-    const count = await this.#userRepository.getCount(EnumRole.DOCTOR);
+  async getCount() {
+    const count = await this.#userRepository.getCount();
     return { message: ErrorCode.SUCCESS, data: count };
   }
 }

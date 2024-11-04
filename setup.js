@@ -88,7 +88,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 10)),
         },
         {
           name: "Atorvastatin (Lipitor)",
@@ -96,7 +96,7 @@ class Setup {
             "A statin medication that lowers cholesterol levels, reducing the risk of atherosclerosis and heart disease.",
           level: 1,
           price: 5000.0,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
         },
         {
           name: "Lisinopril",
@@ -105,7 +105,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
         },
         {
           name: "Metoprolol (Lopressor, Toprol XL)",
@@ -113,7 +113,7 @@ class Setup {
             "A beta-blocker that reduces heart rate and blood pressure, used to treat angina and heart failure.",
           level: 1,
           price: 5000.0,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
         },
         {
           name: "Amlodipine (Norvasc)",
@@ -121,7 +121,7 @@ class Setup {
             "A calcium channel blocker that helps relax blood vessels and lower blood pressure, used in the treatment of hypertension and angina.",
           level: 1,
           price: 5000.0,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
         },
         {
           name: "Losartan (Cozaar)",
@@ -129,7 +129,7 @@ class Setup {
             "An angiotensin II receptor blocker (ARB) used to treat high blood pressure and heart failure.",
           level: 1,
           price: 5000.0,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 2)),
         },
         {
           name: "Warfarin (Coumadin)",
@@ -138,7 +138,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
         },
         {
           name: "Clopidogrel (Plavix)",
@@ -146,7 +146,7 @@ class Setup {
             "An antiplatelet drug that prevents platelets from clumping together, reducing the risk of clots in conditions like coronary artery disease.",
           level: 1,
           price: 5000.0,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
         },
         {
           name: "Digoxin",

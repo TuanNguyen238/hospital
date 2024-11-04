@@ -42,7 +42,7 @@ class UserMiddleware {
       const userRepository = new UserRepository();
       const userData = await userRepository.findByPhoneNumber(user.sub);
 
-      if (userData.status !== Status.ACTIVE)
+      if (userData.status != Status.ACTIVE)
         return res.status(StatusCode.HTTP_400_BAD_REQUEST).json({
           status: Status.ERROR,
           message: ErrorCode.USER_DISABLED,

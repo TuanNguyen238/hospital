@@ -17,6 +17,10 @@ class OrderRepository {
     return await this.#repository.save(order);
   }
 
+  async getCount() {
+    return await this.#repository.count();
+  }
+
   async createOrderWithTransaction(orderData, orderMedicinesData) {
     return await AppDataSource.transaction(
       async (transactionalEntityManager) => {

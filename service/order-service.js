@@ -120,5 +120,13 @@ class OrderService {
       data: fullOrders,
     };
   }
+
+  async getCount() {
+    const count = await this.#orderRepository.getCount();
+    return {
+      message: ErrorCode.SUCCESS,
+      data: count,
+    };
+  }
 }
 module.exports = OrderService;

@@ -100,7 +100,6 @@ class AuthenticationService {
         status: StatusCode.HTTP_401_UNAUTHORIZED,
         message: ErrorCode.UNAUTHENTICATED,
       };
-    console.log(user);
     if (user.status != Status.ACTIVE)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,

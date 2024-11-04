@@ -11,5 +11,8 @@ router.post("/create", UserMiddleware.authenticationTokenDoctor, (req, res) =>
 router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   orderController.getAllOrder(req, res)
 );
+router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  orderController.getCount(req, res)
+);
 
 module.exports = router;

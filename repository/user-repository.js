@@ -32,9 +32,21 @@ class UserRepository {
   }
 
   async getCount(role) {
-    return await this.#repository.count({
-      where: { role: { name: role } },
-    });
+    const roles = [EnumRole.USER, EnumRole.DOCTOR, EnumRole.ADMIN];
+    const result = {};
+    let total = 0;
+
+    for (const role of roles) {
+      const count = await this.#repository.count({
+        where: { role: { name: role } },
+      });
+      result[role] = count;
+      total += count;
+    }
+
+    result.total = total;
+
+    return result;
   }
 }
 

@@ -160,9 +160,9 @@ class UserController {
     }
   }
 
-  async getCountDoctor(req, res) {
+  async getCount(req, res) {
     try {
-      const result = await this.#userService.getCountDoctor();
+      const result = await this.#userService.getCount();
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
