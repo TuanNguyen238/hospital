@@ -79,12 +79,12 @@ class OrderService {
 
       if (medicineData.status !== Status.ACTIVE)
         errorMessages.push({
-          medicineId: medicineData.id,
+          medicine: medicineData,
           message: ErrorCode.MEDICINE_DISABLED,
         });
       else if (medicineData.quantity < medicine.quantity)
         errorMessages.push({
-          medicineId: medicineData.id,
+          medicine: medicineData,
           message: ErrorCode.INSUFFICIENT_STOCK,
         });
       else
