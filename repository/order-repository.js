@@ -2,6 +2,7 @@ const { Between } = require("typeorm");
 const Order = require("../models/order");
 const OrderMedicine = require("../models/order-medicine");
 const AppDataSource = require("../utils/configs");
+const Medicine = require("../models/medicine");
 
 class OrderRepository {
   #repository;
@@ -35,6 +36,11 @@ class OrderRepository {
         }));
 
         await transactionalEntityManager.save(OrderMedicine, orderMedicines);
+
+        for (const orderMed of orderMedicines) {
+          orderMed.medicine.quantity -= orderMed.quantity;
+          await transactionalEntityManager.save(Medicine, orderMed.medicine);
+        }
 
         return savedOrder;
       }

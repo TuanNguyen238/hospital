@@ -35,6 +35,7 @@ const ErrorCode = {
   TIMEOUT_REQUEST: "Kết nối thất bại, vui lòng kiểm tra lại đường truyền mạng",
   USER_DISABLED: "Tài khoản đã bị vô hiệu hóa",
   STATUS_UPDATED: "Cập nhật trạng thái thành công",
+  INSUFFICIENT_STOCK: "Sản phẩm đã hết hàng",
 };
 
 module.exports = ErrorCode;
