@@ -66,7 +66,7 @@ class OrderRepository {
     });
   }
 
-  async getAllOrderByPhoneNumber() {
+  async getAllOrderByPhoneNumber(phoneNumber) {
     return await this.#repository.find({
       where: [
         { client: { phoneNumber: phoneNumber } },
