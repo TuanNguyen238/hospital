@@ -154,7 +154,7 @@ class Setup {
             "Used to treat heart failure and atrial fibrillation, this drug increases the force of heart contractions and helps control heart rate.",
           level: 1,
           price: 5000.0,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
         },
         {
           name: "Nitroglycerin",
