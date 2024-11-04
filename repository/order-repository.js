@@ -64,6 +64,27 @@ class OrderRepository {
       },
     });
   }
+
+  async getCountByMonth(year) {
+    const start = new Date(year, 0, 1);
+    const end = new Date(year + 1, 0, 1);
+
+    const orders = await this.#repository.find({
+      where: {
+        createdAt: Between(start, end),
+      },
+      select: ["createdAt"],
+    });
+
+    const result = Array(12).fill(0);
+
+    orders.forEach((order) => {
+      const month = order.createdAt.getMonth();
+      result[month] += 1;
+    });
+
+    return result;
+  }
 }
 
 module.exports = OrderRepository;

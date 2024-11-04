@@ -149,6 +149,11 @@ class UserService {
     const count = await this.#userRepository.getCount();
     return { message: ErrorCode.SUCCESS, data: count };
   }
+
+  async getCountByMonth() {
+    const count = await this.#userRepository.getUserCountByMonthAndRole();
+    return { message: ErrorCode.SUCCESS, data: count };
+  }
 }
 
 module.exports = UserService;

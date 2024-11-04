@@ -8,6 +8,9 @@ const medicineController = new MedicineController();
 router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.getCount(req, res)
 );
+router.get("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  medicineController.getCountByMonth(req, res)
+);
 router.post("/create", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.createMedicine(req, res)
 );

@@ -115,18 +115,17 @@ class OrderService {
       };
     });
 
-    return {
-      message: ErrorCode.SUCCESS,
-      data: fullOrders,
-    };
+    return { message: ErrorCode.SUCCESS, data: fullOrders };
   }
 
   async getCount() {
     const count = await this.#orderRepository.getCount();
-    return {
-      message: ErrorCode.SUCCESS,
-      data: count,
-    };
+    return { message: ErrorCode.SUCCESS, data: count };
+  }
+
+  async getCountByMonth() {
+    const count = await this.#orderRepository.getCountByMonth();
+    return { message: ErrorCode.SUCCESS, data: count };
   }
 }
 module.exports = OrderService;

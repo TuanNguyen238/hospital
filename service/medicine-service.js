@@ -11,10 +11,12 @@ class MedicineService {
 
   async getCount() {
     const count = await this.#medicineRepository.getCount();
-    return {
-      message: ErrorCode.SUCCESS,
-      data: count,
-    };
+    return { message: ErrorCode.SUCCESS, data: count };
+  }
+
+  async getCountByMonth() {
+    const count = await this.#medicineRepository.getCountByMonth();
+    return { message: ErrorCode.SUCCESS, data: count };
   }
 
   async createMedicine(medicine) {
@@ -33,10 +35,7 @@ class MedicineService {
 
   async getAllMedicine() {
     const medicines = await this.#medicineRepository.getAllMedicine();
-    return {
-      message: ErrorCode.SUCCESS,
-      data: medicines,
-    };
+    return { message: ErrorCode.SUCCESS, data: medicines };
   }
 
   async deleteMedicine(data) {
@@ -54,9 +53,7 @@ class MedicineService {
         message: ErrorCode.MEDICINE_NOT_EXISTED,
       };
     await this.#medicineRepository.deleteMedicine(id);
-    return {
-      message: ErrorCode.MEDICINE_DELETED,
-    };
+    return { message: ErrorCode.MEDICINE_DELETED };
   }
 
   async updateMedicine({ id, name, description, level, price, quantity }) {

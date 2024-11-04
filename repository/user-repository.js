@@ -1,3 +1,4 @@
+const { Between } = require("typeorm");
 const EnumRole = require("../enum/enum-role.js");
 const User = require("../models/user.js");
 const AppDataSource = require("../utils/configs.js");
@@ -45,6 +46,36 @@ class UserRepository {
     }
 
     result.total = total;
+
+    return result;
+  }
+
+  async getUserCountByMonthAndRole(year) {
+    const start = new Date(year, 0, 1);
+    const end = new Date(year + 1, 0, 1);
+
+    const users = await this.#repository.find({
+      where: {
+        createdAt: Between(start, end),
+      },
+      select: ["createdAt"],
+      relations: ["role"],
+    });
+
+    const result = Array.from({ length: 12 }, () => ({
+      user: 0,
+      doctor: 0,
+      admin: 0,
+    }));
+
+    users.forEach((user) => {
+      const month = user.createdAt.getMonth();
+      const roleName = user.role?.name;
+
+      if (roleName === EnumRole.USER) result[month].user += 1;
+      else if (roleName === EnumRole.DOCTOR) result[month].doctor += 1;
+      else if (roleName === EnumRole.ADMIN) result[month].admin += 1;
+    });
 
     return result;
   }

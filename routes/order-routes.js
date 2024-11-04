@@ -14,5 +14,8 @@ router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
 router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   orderController.getCount(req, res)
 );
+router.get("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  orderController.getCountByMonth(req, res)
+);
 
 module.exports = router;

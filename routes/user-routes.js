@@ -8,6 +8,9 @@ const userController = new UserController();
 router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   userController.getCount(req, res)
 );
+router.get("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  userController.getCountByMonth(req, res)
+);
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   userController.getAllUsers(req, res)
 );
