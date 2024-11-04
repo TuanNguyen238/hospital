@@ -37,6 +37,10 @@ const User = new EntitySchema({
       type: "varchar",
       length: 20,
     },
+    createdAt: {
+      type: "timestamp",
+      default: () => "CURRENT_TIMESTAMP",
+    },
   },
   relations: {
     role: {

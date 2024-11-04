@@ -88,6 +88,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
+          createdAt: new Date(),
         },
         {
           name: "Atorvastatin (Lipitor)",
@@ -95,6 +96,7 @@ class Setup {
             "A statin medication that lowers cholesterol levels, reducing the risk of atherosclerosis and heart disease.",
           level: 1,
           price: 5000.0,
+          createdAt: new Date(),
         },
         {
           name: "Lisinopril",
@@ -103,6 +105,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
+          createdAt: new Date(),
         },
         {
           name: "Metoprolol (Lopressor, Toprol XL)",
@@ -110,6 +113,7 @@ class Setup {
             "A beta-blocker that reduces heart rate and blood pressure, used to treat angina and heart failure.",
           level: 1,
           price: 5000.0,
+          createdAt: new Date(),
         },
         {
           name: "Amlodipine (Norvasc)",
@@ -117,6 +121,7 @@ class Setup {
             "A calcium channel blocker that helps relax blood vessels and lower blood pressure, used in the treatment of hypertension and angina.",
           level: 1,
           price: 5000.0,
+          createdAt: new Date(),
         },
         {
           name: "Losartan (Cozaar)",
@@ -124,6 +129,7 @@ class Setup {
             "An angiotensin II receptor blocker (ARB) used to treat high blood pressure and heart failure.",
           level: 1,
           price: 5000.0,
+          createdAt: new Date(),
         },
         {
           name: "Warfarin (Coumadin)",
@@ -132,6 +138,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
+          createdAt: new Date(),
         },
         {
           name: "Clopidogrel (Plavix)",
@@ -139,6 +146,7 @@ class Setup {
             "An antiplatelet drug that prevents platelets from clumping together, reducing the risk of clots in conditions like coronary artery disease.",
           level: 1,
           price: 5000.0,
+          createdAt: new Date(),
         },
         {
           name: "Digoxin",
@@ -146,6 +154,7 @@ class Setup {
             "Used to treat heart failure and atrial fibrillation, this drug increases the force of heart contractions and helps control heart rate.",
           level: 1,
           price: 5000.0,
+          createdAt: new Date(),
         },
         {
           name: "Nitroglycerin",
@@ -154,6 +163,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 4,
+          createdAt: new Date(),
         },
       ];
 

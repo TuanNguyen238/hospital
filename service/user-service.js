@@ -1,6 +1,7 @@
 const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
+const Status = require("../enum/status.js");
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
@@ -43,6 +44,8 @@ class UserService {
       };
 
     user.role = userRole;
+    user.status = Status.ACTIVE;
+    user.createAt = new Date();
     await this.#userRepository.saveUser(user);
     return { message: ErrorCode.REGISTED };
   }
@@ -129,7 +132,8 @@ class UserService {
         status: StatusCode.HTTP_403_FORBIDDEN,
         message: ErrorCode.INSUFFICIENT_PERMISSION,
       };
-    const status = user.status === "active" ? "inactive" : "active";
+    const status =
+      user.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
     Object.assign(user, { status });
     await this.#userRepository.saveUser(user);
 

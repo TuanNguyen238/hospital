@@ -32,6 +32,10 @@ const Medicine = new EntitySchema({
       type: "int",
       default: 0,
     },
+    createdAt: {
+      type: "timestamp",
+      default: () => "CURRENT_TIMESTAMP",
+    },
   },
   relations: {
     dosages: {

@@ -6,6 +6,7 @@ const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const TokenRepository = require("../repository/token-repository.js");
+const Status = require("../enum/status.js");
 
 dotenv.config();
 
@@ -100,7 +101,7 @@ class AuthenticationService {
         message: ErrorCode.UNAUTHENTICATED,
       };
 
-    if (user.status === "inactive")
+    if (user.status === Status.ACTIVE)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.USER_DISABLED,

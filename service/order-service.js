@@ -24,67 +24,6 @@ class OrderService {
     this.#roleRepository = new RoleRepository();
   }
 
-  // async createOrder(order, idUserCreate) {
-  //   if (order.id) {
-  //     throw {
-  //       status: StatusCode.HTTP_400_BAD_REQUEST,
-  //       message: ErrorCode.INVALID_REQUEST,
-  //     };
-  //   }
-
-  //   const clientId =
-  //     order.clientId && order.clientId.trim() !== ""
-  //       ? order.clientId
-  //       : idUserCreate;
-
-  //   let client = await this.#userRepository.findByPhoneNumber(clientId);
-  //   if (!client) {
-  //     const password = await bcrypt.hash(clientId, 10);
-  //     const userRole = await this.#roleRepository.getRole(EnumRole.USER);
-
-  //     if (!userRole)
-  //       throw {
-  //         status: StatusCode.HTTP_400_BAD_REQUEST,
-  //         message: ErrorCode.ROLE_NOT_EXISTED,
-  //       };
-
-  //     client = await this.#userRepository.saveUser({
-  //       username: clientId,
-  //       email: `${clientId}@gmail.com`,
-  //       password: password,
-  //       phoneNumber: clientId,
-  //       identifyCard: clientId,
-  //       status: "active",
-  //       role: userRole,
-  //     });
-  //   }
-
-  //   const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
-
-  //   const savedOrder = await this.#orderRepository.saveOrder({
-  //     client: client,
-  //     doctor: doctor,
-  //     createAt: new Date(),
-  //   });
-  //   for (const medicine of order.medicines) {
-  //     const medicineData = await this.#medicineRepository.findById(
-  //       medicine.medicineId
-  //     );
-  //     if (!medicineData) {
-  //       throw {
-  //         status: StatusCode.HTTP_400_BAD_REQUEST,
-  //         message: ErrorCode.MEDICINE_NOT_EXISTED,
-  //       };
-  //     }
-  //     await this.#orderMedicineRepository.saveOrderMedicine({
-  //       order: savedOrder,
-  //       medicine: medicineData,
-  //       quantity: medicine.quantity,
-  //     });
-  //   }
-  //   return { message: ErrorCode.ORDER_CREATED };
-  // }
-
   async createOrder(order, idUserCreate) {
     if (order.id) {
       throw {

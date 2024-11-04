@@ -25,6 +25,8 @@ class MedicineService {
       };
     }
 
+    medicine.createdAt = new Date();
+
     await this.#medicineRepository.saveMedicine(medicine);
     return { message: ErrorCode.MEDICINE_CREATED };
   }

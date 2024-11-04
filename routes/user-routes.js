@@ -5,8 +5,10 @@ const UserMiddleware = require("../middleware/user-middleware.js");
 const router = express.Router();
 const userController = new UserController();
 
-router.get("/countUser", (req, res) => userController.getCountUser(req, res));
-router.get("/countDoctor", (req, res) =>
+router.get("/countUser", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  userController.getCountUser(req, res)
+);
+router.get("/countDoctor", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   userController.getCountDoctor(req, res)
 );
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
