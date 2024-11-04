@@ -151,6 +151,7 @@ class UserService {
   }
 
   async getCountByMonth() {
+    const year = new Date().getFullYear();
     const count = await this.#userRepository.getUserCountByMonthAndRole(year);
     return { message: ErrorCode.SUCCESS, data: count };
   }
