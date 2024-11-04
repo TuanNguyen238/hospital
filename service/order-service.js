@@ -123,7 +123,8 @@ class OrderService {
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
-  async getCountByMonth({ year }) {
+  async getCountByMonth() {
+    const year = new Date().getFullYear();
     const count = await this.#orderRepository.getCountByMonth(year);
     return { message: ErrorCode.SUCCESS, data: count };
   }
