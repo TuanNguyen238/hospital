@@ -67,17 +67,26 @@ class UserRepository {
       doctor: 0,
       admin: 0,
     }));
+    const userCount = {
+      user: Array(12).fill(0),
+      doctor: Array(12).fill(0),
+      admin: Array(12).fill(0),
+    };
 
     users.forEach((user) => {
       const month = user.createdAt.getMonth();
       const roleName = user.role?.name;
 
-      if (roleName === EnumRole.USER) result[month].user += 1;
-      else if (roleName === EnumRole.DOCTOR) result[month].doctor += 1;
-      else if (roleName === EnumRole.ADMIN) result[month].admin += 1;
+      if (roleName === EnumRole.USER) userCount.user[month] += 1;
+      else if (roleName === EnumRole.DOCTOR) userCount.doctor[month] += 1;
+      else if (roleName === EnumRole.ADMIN) userCount.admin[month] += 1;
     });
 
-    return result;
+    return {
+      user: userCount.user,
+      doctor: userCount.doctor,
+      admin: userCount.admin,
+    };
   }
 }
 
