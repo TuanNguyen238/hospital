@@ -23,6 +23,7 @@ class OrderController {
       res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
         status: Status.ERROR,
         message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+        data: err.data || "",
       });
     }
   }
