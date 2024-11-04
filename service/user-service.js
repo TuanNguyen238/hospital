@@ -123,11 +123,15 @@ class UserService {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.USER_NOT_EXISTED,
       };
-    console.log(user);
+
+    if (user.role.name === EnumRole.ADMIN)
+      throw {
+        status: StatusCode.HTTP_403_FORBIDDEN,
+        message: ErrorCode.INSUFFICIENT_PERMISSION,
+      };
     const status = user.status === "active" ? "inactive" : "active";
     Object.assign(user, { status });
     await this.#userRepository.saveUser(user);
-    console.log(user);
 
     return { message: ErrorCode.STATUS_UPDATED };
   }

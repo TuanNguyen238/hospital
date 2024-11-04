@@ -100,6 +100,12 @@ class AuthenticationService {
         message: ErrorCode.UNAUTHENTICATED,
       };
 
+    if (user.status === "inactive")
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.USER_DISABLED,
+      };
+
     const token = this.#generateToken(user);
     const existingToken = await this.#tokenRepository.findByUser(user);
 
