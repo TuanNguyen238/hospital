@@ -100,7 +100,7 @@ class AuthenticationService {
         status: StatusCode.HTTP_401_UNAUTHORIZED,
         message: ErrorCode.UNAUTHENTICATED,
       };
-    if (user.status === Status.INACTIVE)
+    if (user.status !== Status.ACTIVE)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.USER_DISABLED,
