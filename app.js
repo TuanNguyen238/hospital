@@ -40,7 +40,7 @@ AppDataSource.initialize()
     console.log("Database setup complete");
     const app = express();
     app.use(cors());
-    app.use(timeout("5s"));
+    app.use(timeout("10s"));
     const PORT = process.env.PORT || 3000;
 
     app.use((req, res, next) => {
