@@ -29,7 +29,7 @@ class MedicineController {
 
   async getCountByMonth(req, res) {
     try {
-      const result = await this.#medicineService.getCountByMonth();
+      const result = await this.#medicineService.getCountByMonth(req.body);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

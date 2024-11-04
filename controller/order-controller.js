@@ -62,7 +62,7 @@ class OrderController {
 
   async getCountByMonth(req, res) {
     try {
-      const result = await this.#orderService.getCountByMonth();
+      const result = await this.#orderService.getCountByMonth(req.body);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

@@ -123,8 +123,8 @@ class OrderService {
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
-  async getCountByMonth() {
-    const count = await this.#orderRepository.getCountByMonth();
+  async getCountByMonth({ year }) {
+    const count = await this.#orderRepository.getCountByMonth(year);
     return { message: ErrorCode.SUCCESS, data: count };
   }
 }

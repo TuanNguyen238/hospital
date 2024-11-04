@@ -179,7 +179,7 @@ class UserController {
 
   async getCountByMonth(req, res) {
     try {
-      const result = await this.#userService.getCountByMonth();
+      const result = await this.#userService.getCountByMonth(req.body);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

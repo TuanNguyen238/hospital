@@ -150,8 +150,8 @@ class UserService {
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
-  async getCountByMonth() {
-    const count = await this.#userRepository.getUserCountByMonthAndRole();
+  async getCountByMonth({ year }) {
+    const count = await this.#userRepository.getUserCountByMonthAndRole(year);
     return { message: ErrorCode.SUCCESS, data: count };
   }
 }

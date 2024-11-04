@@ -14,8 +14,8 @@ class MedicineService {
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
-  async getCountByMonth() {
-    const count = await this.#medicineRepository.getCountByMonth();
+  async getCountByMonth({ year }) {
+    const count = await this.#medicineRepository.getCountByMonth(year);
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
