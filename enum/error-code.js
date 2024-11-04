@@ -20,7 +20,6 @@ const ErrorCode = {
   MEDICINE_CREATED: "Tạo thuốc thành công",
   ORDER_CREATED: "Tạo đơn hàng thành công",
   MEDICINE_NOT_EXISTED: "Thuốc không tồn tại",
-  MEDICINE_DELETED: "Xóa thuốc thành công",
   MEDICINE_UPDATED: "Cập nhật thuốc thành công",
   EXAMROOM_CREATED: "Tạo phòng khám thành công",
   EXAMROOM_EXISTED: "Phòng khám đã tồn tại",
@@ -34,6 +33,7 @@ const ErrorCode = {
   INVALID_REQUEST: "Yêu cầu không hợp lệ",
   TIMEOUT_REQUEST: "Kết nối thất bại, vui lòng kiểm tra lại đường truyền mạng",
   USER_DISABLED: "Tài khoản đã bị vô hiệu hóa",
+  MEDICINE_DISABLED: "Sản phẩm đã bị vô hiệu hóa",
   STATUS_UPDATED: "Cập nhật trạng thái thành công",
   INSUFFICIENT_STOCK: "Sản phẩm đã hết hàng",
 };

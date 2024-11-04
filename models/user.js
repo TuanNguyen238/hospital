@@ -1,4 +1,5 @@
 const { EntitySchema, JoinColumn } = require("typeorm");
+const Status = require("../enum/status");
 
 const User = new EntitySchema({
   name: "User",
@@ -36,6 +37,7 @@ const User = new EntitySchema({
     status: {
       type: "varchar",
       length: 20,
+      default: Status.ACTIVE,
     },
     createdAt: {
       type: "timestamp",

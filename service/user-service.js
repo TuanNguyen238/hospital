@@ -44,7 +44,6 @@ class UserService {
       };
 
     user.role = userRole;
-    user.status = Status.ACTIVE;
     user.createdAt = new Date();
     await this.#userRepository.saveUser(user);
     return { message: ErrorCode.REGISTED };

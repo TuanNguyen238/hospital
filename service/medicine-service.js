@@ -1,5 +1,6 @@
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
+const Status = require("../enum/status.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 
 class MedicineService {
@@ -39,8 +40,7 @@ class MedicineService {
     return { message: ErrorCode.SUCCESS, data: medicines };
   }
 
-  async deleteMedicine(data) {
-    const { id } = data;
+  async updateStatus({ id }) {
     if (!id) {
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
@@ -53,8 +53,11 @@ class MedicineService {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.MEDICINE_NOT_EXISTED,
       };
-    await this.#medicineRepository.deleteMedicine(id);
-    return { message: ErrorCode.MEDICINE_DELETED };
+    const status =
+      medicine.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
+    Object.assign(medicine, { status });
+    await this.#medicineRepository.saveMedicine(medicine);
+    return { message: ErrorCode.STATUS_UPDATED };
   }
 
   async updateMedicine({ id, name, description, level, price, quantity }) {

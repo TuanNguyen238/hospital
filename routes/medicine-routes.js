@@ -17,8 +17,8 @@ router.post("/create", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   medicineController.getAllMedicine(req, res)
 );
-router.post("/delete", UserMiddleware.authenticateTokenAdmin, (req, res) =>
-  medicineController.deleteMedicine(req, res)
+router.put("/updatestatus", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  medicineController.updateStatus(req, res)
 );
 router.put("/update", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.updateMedicine(req, res)

@@ -77,9 +77,9 @@ class MedicineController {
     }
   }
 
-  async deleteMedicine(req, res) {
+  async updateStatus(req, res) {
     try {
-      const result = await this.#medicineService.deleteMedicine(req.body);
+      const result = await this.#medicineService.updateStatus(req.body);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

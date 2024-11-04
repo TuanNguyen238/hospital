@@ -33,10 +33,6 @@ class MedicineRepository {
     return await this.#repository.find();
   }
 
-  async deleteMedicine(id) {
-    await this.#repository.delete({ id: id });
-  }
-
   async getCountByMonth(year) {
     const start = new Date(year, 0, 1);
     const end = new Date(year + 1, 0, 1);

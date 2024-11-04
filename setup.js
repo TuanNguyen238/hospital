@@ -3,6 +3,7 @@ const UserRepository = require("./repository/user-repository.js");
 const RoleRepository = require("./repository/role-repository.js");
 const bcrypt = require("bcrypt");
 const MedicineRepository = require("./repository/medicine-repository.js");
+const Status = require("./enum/status.js");
 
 class Setup {
   #roleRepository;
@@ -56,7 +57,6 @@ class Setup {
           email: "tuannguyen23823@gmail.com",
           password: hashedPassword,
           phoneNumber: "0937837564",
-          status: "active",
           role: adminRole,
         };
 
@@ -65,7 +65,6 @@ class Setup {
           email: "lethithuyduyen230803@gmail.com",
           password: hashedPassword,
           phoneNumber: "0943640913",
-          status: "active",
           role: adminRole,
         };
 

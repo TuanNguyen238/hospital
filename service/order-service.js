@@ -1,6 +1,7 @@
 const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
+const Status = require("../enum/status.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 const OrderRepository = require("../repository/order-repository.js");
 const RoleRepository = require("../repository/role-repository.js");
@@ -69,23 +70,35 @@ class OrderService {
     }
 
     const orderMedicinesData = [];
+    const errorMessages = [];
 
     for (const medicine of order.medicines) {
       const medicineData = medicines.find(
         (med) => med.id === medicine.medicineId
       );
 
-      if (medicineData.quantity < medicine.quantity) {
-        throw {
-          status: StatusCode.HTTP_400_BAD_REQUEST,
+      if (medicineData.status !== Status.ACTIVE)
+        errorMessages.push({
+          medicineId: medicineData.id,
+          message: ErrorCode.MEDICINE_DISABLED,
+        });
+      else if (medicineData.quantity < medicine.quantity)
+        errorMessages.push({
+          medicineId: medicineData.id,
           message: ErrorCode.INSUFFICIENT_STOCK,
-        };
-      }
-
-      orderMedicinesData.push({
-        medicine: medicineData,
-        quantity: medicine.quantity,
-      });
+        });
+      else
+        orderMedicinesData.push({
+          medicine: medicineData,
+          quantity: medicine.quantity,
+        });
+    }
+    if (errorMessages.length > 0) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_REQUEST,
+        data: errorMessages,
+      };
     }
 
     const savedOrder = await this.#orderRepository.createOrderWithTransaction(
