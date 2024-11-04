@@ -66,6 +66,35 @@ class OrderRepository {
     });
   }
 
+  async getAllOrderByPhoneNumber() {
+    return await this.#repository.find({
+      where: [
+        { client: { phoneNumber: phoneNumber } },
+        { createdBy: idUserCreate },
+      ],
+      relations: [
+        "client",
+        "doctor",
+        "orderMedicines",
+        "orderMedicines.medicine",
+      ],
+      select: {
+        client: { username: true },
+        doctor: { username: true },
+        orderMedicines: {
+          id: true,
+          quantity: true,
+          medicine: {
+            id: true,
+            name: true,
+            description: true,
+            price: true,
+          },
+        },
+      },
+    });
+  }
+
   async getCountByMonth(year) {
     const start = new Date(year, 0, 1);
     const end = new Date(year + 1, 0, 1);
