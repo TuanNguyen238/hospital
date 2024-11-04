@@ -69,15 +69,9 @@ class OrderRepository {
   async getAllOrderByPhoneNumber(phoneNumber) {
     return await this.#repository.find({
       where: [{ doctor: { phoneNumber: phoneNumber } }],
-      relations: [
-        "client",
-        "doctor",
-        "orderMedicines",
-        "orderMedicines.medicine",
-      ],
+      relations: ["client", "orderMedicines", "orderMedicines.medicine"],
       select: {
         client: { username: true },
-        doctor: { username: true },
         orderMedicines: {
           id: true,
           quantity: true,
