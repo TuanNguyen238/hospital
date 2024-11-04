@@ -101,7 +101,7 @@ class AuthenticationService {
         message: ErrorCode.UNAUTHENTICATED,
       };
     console.log(user);
-    if (user.status !== Status.ACTIVE)
+    if (user.status != Status.ACTIVE)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.USER_DISABLED,
