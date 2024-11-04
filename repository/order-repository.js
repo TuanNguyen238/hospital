@@ -68,10 +68,7 @@ class OrderRepository {
 
   async getAllOrderByPhoneNumber(phoneNumber) {
     return await this.#repository.find({
-      where: [
-        { client: { phoneNumber: phoneNumber } },
-        { createdBy: idUserCreate },
-      ],
+      where: [{ doctor: { phoneNumber: phoneNumber } }],
       relations: [
         "client",
         "doctor",
