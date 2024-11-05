@@ -57,6 +57,7 @@ class OrderService {
       });
     }
     console.log(client);
+    client = await this.#userRepository.findByPhoneNumber(clientId);
 
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
