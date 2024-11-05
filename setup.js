@@ -21,7 +21,6 @@ class Setup {
       await this.setupRole(EnumRole.ADMIN, "admin role");
       await this.setupRole(EnumRole.USER, "user role");
       await this.setupRole(EnumRole.DOCTOR, "doctor role");
-
       await this.setupAdmin();
 
       await this.setupMedicine();
