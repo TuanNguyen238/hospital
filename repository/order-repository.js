@@ -46,9 +46,15 @@ class OrderRepository {
         }
 
         return {
-          order: savedOrder,
+          order: {
+            ...savedOrder,
+            orderMedicines: orderMedicines.map((orderMed) => ({
+              medicine: orderMed.medicine,
+              quantity: orderMed.quantity,
+              id: orderMed.id,
+            })),
+          },
           totalPrice: totalPrice,
-          orderMedicines: orderMedicines,
         };
       }
     );
