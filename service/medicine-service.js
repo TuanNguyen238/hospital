@@ -35,6 +35,40 @@ class MedicineService {
     return { message: ErrorCode.MEDICINE_CREATED };
   }
 
+  async importMedicine(req) {
+    const medicinesArray = Object.values(req);
+
+    const medicinesToSave = [];
+    const errorMessages = [];
+
+    medicinesArray.forEach((medicine) => {
+      if (medicine.id) {
+        errorMessages.push(medicine);
+      } else
+        medicinesToSave.push({
+          ...medicine,
+          createdAt: new Date(),
+        });
+    });
+
+    const saveMedicine = await this.#medicineRepository.saveMedicine(
+      medicinesToSave
+    );
+
+    if (errorMessages.length > 0) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_REQUEST,
+        data: errorMessages,
+      };
+    }
+
+    return {
+      message: ErrorCode.MEDICINE_IMPORTED,
+      data: saveMedicine,
+    };
+  }
+
   async getAllMedicine() {
     const medicines = await this.#medicineRepository.getAllMedicine();
     return { message: ErrorCode.SUCCESS, data: medicines };

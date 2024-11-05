@@ -61,7 +61,21 @@ class MedicineController {
   }
 
   async importMedicine(req, res) {
-    console.log(req.body);
+    try {
+      const result = await this.#medicineService.importMedicine(req.body);
+      res.status(StatusCode.HTTP_201_CREATED).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
+    } catch (err) {
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+        data: err.data || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
   }
 
   async getAllMedicine(req, res) {
