@@ -1,5 +1,3 @@
-const { SUCCESS } = require("./status");
-
 const ErrorCode = {
   USER_NOT_EXISTED: "Người dùng không tồn tại",
   USER_ALREADY_EXISTS: "Người dùng đã tồn tại",
@@ -35,7 +33,7 @@ const ErrorCode = {
   USER_DISABLED: "Tài khoản đã bị vô hiệu hóa",
   MEDICINE_DISABLED: "Sản phẩm đã bị vô hiệu hóa",
   STATUS_UPDATED: "Cập nhật trạng thái thành công",
-  INSUFFICIENT_STOCK: "Sản phẩm đã hết hàng",
+  INSUFFICIENT_STOCK: "Số lượng sản phẩm trong kho",
 };
 
 module.exports = ErrorCode;

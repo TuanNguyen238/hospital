@@ -56,6 +56,7 @@ class OrderService {
         role: userRole,
       });
     }
+    console.log(client);
 
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
