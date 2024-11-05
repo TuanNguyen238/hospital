@@ -56,7 +56,7 @@ class OrderService {
         role: userRole,
       });
     }
-    console.log(client);
+
     client = await this.#userRepository.findByPhoneNumber(clientId);
 
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
@@ -103,12 +103,12 @@ class OrderService {
       };
     }
 
-    const savedOrder = await this.#orderRepository.createOrderWithTransaction(
+    const result = await this.#orderRepository.createOrderWithTransaction(
       { client, doctor, createAt: new Date() },
       orderMedicinesData
     );
 
-    return { message: ErrorCode.ORDER_CREATED, data: savedOrder };
+    return { message: ErrorCode.ORDER_CREATED, data: result };
   }
 
   async getAllOrder() {

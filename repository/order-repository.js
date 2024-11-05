@@ -42,7 +42,7 @@ class OrderRepository {
           await transactionalEntityManager.save(Medicine, orderMed.medicine);
         }
 
-        return savedOrder;
+        return orderMedicines;
       }
     );
   }
