@@ -60,6 +60,10 @@ class MedicineController {
     }
   }
 
+  async importMedicine(req, res) {
+    console.log(req.body);
+  }
+
   async getAllMedicine(req, res) {
     try {
       const result = await this.#medicineService.getAllMedicine();
