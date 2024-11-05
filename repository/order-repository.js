@@ -37,12 +37,19 @@ class OrderRepository {
 
         await transactionalEntityManager.save(OrderMedicine, orderMedicines);
 
+        let totalPrice = 0;
+
         for (const orderMed of orderMedicines) {
           orderMed.medicine.quantity -= orderMed.quantity;
+          totalPrice += orderMed.medicine.price * orderMed.quantity;
           await transactionalEntityManager.save(Medicine, orderMed.medicine);
         }
 
-        return orderMedicines;
+        return {
+          order: savedOrder,
+          totalPrice: totalPrice,
+          orderMedicines: orderMedicines,
+        };
       }
     );
   }
