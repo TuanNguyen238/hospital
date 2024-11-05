@@ -33,7 +33,7 @@ const ErrorCode = {
   USER_DISABLED: "Tài khoản đã bị vô hiệu hóa",
   MEDICINE_DISABLED: "Sản phẩm đã bị vô hiệu hóa",
   STATUS_UPDATED: "Cập nhật trạng thái thành công",
-  INSUFFICIENT_STOCK: "Số lượng sản phẩm trong kho",
+  INSUFFICIENT_STOCK: "Số lượng sản phẩm trong kho không đủ",
 };
 
 module.exports = ErrorCode;

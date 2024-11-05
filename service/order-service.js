@@ -30,7 +30,7 @@ class OrderService {
     }
 
     const clientId =
-      order.clientId && order.clientId.trim() !== ""
+      order.clientId && order.clientId.trim() !== "" && order.clientId != null
         ? order.clientId
         : idUserCreate;
 
