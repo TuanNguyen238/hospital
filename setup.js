@@ -164,16 +164,15 @@ class Setup {
           createdAt: new Date(),
         },
       ];
-
+      const medicineData = [];
       for (const medicine of medicines) {
         const existingMedicine = await this.#medicineRepository.findByName(
           medicine.name
         );
-        if (!existingMedicine) {
-          await this.#medicineRepository.saveMedicine(medicine);
-          console.log(`${medicine.name} seeded.`);
-        }
+        if (!existingMedicine) medicineData.push(medicine);
       }
+      await this.#medicineRepository.saveMedicine(medicineData);
+      console.log("Medicine seeded!");
     } catch (err) {
       console.error(`Error setup Medicine: ${err}`);
     }

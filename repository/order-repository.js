@@ -39,11 +39,13 @@ class OrderRepository {
 
         let totalPrice = 0;
 
-        for (const orderMed of orderMedicines) {
+        const medicinesToUpdate = orderMedicines.map((orderMed) => {
           orderMed.medicine.quantity -= orderMed.quantity;
           totalPrice += orderMed.medicine.price * orderMed.quantity;
-          await transactionalEntityManager.save(Medicine, orderMed.medicine);
-        }
+          return orderMed.medicine;
+        });
+
+        await transactionalEntityManager.save(Medicine, medicinesToUpdate);
 
         return {
           order: {
