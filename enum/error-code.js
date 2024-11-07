@@ -35,6 +35,7 @@ const ErrorCode = {
   MEDICINE_IMPORTED: "Import thuốc thành công",
   STATUS_UPDATED: "Cập nhật trạng thái thành công",
   INSUFFICIENT_STOCK: "Số lượng sản phẩm trong kho không đủ",
+  RESET_ORDER_MEDICINE: "Reset Order-Medicine thành công",
 };
 // const ErrorCode = {
 //   USER_NOT_EXISTED: "User does not exist",
