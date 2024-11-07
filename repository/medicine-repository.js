@@ -34,7 +34,7 @@ class MedicineRepository {
   }
 
   async delete() {
-    await this.#repository.clear();
+    await this.#repository.delete({});
   }
 
   async getCountByMonth(year) {

@@ -189,9 +189,10 @@ class OrderService {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.UNAUTHENTICATED,
       };
-    await this.#medicineRepository.delete();
     await this.#orderMedicineRepository.delete();
     await this.#medicineRepository.delete();
+
+    await this.#orderRepository.delete();
     return { message: ErrorCode.RESET_ORDER_MEDICINE };
   }
 }

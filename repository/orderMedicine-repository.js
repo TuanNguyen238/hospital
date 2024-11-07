@@ -21,7 +21,7 @@ class OrderMedicineRepository {
   }
 
   async delete() {
-    await this.#repository.clear();
+    await this.#repository.delete({});
   }
 }
 

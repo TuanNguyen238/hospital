@@ -129,7 +129,7 @@ class OrderRepository {
   }
 
   async delete() {
-    await this.#repository.clear();
+    await this.#repository.delete({});
   }
 }
 
