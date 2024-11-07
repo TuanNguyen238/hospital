@@ -184,7 +184,7 @@ class OrderService {
   }
 
   async reset({ pass }) {
-    if (pass !== "23823")
+    if (pass != "23823")
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.UNAUTHENTICATED,

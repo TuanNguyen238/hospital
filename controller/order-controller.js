@@ -81,7 +81,7 @@ class OrderController {
 
   async reset(req, res) {
     try {
-      const result = await this.#orderService.reset();
+      const result = await this.#orderService.reset(req.body);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
