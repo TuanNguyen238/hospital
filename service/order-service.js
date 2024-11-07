@@ -4,6 +4,7 @@ const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 const OrderRepository = require("../repository/order-repository.js");
+const OrderMedicineRepository = require("../repository/orderMedicine-repository.js");
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
@@ -13,12 +14,14 @@ class OrderService {
   #userRepository;
   #medicineRepository;
   #roleRepository;
+  #orderMedicineRepository;
 
   constructor() {
     this.#orderRepository = new OrderRepository();
     this.#userRepository = new UserRepository();
     this.#medicineRepository = new MedicineRepository();
     this.#roleRepository = new RoleRepository();
+    this.#orderMedicineRepository = new OrderMedicineRepository();
   }
 
   async createOrder(order, idUserCreate) {
@@ -178,6 +181,18 @@ class OrderService {
     const year = new Date().getFullYear();
     const count = await this.#orderRepository.getCountByMonth(year);
     return { message: ErrorCode.SUCCESS, data: count };
+  }
+
+  async reset({ pass }) {
+    if (pass !== "23823")
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.UNAUTHENTICATED,
+      };
+    await this.#medicineRepository.delete();
+    await this.#orderMedicineRepository.delete();
+    await this.#medicineRepository.delete();
+    return { message: ErrorCode.RESET_ORDER_MEDICINE };
   }
 }
 module.exports = OrderService;

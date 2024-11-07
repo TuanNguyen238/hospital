@@ -21,4 +21,8 @@ router.get("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   orderController.getCountByMonth(req, res)
 );
 
+router.post("/reset", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  orderController.reset(req, res)
+);
+
 module.exports = router;

@@ -127,6 +127,10 @@ class OrderRepository {
 
     return result;
   }
+
+  async delete() {
+    await this.#repository.clear();
+  }
 }
 
 module.exports = OrderRepository;

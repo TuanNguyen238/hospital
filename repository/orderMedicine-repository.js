@@ -19,6 +19,10 @@ class OrderMedicineRepository {
   async getAllOrderMedicine() {
     return await this.#repository.find({ relations: ["medicine"] });
   }
+
+  async delete() {
+    await this.#repository.clear();
+  }
 }
 
 module.exports = OrderMedicineRepository;
