@@ -107,7 +107,7 @@ class OrderService {
     }
 
     const result = await this.#orderRepository.createOrderWithTransaction(
-      { client, doctor, createAt: new Date() },
+      { client, doctor },
       orderMedicinesData
     );
 
