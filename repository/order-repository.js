@@ -48,14 +48,12 @@ class OrderRepository {
         await transactionalEntityManager.save(Medicine, medicinesToUpdate);
 
         return {
-          order: {
-            ...savedOrder,
-            orderMedicines: orderMedicines.map((orderMed) => ({
-              medicine: orderMed.medicine,
-              quantity: orderMed.quantity,
-              id: orderMed.id,
-            })),
-          },
+          ...savedOrder,
+          orderMedicines: orderMedicines.map((orderMed) => ({
+            medicine: orderMed.medicine,
+            quantity: orderMed.quantity,
+            id: orderMed.id,
+          })),
           totalPrice: totalPrice,
         };
       }
