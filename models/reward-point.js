@@ -9,7 +9,7 @@ const RewardPoints = new EntitySchema({
       type: "uuid",
       generated: "uuid",
     },
-    quantity: {
+    point: {
       type: "int",
       default: 0,
     },
