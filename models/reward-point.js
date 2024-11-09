@@ -1,6 +1,6 @@
 const { EntitySchema } = require("typeorm");
 
-const RewardPoints = new EntitySchema({
+const RewardPoint = new EntitySchema({
   name: "RewardPoint",
   tableName: "rewardPoints",
   columns: {
@@ -23,4 +23,4 @@ const RewardPoints = new EntitySchema({
   },
 });
 
-module.exports = Order;
+module.exports = RewardPoint;
