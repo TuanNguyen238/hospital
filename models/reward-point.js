@@ -1,0 +1,26 @@
+const { EntitySchema } = require("typeorm");
+
+const RewardPoints = new EntitySchema({
+  name: "RewardPoint",
+  tableName: "rewardPoints",
+  columns: {
+    id: {
+      primary: true,
+      type: "uuid",
+      generated: "uuid",
+    },
+    quantity: {
+      type: "int",
+      default: 0,
+    },
+  },
+  relations: {
+    user: {
+      target: "User",
+      type: "one-to-one",
+      joinColumn: true,
+    },
+  },
+});
+
+module.exports = Order;
