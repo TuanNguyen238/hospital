@@ -2,6 +2,7 @@ const EnumRole = require("../enum/enum-role.js");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
+const RewardPointRepository = require("../repository/rewardPoint-repository.js");
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
@@ -9,10 +10,12 @@ const bcrypt = require("bcrypt");
 class UserService {
   #userRepository;
   #roleRepository;
+  #rewardPointRepository;
 
   constructor() {
     this.#userRepository = new UserRepository();
     this.#roleRepository = new RoleRepository();
+    this.#rewardPointRepository = new RewardPointRepository();
   }
 
   async getUserById(phoneNumber) {
@@ -46,6 +49,11 @@ class UserService {
     user.role = userRole;
     user.createdAt = new Date();
     await this.#userRepository.saveUser(user);
+
+    if (user.role === EnumRole.USER) {
+      this.#rewardPointRepository.saveRewardPoint(user);
+    }
+
     return { message: ErrorCode.REGISTED };
   }
 
