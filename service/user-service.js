@@ -50,7 +50,7 @@ class UserService {
     user.createdAt = new Date();
     await this.#userRepository.saveUser(user);
 
-    if (user.role == EnumRole.USER) {
+    if (user.role.name == EnumRole.USER) {
       this.#rewardPointRepository.saveRewardPoint({ user });
     }
 
