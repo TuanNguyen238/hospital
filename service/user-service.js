@@ -28,6 +28,18 @@ class UserService {
     return { message: ErrorCode.SUCCESS, data: user };
   }
 
+  async getPointByPhoneNumber(phoneNumber) {
+    const point = await this.#rewardPointRepository.getRewardPointByPhoneNumber(
+      phoneNumber
+    );
+    if (!point)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
+    return { message: ErrorCode.SUCCESS, data: point };
+  }
+
   async createUser(user) {
     const checkUser = await this.#userRepository.findByPhoneNumber(
       user.phoneNumber

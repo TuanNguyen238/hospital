@@ -17,6 +17,9 @@ router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.getUserById(req, res)
 );
+router.get("/point", UserMiddleware.authenticationTokenUser, (req, res) =>
+  userController.getPointByPhoneNumber(req, res)
+);
 router.post("/", (req, res) => userController.createUser(req, res));
 router.put("/forgotpass", (req, res) => userController.forgotPass(req, res));
 router.put("/updatepass", UserMiddleware.authenticationTokenUser, (req, res) =>
