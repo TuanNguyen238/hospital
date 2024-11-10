@@ -43,6 +43,23 @@ class UserController {
     }
   }
 
+  async findUser(req, res) {
+    try {
+      const result = await this.#userService.getUserById(req.body.phoneNumber);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
   async getPointByPhoneNumber(req, res) {
     try {
       const result = await this.#userService.getPointByPhoneNumber(req.sub);
