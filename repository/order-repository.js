@@ -78,7 +78,6 @@ class OrderRepository {
             price: true,
           },
         },
-        totalPrice: true,
       },
     });
   }
