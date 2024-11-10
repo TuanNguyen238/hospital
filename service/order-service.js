@@ -98,7 +98,7 @@ class OrderService {
 
     if (isClient) {
       point.point += result.totalPrice * 0.005;
-      this.#rewardRepository.saveRewardPoint(point);
+      await this.#rewardRepository.saveRewardPoint(point);
     }
 
     return { message: ErrorCode.ORDER_CREATED, data: { result, point } };

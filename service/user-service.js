@@ -61,10 +61,7 @@ class UserService {
     user.role = userRole;
     user.createdAt = new Date();
     await this.#userRepository.saveUser(user);
-
-    if (user.role.name == EnumRole.USER) {
-      this.#rewardPointRepository.saveRewardPoint({ user });
-    }
+    await this.#rewardPointRepository.saveRewardPoint({ user });
 
     return { message: ErrorCode.REGISTED };
   }
