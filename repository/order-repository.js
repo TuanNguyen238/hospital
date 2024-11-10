@@ -99,7 +99,6 @@ class OrderRepository {
             price: true,
           },
         },
-        totalPrice: true,
       },
     });
   }
@@ -121,7 +120,6 @@ class OrderRepository {
           },
         },
       },
-      totalPrice: true,
     });
   }
 
