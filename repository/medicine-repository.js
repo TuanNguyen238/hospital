@@ -33,23 +33,6 @@ class MedicineRepository {
     return await this.#repository.find();
   }
 
-  async getClientMedicine() {
-    return await this.#repository.find({
-      select: {
-        orderMedicines: {
-          id: true,
-          quantity: true,
-          medicine: {
-            id: true,
-            name: true,
-            description: true,
-            price: true,
-          },
-        },
-      },
-    });
-  }
-
   async delete() {
     await this.#repository.delete({});
   }

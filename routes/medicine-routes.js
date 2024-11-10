@@ -17,9 +17,7 @@ router.post("/create", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.post("/import", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.importMedicine(req, res)
 );
-router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
-  medicineController.getAllMedicine(req, res)
-);
+router.get("/", (req, res) => medicineController.getAllMedicine(req, res));
 router.put("/updatestatus", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.updateStatus(req, res)
 );
