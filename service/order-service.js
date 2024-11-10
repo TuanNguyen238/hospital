@@ -91,17 +91,23 @@ class OrderService {
       };
     }
 
+    if (order.point > point.point)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.REWARDPOINT_NOT_ENOUGH,
+      };
+
     const result = await this.#orderRepository.createOrderWithTransaction(
       { client, doctor },
-      orderMedicinesData
+      orderMedicinesData,
+      order.point
     );
 
-    if (isClient) {
-      point.point += result.totalPrice * 0.005;
-      await this.#rewardRepository.saveRewardPoint(point);
-    }
+    point.point -= order.point;
+    if (isClient) point.point += result.totalPrice * 0.005;
+    await this.#rewardRepository.saveRewardPoint(point);
 
-    return { message: ErrorCode.ORDER_CREATED, data: { result, point } };
+    return { message: ErrorCode.ORDER_CREATED, data: result };
   }
 
   async getAllOrder() {

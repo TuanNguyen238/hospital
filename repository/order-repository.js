@@ -23,7 +23,7 @@ class OrderRepository {
     return await this.#repository.count();
   }
 
-  async createOrderWithTransaction(orderData, orderMedicinesData) {
+  async createOrderWithTransaction(orderData, orderMedicinesData, point) {
     return await AppDataSource.transaction(
       async (transactionalEntityManager) => {
         const savedOrder = await transactionalEntityManager.save(
@@ -54,7 +54,8 @@ class OrderRepository {
             quantity: orderMed.quantity,
             id: orderMed.id,
           })),
-          totalPrice: totalPrice,
+          priceBefore: totalPrice,
+          totalPrice: totalPrice - point,
         };
       }
     );
