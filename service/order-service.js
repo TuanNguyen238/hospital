@@ -5,7 +5,7 @@ const Status = require("../enum/status.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 const OrderRepository = require("../repository/order-repository.js");
 const OrderMedicineRepository = require("../repository/orderMedicine-repository.js");
-const RoleRepository = require("../repository/role-repository.js");
+const RewardPointRepository = require("../repository/rewardPoint-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
 
@@ -13,15 +13,15 @@ class OrderService {
   #orderRepository;
   #userRepository;
   #medicineRepository;
-  #roleRepository;
   #orderMedicineRepository;
+  #rewardRepository;
 
   constructor() {
     this.#orderRepository = new OrderRepository();
     this.#userRepository = new UserRepository();
     this.#medicineRepository = new MedicineRepository();
-    this.#roleRepository = new RoleRepository();
     this.#orderMedicineRepository = new OrderMedicineRepository();
+    this.#rewardRepository = new RewardPointRepository();
   }
 
   async createOrder(order, idUserCreate) {
@@ -32,35 +32,20 @@ class OrderService {
       };
     }
 
-    const clientId =
-      order.clientId && order.clientId.trim() !== "" && order.clientId != null
-        ? order.clientId
-        : idUserCreate;
+    const isClient =
+      order.clientId && order.clientId.trim() !== "" && order.clientId != null;
+    const clientId = isClient ? order.clientId : idUserCreate;
 
-    let client = await this.#userRepository.findByPhoneNumber(clientId);
-    if (!client) {
-      const password = await bcrypt.hash(clientId, 10);
-      const userRole = await this.#roleRepository.getRole(EnumRole.USER);
+    const point = await this.#rewardRepository.getRewardPointByPhoneNumber(
+      clientId
+    );
+    if (!point)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
 
-      if (!userRole) {
-        throw {
-          status: StatusCode.HTTP_400_BAD_REQUEST,
-          message: ErrorCode.ROLE_NOT_EXISTED,
-        };
-      }
-
-      client = await this.#userRepository.saveUser({
-        username: clientId,
-        email: `${clientId}@gmail.com`,
-        password: password,
-        phoneNumber: clientId,
-        identifyCard: clientId,
-        status: "active",
-        role: userRole,
-      });
-    }
-
-    client = await this.#userRepository.findByPhoneNumber(clientId);
+    const client = point.user;
 
     const doctor = await this.#userRepository.findByPhoneNumber(idUserCreate);
 
@@ -111,7 +96,12 @@ class OrderService {
       orderMedicinesData
     );
 
-    return { message: ErrorCode.ORDER_CREATED, data: result };
+    if (isClient) {
+      point.point += result.totalPrice * 0.005;
+      this.#rewardRepository.saveRewardPoint(point);
+    }
+
+    return { message: ErrorCode.ORDER_CREATED, data: { result, point } };
   }
 
   async getAllOrder() {
