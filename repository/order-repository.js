@@ -50,9 +50,9 @@ class OrderRepository {
         return {
           ...savedOrder,
           orderMedicines: orderMedicines.map((orderMed) => ({
+            id: orderMed.id,
             medicine: orderMed.medicine,
             quantity: orderMed.quantity,
-            id: orderMed.id,
           })),
           priceBefore: totalPrice,
           totalPrice: totalPrice - point,
@@ -86,9 +86,29 @@ class OrderRepository {
     });
   }
 
-  async getAllOrderByPhoneNumber(phoneNumber) {
+  async getDoctorOrderByPhoneNumber(phoneNumber) {
     return await this.#repository.find({
       where: [{ doctor: { phoneNumber: phoneNumber } }],
+      relations: ["client", "orderMedicines", "orderMedicines.medicine"],
+      select: {
+        client: { username: true },
+        orderMedicines: {
+          id: true,
+          quantity: true,
+          medicine: {
+            id: true,
+            name: true,
+            description: true,
+            price: true,
+          },
+        },
+      },
+    });
+  }
+
+  async getClientOrderByPhoneNumber(phoneNumber) {
+    return await this.#repository.find({
+      where: [{ client: { phoneNumber: phoneNumber } }],
       relations: ["client", "orderMedicines", "orderMedicines.medicine"],
       select: {
         client: { username: true },

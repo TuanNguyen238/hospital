@@ -138,8 +138,38 @@ class OrderService {
     return { message: ErrorCode.SUCCESS, data: fullOrders };
   }
 
-  async getAllOrderByPhoneNumber(phoneNumber) {
-    const orders = await this.#orderRepository.getAllOrderByPhoneNumber(
+  async getDoctorOrderByPhoneNumber(phoneNumber) {
+    const orders = await this.#orderRepository.getDoctorOrderByPhoneNumber(
+      phoneNumber
+    );
+
+    const fullOrders = orders.map((order) => {
+      const orderMedicines = order.orderMedicines.map((orderMedicine) => ({
+        id: orderMedicine.medicine.id,
+        name: orderMedicine.medicine.name,
+        description: orderMedicine.medicine.description,
+        quantity: orderMedicine.quantity,
+        price: orderMedicine.medicine.price,
+        total: orderMedicine.medicine.price * orderMedicine.quantity,
+      }));
+
+      const totalPrice = orderMedicines.reduce(
+        (total, medicine) => total + medicine.total,
+        0
+      );
+
+      return {
+        ...order,
+        totalPrice,
+        orderMedicines,
+      };
+    });
+
+    return { message: ErrorCode.SUCCESS, data: fullOrders };
+  }
+
+  async getClientOrderByPhoneNumber(phoneNumber) {
+    const orders = await this.#orderRepository.getClientOrderByPhoneNumber(
       phoneNumber
     );
 
