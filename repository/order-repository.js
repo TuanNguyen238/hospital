@@ -23,7 +23,7 @@ class OrderRepository {
     return await this.#repository.count();
   }
 
-  async createOrderWithTransaction(orderData, orderMedicinesData, point) {
+  async createOrderWithTransaction(orderData, orderMedicinesData) {
     return await AppDataSource.transaction(
       async (transactionalEntityManager) => {
         const savedOrder = await transactionalEntityManager.save(
@@ -37,11 +37,8 @@ class OrderRepository {
 
         await transactionalEntityManager.save(OrderMedicine, orderMedicines);
 
-        let totalPrice = 0;
-
         const medicinesToUpdate = orderMedicines.map((orderMed) => {
           orderMed.medicine.quantity -= orderMed.quantity;
-          totalPrice += orderMed.medicine.price * orderMed.quantity;
           return orderMed.medicine;
         });
 
@@ -54,8 +51,7 @@ class OrderRepository {
             medicine: orderMed.medicine,
             quantity: orderMed.quantity,
           })),
-          priceBefore: totalPrice,
-          totalPrice: totalPrice - point,
+          priceBefore: orderData.totalPrice,
         };
       }
     );

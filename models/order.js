@@ -13,6 +13,18 @@ const Order = new EntitySchema({
       type: "timestamp",
       default: () => "CURRENT_TIMESTAMP",
     },
+    usedPoint: {
+      type: "decimal",
+      precision: 10,
+      scale: 2,
+      default: 0,
+    },
+    totalPrice: {
+      type: "decimal",
+      precision: 10,
+      scale: 2,
+      default: 0,
+    },
   },
   relations: {
     client: {

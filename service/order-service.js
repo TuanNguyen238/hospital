@@ -97,14 +97,18 @@ class OrderService {
         message: ErrorCode.REWARDPOINT_NOT_ENOUGH,
       };
 
+    const usedPoint = order.point;
+    const totalPrice = orderMedicinesData.reduce((total, orderMed) => {
+      return total + orderMed.medicine.price * orderMed.quantity;
+    }, 0);
+
     const result = await this.#orderRepository.createOrderWithTransaction(
-      { client, doctor },
-      orderMedicinesData,
-      order.point
+      { client, doctor, usedPoint, totalPrice },
+      orderMedicinesData
     );
 
     point.point -= order.point;
-    if (isClient) point.point += result.totalPrice * 0.005;
+    if (isClient) point.point += totalPrice * 0.005;
     await this.#rewardRepository.saveRewardPoint(point);
 
     return { message: ErrorCode.ORDER_CREATED, data: result };
