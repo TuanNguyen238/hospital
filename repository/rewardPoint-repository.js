@@ -14,6 +14,7 @@ class RewardPointRepository {
   async getRewardPointByPhoneNumber(phoneNumber) {
     return await this.#repository.findOneBy({
       user: { phoneNumber: phoneNumber },
+      relations: ["user"],
     });
   }
 }
