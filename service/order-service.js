@@ -97,7 +97,7 @@ class OrderService {
         message: ErrorCode.REWARDPOINT_NOT_ENOUGH,
       };
 
-    const usedPoint = order.point;
+    const usedPoint = order.point ? order.point : 0;
     const totalPrice = orderMedicinesData.reduce((total, orderMed) => {
       return total + orderMed.medicine.price * orderMed.quantity;
     }, 0);
