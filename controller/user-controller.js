@@ -45,7 +45,9 @@ class UserController {
 
   async findUser(req, res) {
     try {
-      const result = await this.#userService.getUserById(req.body.phoneNumber);
+      const result = await this.#userService.getPointByPhoneNumber(
+        req.body.phoneNumber
+      );
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
