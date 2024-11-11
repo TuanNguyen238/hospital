@@ -20,7 +20,7 @@ router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.get("/point", UserMiddleware.authenticationTokenUser, (req, res) =>
   userController.getPointByPhoneNumber(req, res)
 );
-router.get("/find", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+router.post("/find", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   userController.findUser(req, res)
 );
 router.post("/", (req, res) => userController.createUser(req, res));
