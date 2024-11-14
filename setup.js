@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const MedicineRepository = require("./repository/medicine-repository.js");
 const Status = require("./enum/status.js");
 const path = require("path");
-
+const fs = require("fs");
 class Setup {
   #roleRepository;
   #userRepository;
