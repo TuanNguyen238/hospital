@@ -105,7 +105,7 @@ class Setup {
           const uploadedImage = await this.#medicineRepository.uploadImage(
             imagePath
           );
-          setDefaultMedicineUrl(uploadedImage.url);
+          setDefaultMedicineUrl(uploadedImage);
           console.log("Uploaded image:", uploadedImage);
         }
       }

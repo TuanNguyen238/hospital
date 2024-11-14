@@ -3,7 +3,7 @@ function formatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
-let DEFAULT_MEDICINE;
+let DEFAULT_MEDICIN = null;
 
 const timeSlots = [
   "07:00:00",
