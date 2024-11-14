@@ -61,7 +61,7 @@ class MedicineRepository {
 
   async getImageById(publicId) {
     try {
-      const image = await cloudinary.api.resource(publicId);
+      const image = await cloudinary.api.resource(`medicine/${publicId}`);
       console.log("Image found:", image);
       return image;
     } catch (err) {
@@ -70,7 +70,7 @@ class MedicineRepository {
       } else {
         console.error("Error retrieving image:", err);
       }
-      return null; // Nếu không tìm thấy ảnh hoặc có lỗi khác
+      return null;
     }
   }
 
