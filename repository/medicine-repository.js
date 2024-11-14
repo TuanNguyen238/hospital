@@ -1,8 +1,8 @@
 const AppDataSource = require("../utils/database.js");
 const Medicine = require("../models/medicine.js");
 const { In, Between } = require("typeorm");
-const sharp = require("sharp");
 const { cloudinary } = require("../utils/cloudinary.js");
+const path = require("path");
 class MedicineRepository {
   #repository;
 
@@ -74,8 +74,10 @@ class MedicineRepository {
   }
 
   async uploadImage(imagePath) {
+    const imageName = path.basename(imagePath, path.extname(imagePath));
     const result = await cloudinary.uploader.upload(imagePath, {
       resource_type: "auto",
+      public_id: imageName,
     });
     console.log("Image uploaded:", result);
     return result.url;
