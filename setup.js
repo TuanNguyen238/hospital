@@ -85,7 +85,7 @@ class Setup {
       if (image) {
         console.log("Image found:", image);
         setDefaultMedicineUrl(image.url);
-        console.log("DEFAULT: ", DEFAULT_MEDICINE);
+        console.log("DEFAULT: ", DEFAULT_MEDICINE.value);
       } else {
         console.log("Image not found on Cloudinary");
 
@@ -108,10 +108,10 @@ class Setup {
           );
           setDefaultMedicineUrl(uploadedImage);
           console.log("Uploaded image:", uploadedImage);
-          console.log("DEFAULT: ", DEFAULT_MEDICINE);
+          console.log("DEFAULT: ", DEFAULT_MEDICINE.value);
         }
       }
-      console.log("DEFAULT AFTER: ", DEFAULT_MEDICINE);
+      console.log("DEFAULT AFTER: ", DEFAULT_MEDICINE.value);
 
       const medicines = [
         {
@@ -122,7 +122,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 10)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Atorvastatin (Lipitor)",
@@ -132,7 +132,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Lisinopril",
@@ -142,7 +142,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Metoprolol (Lopressor, Toprol XL)",
@@ -152,7 +152,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Amlodipine (Norvasc)",
@@ -162,7 +162,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Losartan (Cozaar)",
@@ -172,7 +172,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 2)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Warfarin (Coumadin)",
@@ -183,7 +183,7 @@ class Setup {
           quantity: 5,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Clopidogrel (Plavix)",
@@ -193,7 +193,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Digoxin",
@@ -203,7 +203,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
         {
           name: "Nitroglycerin",
@@ -213,7 +213,7 @@ class Setup {
           price: 5000.0,
           quantity: 50,
           createdAt: new Date(),
-          imageUrl: DEFAULT_MEDICINE,
+          imageUrl: DEFAULT_MEDICINE.value,
         },
       ];
       const medicineData = [];

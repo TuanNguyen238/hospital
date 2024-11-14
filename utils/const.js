@@ -3,7 +3,9 @@ function formatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
-let DEFAULT_MEDICINE;
+let DEFAULT_MEDICINE = {
+  value: undefined,
+};
 
 const timeSlots = [
   "07:00:00",
@@ -25,11 +27,13 @@ const timeSlots = [
   "15:00:00",
 ];
 
+function setDefaultMedicineUrl(url) {
+  DEFAULT_MEDICINE.value = url;
+}
+
 module.exports = {
   formatDate,
   timeSlots,
   DEFAULT_MEDICINE,
-  setDefaultMedicineUrl: (url) => {
-    DEFAULT_MEDICINE = url;
-  },
+  setDefaultMedicineUrl,
 };
