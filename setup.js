@@ -4,6 +4,7 @@ const RoleRepository = require("./repository/role-repository.js");
 const bcrypt = require("bcrypt");
 const MedicineRepository = require("./repository/medicine-repository.js");
 const Status = require("./enum/status.js");
+const path = require("path");
 
 class Setup {
   #roleRepository;
@@ -78,12 +79,18 @@ class Setup {
 
   async setupMedicine() {
     try {
-      const isImage = await this.#medicineRepository.getImageById(
-        "default_medicine.jpg"
-      );
+      const publicId = "default_medicine";
+      let image = await getImageById(publicId);
 
-      if (!isImage) {
-        const imagePath = "./assets/default_medicine.jpg";
+      if (image) {
+        console.log("Image found:", image);
+      } else {
+        console.log("Image not found on Cloudinary");
+
+        const imagePath = path.resolve(
+          __dirname,
+          "./assets/default_medicine.jpg"
+        );
 
         if (!fs.existsSync(imagePath)) {
           console.error(
@@ -91,14 +98,15 @@ class Setup {
             imagePath
           );
           throw new Error("File default_medicine.jpg không tồn tại.");
-        } else console.log(imagePath);
+        } else {
+          console.log("File found in local directory:", imagePath);
 
-        isImage = await this.#medicineRepository.uploadImage(
-          "./assets/default_medicine.jpg"
-        );
+          const uploadedImage = await this.#medicineRepository.uploadImage(
+            imagePath
+          );
+          console.log("Uploaded image:", uploadedImage);
+        }
       }
-      console.log(isImage);
-
       const medicines = [
         {
           name: "Aspirin",

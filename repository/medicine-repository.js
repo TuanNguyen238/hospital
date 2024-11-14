@@ -60,12 +60,23 @@ class MedicineRepository {
   }
 
   async getImageById(publicId) {
-    const image = await cloudinary.api.resource(publicId);
-    return image;
+    try {
+      const image = await cloudinary.api.resource(publicId);
+      return image;
+    } catch (err) {
+      if (err.http_code === 404) {
+        console.error(`Image with publicId ${publicId} not found.`);
+      } else {
+        console.error("Error retrieving image:", err);
+      }
+      return null;
+    }
   }
 
   async uploadImage(imagePath) {
-    const result = await cloudinary.uploader.upload(imagePath);
+    const result = await cloudinary.uploader.upload(imagePath, {
+      resource_type: "auto",
+    });
     console.log("Image uploaded:", result);
     return result.url;
   }
