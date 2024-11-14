@@ -84,7 +84,7 @@ class Setup {
 
       if (image) {
         console.log("Image found:", image);
-        setDefaultMedicineUrl(image);
+        setDefaultMedicineUrl(image.url);
       } else {
         console.log("Image not found on Cloudinary");
 

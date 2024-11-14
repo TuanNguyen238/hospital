@@ -61,16 +61,16 @@ class MedicineRepository {
 
   async getImageById(publicId) {
     try {
-      const imageUrl = cloudinary.url(publicId, {
-        fetch_format: "auto",
-        quality: "auto",
-      });
-
-      console.log("Image URL:", imageUrl);
-      return imageUrl;
+      const image = await cloudinary.api.resource(publicId);
+      console.log("Image found:", image);
+      return image;
     } catch (err) {
-      console.error("Error retrieving image:", err);
-      return null;
+      if (err.http_code === 404) {
+        console.error(`Image with publicId ${publicId} not found.`);
+      } else {
+        console.error("Error retrieving image:", err);
+      }
+      return null; // Nếu không tìm thấy ảnh hoặc có lỗi khác
     }
   }
 
