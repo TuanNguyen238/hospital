@@ -1,4 +1,4 @@
-const AppDataSource = require("../utils/configs.js");
+const AppDataSource = require("../utils/database.js");
 const Patient = require("../models/patient.js");
 
 class PatientRepository {

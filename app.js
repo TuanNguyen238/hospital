@@ -10,15 +10,23 @@ const medicineRoutes = require("./routes/medicine-routes.js");
 const examRoomRoutes = require("./routes/examRoom-routes.js");
 const recordRoutes = require("./routes/record-routes.js");
 const orderRoutes = require("./routes/order-routes.js");
-const AppDataSource = require("./utils/configs.js");
+const AppDataSource = require("./utils/database.js");
 const admin = require("firebase-admin");
 const { default: rateLimit } = require("express-rate-limit");
 const timeout = require("connect-timeout");
 const StatusCode = require("./enum/status-code.js");
 const Status = require("./enum/status");
 const ErrorCode = require("./enum/error-code.js");
+const { configureCloudinary } = require("./utils/cloudinary.js");
 
 dotenv.config();
+
+try {
+  configureCloudinary();
+} catch (error) {
+  console.error("Application startup failed:", error.message);
+  process.exit(1);
+}
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -38,6 +46,7 @@ AppDataSource.initialize()
   })
   .then(() => {
     console.log("Database setup complete");
+
     const app = express();
     app.use(cors());
     app.use(timeout("10s"));

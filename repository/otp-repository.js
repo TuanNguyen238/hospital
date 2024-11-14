@@ -1,5 +1,5 @@
 const Otp = require("../models/otp.js");
-const AppDataSource = require("../utils/configs");
+const AppDataSource = require("../utils/database.js");
 const { getMessaging } = require("firebase-admin/messaging");
 
 class OtpRepository {

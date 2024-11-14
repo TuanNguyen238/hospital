@@ -1,7 +1,7 @@
 const { Between } = require("typeorm");
 const EnumRole = require("../enum/enum-role.js");
 const User = require("../models/user.js");
-const AppDataSource = require("../utils/configs.js");
+const AppDataSource = require("../utils/database.js");
 
 class UserRepository {
   #repository;

@@ -1,5 +1,5 @@
 const Role = require("../models/role.js");
-const AppDataSource = require("../utils/configs.js");
+const AppDataSource = require("../utils/database.js");
 
 class RoleRepository {
   #repository;

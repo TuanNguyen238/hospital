@@ -1,5 +1,5 @@
 const OrderMedicine = require("../models/order-medicine");
-const AppDataSource = require("../utils/configs");
+const AppDataSource = require("../utils/database");
 
 class OrderMedicineRepository {
   #repository;

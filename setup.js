@@ -78,6 +78,17 @@ class Setup {
 
   async setupMedicine() {
     try {
+      const isImage = await this.#medicineRepository.getImageById(
+        "default_medicine.jpg"
+      );
+
+      if (!isImage)
+        isImage = await this.#medicineRepository.uploadImage(
+          "./assets/default_medicine.jpg"
+        );
+
+      console.log(isImage);
+
       const medicines = [
         {
           name: "Aspirin",

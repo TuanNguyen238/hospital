@@ -1,4 +1,4 @@
-const AppDataSource = require("../utils/configs.js");
+const AppDataSource = require("../utils/database.js");
 const Relative = require("../models/relative.js");
 
 class RelativeRepository {

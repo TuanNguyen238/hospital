@@ -42,6 +42,11 @@ const Medicine = new EntitySchema({
       length: 20,
       default: Status.ACTIVE,
     },
+    imageUrl: {
+      type: "varchar",
+      length: 255,
+      nullable: true,
+    },
   },
   relations: {
     dosages: {

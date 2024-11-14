@@ -1,5 +1,5 @@
 const MedicalRecord = require("../models/medical-record");
-const AppDataSource = require("../utils/configs");
+const AppDataSource = require("../utils/database");
 
 class RecordRepository {
   #repository;

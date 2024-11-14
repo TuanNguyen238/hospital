@@ -1,5 +1,5 @@
 const RewardPoint = require("../models/reward-point.js");
-const AppDataSource = require("../utils/configs.js");
+const AppDataSource = require("../utils/database.js");
 
 class RewardPointRepository {
   #repository;

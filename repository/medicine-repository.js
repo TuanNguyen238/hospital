@@ -1,7 +1,8 @@
-const AppDataSource = require("../utils/configs");
+const AppDataSource = require("../utils/database.js");
 const Medicine = require("../models/medicine.js");
 const { In, Between } = require("typeorm");
-
+const sharp = require("sharp");
+const { cloudinary } = require("../utils/cloudinary.js");
 class MedicineRepository {
   #repository;
 
@@ -56,6 +57,26 @@ class MedicineRepository {
     });
 
     return result;
+  }
+
+  async getImageById(publicId) {
+    const image = await cloudinary.api.resource(publicId);
+    return image;
+  }
+
+  async uploadImage(imagePath) {
+    const result = await cloudinary.uploader.upload(imagePath);
+    console.log("Image uploaded:", result);
+    return result.url;
+  }
+
+  async getImageByURL(imageURL) {
+    const { resources } = await cloudinary.search
+      .expression(`url:${imageURL}`)
+      .max_results(1)
+      .execute();
+
+    return resources.length > 0 ? resources[0] : null;
   }
 }
 

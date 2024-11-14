@@ -1,5 +1,5 @@
 const Token = require("../models/token.js");
-const AppDataSource = require("../utils/configs.js");
+const AppDataSource = require("../utils/database.js");
 
 class TokenRepository {
   #repository;

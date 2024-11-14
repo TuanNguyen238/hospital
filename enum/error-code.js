@@ -37,6 +37,7 @@ const ErrorCode = {
   INSUFFICIENT_STOCK: "Số lượng sản phẩm trong kho không đủ",
   RESET_ORDER_MEDICINE: "Reset Order-Medicine thành công",
   REWARDPOINT_NOT_ENOUGH: "Điểm tích lũy không đủ",
+  IMAGE_EXITED: "Ảnh đã tồn tại",
 };
 // const ErrorCode = {
 //   USER_NOT_EXISTED: "User does not exist",
