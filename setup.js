@@ -81,8 +81,11 @@ class Setup {
       const publicId = "default_medicine";
       let image = await this.#medicineRepository.getImageById(publicId);
 
+      let imageUrl;
+
       if (image) {
         console.log("Image found:", image);
+        imageUrl = image.url;
       } else {
         console.log("Image not found on Cloudinary");
 
@@ -103,6 +106,7 @@ class Setup {
           const uploadedImage = await this.#medicineRepository.uploadImage(
             imagePath
           );
+          imageUrl = uploadedImage.url;
           console.log("Uploaded image:", uploadedImage);
         }
       }
@@ -113,8 +117,9 @@ class Setup {
             "A pain reliever and anti-inflammatory drug that helps prevent blood clots, used in the prevention of heart attacks and strokes.",
           level: 1,
           price: 5000.0,
-          quantity: 5,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 10)),
+          imageUrl: imageUrl,
         },
         {
           name: "Atorvastatin (Lipitor)",
@@ -122,7 +127,9 @@ class Setup {
             "A statin medication that lowers cholesterol levels, reducing the risk of atherosclerosis and heart disease.",
           level: 1,
           price: 5000.0,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
+          imageUrl: imageUrl,
         },
         {
           name: "Lisinopril",
@@ -130,8 +137,9 @@ class Setup {
             "An ACE inhibitor that lowers blood pressure and is used in the treatment of heart failure.",
           level: 1,
           price: 5000.0,
-          quantity: 5,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
+          imageUrl: imageUrl,
         },
         {
           name: "Metoprolol (Lopressor, Toprol XL)",
@@ -139,7 +147,9 @@ class Setup {
             "A beta-blocker that reduces heart rate and blood pressure, used to treat angina and heart failure.",
           level: 1,
           price: 5000.0,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
+          imageUrl: imageUrl,
         },
         {
           name: "Amlodipine (Norvasc)",
@@ -147,7 +157,9 @@ class Setup {
             "A calcium channel blocker that helps relax blood vessels and lower blood pressure, used in the treatment of hypertension and angina.",
           level: 1,
           price: 5000.0,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 3)),
+          imageUrl: imageUrl,
         },
         {
           name: "Losartan (Cozaar)",
@@ -155,7 +167,9 @@ class Setup {
             "An angiotensin II receptor blocker (ARB) used to treat high blood pressure and heart failure.",
           level: 1,
           price: 5000.0,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 2)),
+          imageUrl: imageUrl,
         },
         {
           name: "Warfarin (Coumadin)",
@@ -164,7 +178,9 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 5,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
+          imageUrl: imageUrl,
         },
         {
           name: "Clopidogrel (Plavix)",
@@ -172,7 +188,9 @@ class Setup {
             "An antiplatelet drug that prevents platelets from clumping together, reducing the risk of clots in conditions like coronary artery disease.",
           level: 1,
           price: 5000.0,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 4)),
+          imageUrl: imageUrl,
         },
         {
           name: "Digoxin",
@@ -180,7 +198,9 @@ class Setup {
             "Used to treat heart failure and atrial fibrillation, this drug increases the force of heart contractions and helps control heart rate.",
           level: 1,
           price: 5000.0,
+          quantity: 50,
           createdAt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+          imageUrl: imageUrl,
         },
         {
           name: "Nitroglycerin",
@@ -188,8 +208,9 @@ class Setup {
             "A vasodilator used to treat acute chest pain (angina) and to prevent angina attacks by relaxing blood vessels.",
           level: 1,
           price: 5000.0,
-          quantity: 4,
+          quantity: 50,
           createdAt: new Date(),
+          imageUrl: imageUrl,
         },
       ];
       const medicineData = [];
