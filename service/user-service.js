@@ -66,6 +66,34 @@ class UserService {
     return { message: ErrorCode.REGISTED };
   }
 
+  async doctorCreateUser(user) {
+    const checkUser = await this.#userRepository.findByPhoneNumber(
+      user.phoneNumber
+    );
+    if (checkUser)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.USER_ALREADY_EXISTS,
+      };
+    user.password = await bcrypt.hash(user.phoneNumber, 10);
+    user.email = user.phoneNumber + "@gmail.com";
+    const role = await this.#roleRepository.getRole(EnumRole.USER);
+    user.identifyCard = user.phoneNumber;
+
+    if (!user.role)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.ROLE_NOT_EXISTED,
+      };
+
+    user.role = role;
+    user.createdAt = new Date();
+    await this.#userRepository.saveUser(user);
+    await this.#rewardPointRepository.saveRewardPoint({ user });
+
+    return { message: ErrorCode.REGISTED };
+  }
+
   async forgotPass({ phoneNumber, password }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
 
