@@ -80,7 +80,7 @@ class UserService {
     const role = await this.#roleRepository.getRole(EnumRole.USER);
     user.identifyCard = user.phoneNumber;
 
-    if (!user.role)
+    if (!role)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.ROLE_NOT_EXISTED,
