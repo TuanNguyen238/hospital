@@ -91,7 +91,7 @@ class Setup {
             imagePath
           );
           throw new Error("File default_medicine.jpg không tồn tại.");
-        }
+        } else console.log(imagePath);
 
         isImage = await this.#medicineRepository.uploadImage(
           "./assets/default_medicine.jpg"
