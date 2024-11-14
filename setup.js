@@ -80,7 +80,7 @@ class Setup {
   async setupMedicine() {
     try {
       const publicId = "default_medicine";
-      let image = await getImageById(publicId);
+      let image = await this.#medicineRepository.getImageById(publicId);
 
       if (image) {
         console.log("Image found:", image);
