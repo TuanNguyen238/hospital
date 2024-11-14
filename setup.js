@@ -82,11 +82,21 @@ class Setup {
         "default_medicine.jpg"
       );
 
-      if (!isImage)
+      if (!isImage) {
+        const imagePath = "./assets/default_medicine.jpg";
+
+        if (!fs.existsSync(imagePath)) {
+          console.error(
+            "File default_medicine.jpg không tồn tại tại đường dẫn:",
+            imagePath
+          );
+          throw new Error("File default_medicine.jpg không tồn tại.");
+        }
+
         isImage = await this.#medicineRepository.uploadImage(
           "./assets/default_medicine.jpg"
         );
-
+      }
       console.log(isImage);
 
       const medicines = [
