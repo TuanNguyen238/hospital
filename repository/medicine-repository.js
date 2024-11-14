@@ -61,14 +61,15 @@ class MedicineRepository {
 
   async getImageById(publicId) {
     try {
-      const image = await cloudinary.api.resource(publicId);
-      return image;
+      const imageUrl = cloudinary.url(publicId, {
+        fetch_format: "auto",
+        quality: "auto",
+      });
+
+      console.log("Image URL:", imageUrl);
+      return imageUrl;
     } catch (err) {
-      if (err.http_code === 404) {
-        console.error(`Image with publicId ${publicId} not found.`);
-      } else {
-        console.error("Error retrieving image:", err);
-      }
+      console.error("Error retrieving image:", err);
       return null;
     }
   }
@@ -77,6 +78,7 @@ class MedicineRepository {
     const imageName = path.basename(imagePath, path.extname(imagePath));
     const result = await cloudinary.uploader.upload(imagePath, {
       resource_type: "auto",
+      folder: "medicine",
       public_id: imageName,
     });
     console.log("Image uploaded:", result);
