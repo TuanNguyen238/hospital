@@ -85,6 +85,7 @@ class Setup {
       if (image) {
         console.log("Image found:", image);
         setDefaultMedicineUrl(image.url);
+        console.log("DEFAULT: ", DEFAULT_MEDICINE);
       } else {
         console.log("Image not found on Cloudinary");
 
@@ -107,8 +108,10 @@ class Setup {
           );
           setDefaultMedicineUrl(uploadedImage);
           console.log("Uploaded image:", uploadedImage);
+          console.log("DEFAULT: ", DEFAULT_MEDICINE);
         }
       }
+      console.log("DEFAULT AFTER: ", DEFAULT_MEDICINE);
 
       const medicines = [
         {
