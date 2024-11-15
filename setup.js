@@ -82,13 +82,8 @@ class Setup {
       const publicId = "default_medicine";
       let image = await this.#medicineRepository.getImageById(publicId);
 
-      if (image) {
-        console.log("Image found:", image);
-        setDefaultMedicineUrl(image.url);
-        console.log("DEFAULT: ", DEFAULT_MEDICINE.value);
-      } else {
-        console.log("Image not found on Cloudinary");
-
+      if (image) setDefaultMedicineUrl(image.url);
+      else {
         const imagePath = path.resolve(
           __dirname,
           "./assets/default_medicine.jpg"
@@ -101,17 +96,12 @@ class Setup {
           );
           throw new Error("File default_medicine.jpg không tồn tại.");
         } else {
-          console.log("File found in local directory:", imagePath);
-
           const uploadedImage = await this.#medicineRepository.uploadImage(
             imagePath
           );
           setDefaultMedicineUrl(uploadedImage);
-          console.log("Uploaded image:", uploadedImage);
-          console.log("DEFAULT: ", DEFAULT_MEDICINE.value);
         }
       }
-      console.log("DEFAULT AFTER: ", DEFAULT_MEDICINE.value);
 
       const medicines = [
         {
