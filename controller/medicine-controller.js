@@ -116,7 +116,10 @@ class MedicineController {
 
   async updateMedicine(req, res) {
     try {
-      const result = await this.#medicineService.updateMedicine(req.body);
+      const result = await this.#medicineService.updateMedicine(
+        req.body,
+        req.file
+      );
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

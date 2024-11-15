@@ -26,8 +26,11 @@ router.get("/", (req, res) => medicineController.getAllMedicine(req, res));
 router.put("/updatestatus", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.updateStatus(req, res)
 );
-router.put("/update", UserMiddleware.authenticateTokenAdmin, (req, res) =>
-  medicineController.updateMedicine(req, res)
+router.put(
+  "/update",
+  UserMiddleware.authenticateTokenAdmin,
+  upload.single("image"),
+  (req, res) => medicineController.updateMedicine(req, res)
 );
 
 module.exports = router;
