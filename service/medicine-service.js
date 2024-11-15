@@ -1,4 +1,3 @@
-const path = require("path");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
@@ -117,15 +116,42 @@ class MedicineService {
     return { message: ErrorCode.STATUS_UPDATED };
   }
 
-  async updateMedicine({ id, name, description, level, price, quantity }) {
+  async updateMedicine(
+    { id, name, description, level, price, quantity },
+    file
+  ) {
     const medicineData = await this.#medicineRepository.findById(id);
     if (!medicineData)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.MEDICINE_NOT_EXISTED,
       };
+    let imageUrl = medicineData.imageUrl;
+    const image = await this.#medicineRepository.getImageById(name);
+    if (image) imageUrl = image.url;
+    else if (file) {
+      try {
+        const result = await this.#medicineRepository.uploadImage(
+          file.path,
+          name
+        );
+        imageUrl = result;
 
-    Object.assign(medicineData, { name, description, level, price, quantity });
+        await fs.promises.unlink(file.path);
+        console.log("File đã được xóa:", file.path);
+      } catch (err) {
+        console.error("Lỗi trong quá trình xử lý file:", err);
+      }
+    }
+
+    Object.assign(medicineData, {
+      name,
+      description,
+      level,
+      price,
+      quantity,
+      imageUrl,
+    });
     await this.#medicineRepository.saveMedicine(medicineData);
 
     return { message: ErrorCode.MEDICINE_UPDATED };
