@@ -1,6 +1,7 @@
 const express = require("express");
 const MedicineController = require("../controller/medicine-controller.js");
 const UserMiddleware = require("../middleware/user-middleware.js");
+const multer = require("multer");
 const upload = multer({ dest: "../uploads/" });
 
 const router = express.Router();
