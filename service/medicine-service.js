@@ -45,6 +45,7 @@ class MedicineService {
         );
         medicine.imageUrl = result;
 
+        await fs.promises.access(file.path, fs.constants.F_OK);
         await fs.promises.unlink(file.path);
         console.log("File đã được xóa:", file.path);
       } catch (err) {
@@ -126,22 +127,25 @@ class MedicineService {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.MEDICINE_NOT_EXISTED,
       };
-    let imageUrl = medicineData.imageUrl;
-    const image = await this.#medicineRepository.getImageById(name);
-    if (image) imageUrl = image.url;
-    else if (file) {
-      try {
-        const result = await this.#medicineRepository.uploadImage(
-          file.path,
-          name
-        );
-        imageUrl = result;
 
-        await fs.promises.unlink(file.path);
-        console.log("File đã được xóa:", file.path);
-      } catch (err) {
-        console.error("Lỗi trong quá trình xử lý file:", err);
-      }
+    let imageUrl = medicineData.imageUrl;
+
+    if (file) {
+      const image = await this.#medicineRepository.getImageById(name);
+      if (image)
+        throw {
+          status: StatusCode.HTTP_400_BAD_REQUEST,
+          message: ErrorCode.MEDICINE_NAME_EXISTED,
+        };
+      const result = await this.#medicineRepository.uploadImage(
+        file.path,
+        name
+      );
+      imageUrl = result;
+
+      await fs.promises.access(file.path, fs.constants.F_OK);
+      await fs.promises.unlink(file.path);
+      console.log("File đã được xóa:", file.path);
     }
 
     Object.assign(medicineData, {

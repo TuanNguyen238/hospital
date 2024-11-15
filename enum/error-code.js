@@ -38,6 +38,7 @@ const ErrorCode = {
   RESET_ORDER_MEDICINE: "Reset Order-Medicine thành công",
   REWARDPOINT_NOT_ENOUGH: "Điểm tích lũy không đủ",
   IMAGE_EXITED: "Ảnh đã tồn tại",
+  MEDICINE_NAME_EXISTED: "Tên thuốc đã tồn tại",
 };
 // const ErrorCode = {
 //   USER_NOT_EXISTED: "User does not exist",
