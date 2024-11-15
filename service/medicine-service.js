@@ -1,7 +1,9 @@
+const path = require("path");
 const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
+const fs = require("fs");
 
 class MedicineService {
   #medicineRepository;
@@ -24,23 +26,36 @@ class MedicineService {
   async createMedicine(medicine, file) {
     console.log("MEDICINE: ", medicine);
     console.log("FILE: ", file);
-    // if (medicine.id) {
-    //   throw {
-    //     status: StatusCode.HTTP_400_BAD_REQUEST,
-    //     message: ErrorCode.INVALID_REQUEST,
-    //   };
-    // }
 
-    // if (file) {
-    //   const result = await cloudinary.uploader.upload(req.file.path, {
-    //     folder: "medicine",
-    //   });
-    //   imageUrl = result.secure_url;
-    // }
+    if (medicine.id) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_REQUEST,
+      };
+    }
 
-    // medicine.createdAt = new Date();
+    const image = await this.#medicineRepository.getImageById(medicine.name);
+    if (image) medicine.imageUrl = image.url;
+    else if (file) {
+      try {
+        const imagePath = path.resolve(__dirname, file.path);
 
-    // await this.#medicineRepository.saveMedicine(medicine);
+        const result = await this.#medicineRepository.uploadImage(
+          imagePath,
+          medicine.name
+        );
+        medicine.imageUrl = result;
+
+        await fs.promises.unlink(file.path);
+        console.log("File đã được xóa:", file.path);
+      } catch (err) {
+        console.error("Lỗi trong quá trình xử lý file:", err);
+      }
+    }
+
+    medicine.createdAt = new Date();
+
+    await this.#medicineRepository.saveMedicine(medicine);
     return { message: ErrorCode.MEDICINE_CREATED };
   }
 

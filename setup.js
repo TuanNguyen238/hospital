@@ -97,7 +97,8 @@ class Setup {
           throw new Error("File default_medicine.jpg không tồn tại.");
         } else {
           const uploadedImage = await this.#medicineRepository.uploadImage(
-            imagePath
+            imagePath,
+            publicId
           );
           setDefaultMedicineUrl(uploadedImage);
         }

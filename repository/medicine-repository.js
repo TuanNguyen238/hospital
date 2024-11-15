@@ -74,12 +74,11 @@ class MedicineRepository {
     }
   }
 
-  async uploadImage(imagePath) {
-    const imageName = path.basename(imagePath, path.extname(imagePath));
+  async uploadImage(imagePath, name) {
     const result = await cloudinary.uploader.upload(imagePath, {
       resource_type: "auto",
       folder: "medicine",
-      public_id: imageName,
+      public_id: name,
     });
     console.log("Image uploaded:", result);
     return result.url;
