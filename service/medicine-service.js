@@ -4,6 +4,7 @@ const StatusCode = require("../enum/status-code.js");
 const Status = require("../enum/status.js");
 const MedicineRepository = require("../repository/medicine-repository.js");
 const fs = require("fs");
+const { DEFAULT_MEDICINE } = require("../utils/const.js");
 
 class MedicineService {
   #medicineRepository;
@@ -33,15 +34,14 @@ class MedicineService {
         message: ErrorCode.INVALID_REQUEST,
       };
     }
+    medicine.imageUrl = DEFAULT_MEDICINE;
 
     const image = await this.#medicineRepository.getImageById(medicine.name);
     if (image) medicine.imageUrl = image.url;
     else if (file) {
       try {
-        const imagePath = path.resolve(__dirname, file.path);
-
         const result = await this.#medicineRepository.uploadImage(
-          imagePath,
+          file.path,
           medicine.name
         );
         medicine.imageUrl = result;
@@ -52,7 +52,6 @@ class MedicineService {
         console.error("Lỗi trong quá trình xử lý file:", err);
       }
     }
-
     medicine.createdAt = new Date();
 
     await this.#medicineRepository.saveMedicine(medicine);
