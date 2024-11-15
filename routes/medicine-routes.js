@@ -19,8 +19,11 @@ router.post(
   upload.single("image"),
   (req, res) => medicineController.createMedicine(req, res)
 );
-router.post("/import", UserMiddleware.authenticateTokenAdmin, (req, res) =>
-  medicineController.importMedicine(req, res)
+router.post(
+  "/import",
+  UserMiddleware.authenticateTokenAdmin,
+  upload.single("image"),
+  (req, res) => medicineController.importMedicine(req, res)
 );
 router.get("/", (req, res) => medicineController.getAllMedicine(req, res));
 router.put("/updatestatus", UserMiddleware.authenticateTokenAdmin, (req, res) =>

@@ -65,7 +65,10 @@ class MedicineController {
 
   async importMedicine(req, res) {
     try {
-      const result = await this.#medicineService.importMedicine(req.body);
+      const result = await this.#medicineService.importMedicine(
+        req.body,
+        req.file
+      );
       res.status(StatusCode.HTTP_201_CREATED).json({
         status: Status.SUCCESS,
         message: result.message,
