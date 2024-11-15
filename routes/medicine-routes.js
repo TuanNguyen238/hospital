@@ -1,6 +1,7 @@
 const express = require("express");
 const MedicineController = require("../controller/medicine-controller.js");
 const UserMiddleware = require("../middleware/user-middleware.js");
+const upload = multer({ dest: "../uploads/" });
 
 const router = express.Router();
 const medicineController = new MedicineController();
@@ -11,8 +12,11 @@ router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.getCountByMonth(req, res)
 );
-router.post("/create", UserMiddleware.authenticateTokenAdmin, (req, res) =>
-  medicineController.createMedicine(req, res)
+router.post(
+  "/create",
+  UserMiddleware.authenticateTokenAdmin,
+  upload.single("image"),
+  (req, res) => medicineController.createMedicine(req, res)
 );
 router.post("/import", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   medicineController.importMedicine(req, res)

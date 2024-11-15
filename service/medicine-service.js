@@ -21,17 +21,26 @@ class MedicineService {
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
-  async createMedicine(medicine) {
-    if (medicine.id) {
-      throw {
-        status: StatusCode.HTTP_400_BAD_REQUEST,
-        message: ErrorCode.INVALID_REQUEST,
-      };
-    }
+  async createMedicine(medicine, file) {
+    console.log("MEDICINE: ", medicine);
+    console.log("FILE: ", file);
+    // if (medicine.id) {
+    //   throw {
+    //     status: StatusCode.HTTP_400_BAD_REQUEST,
+    //     message: ErrorCode.INVALID_REQUEST,
+    //   };
+    // }
 
-    medicine.createdAt = new Date();
+    // if (file) {
+    //   const result = await cloudinary.uploader.upload(req.file.path, {
+    //     folder: "medicine",
+    //   });
+    //   imageUrl = result.secure_url;
+    // }
 
-    await this.#medicineRepository.saveMedicine(medicine);
+    // medicine.createdAt = new Date();
+
+    // await this.#medicineRepository.saveMedicine(medicine);
     return { message: ErrorCode.MEDICINE_CREATED };
   }
 
