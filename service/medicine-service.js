@@ -166,3 +166,5 @@ class MedicineService {
     return { message: ErrorCode.MEDICINE_UPDATED };
   }
 }
+
+module.exports = MedicineService;
