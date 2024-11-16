@@ -38,7 +38,7 @@ class MedicineService {
         message: ErrorCode.MEDICINE_NAME_EXISTED,
       };
 
-    medicine.imageUrl = DEFAULT_MEDICINE;
+    medicine.imageUrl = DEFAULT_MEDICINE.value;
 
     if (file) {
       try {
