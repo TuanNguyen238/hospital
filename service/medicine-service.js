@@ -42,6 +42,7 @@ class MedicineService {
 
     if (file) {
       try {
+        await this.#medicineRepository.deleteImage(medicine.name);
         const result = await this.#medicineRepository.uploadImage(
           file.path,
           medicine.name
