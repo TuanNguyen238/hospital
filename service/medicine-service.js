@@ -30,11 +30,17 @@ class MedicineService {
         message: ErrorCode.INVALID_REQUEST,
       };
     }
+
+    const isMedicine = await this.#medicineRepository.findByName(medicine.name);
+    if (isMedicine)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.MEDICINE_NAME_EXISTED,
+      };
+
     medicine.imageUrl = DEFAULT_MEDICINE;
 
-    const image = await this.#medicineRepository.getImageById(medicine.name);
-    if (image) medicine.imageUrl = image.url;
-    else if (file) {
+    if (file) {
       try {
         const result = await this.#medicineRepository.uploadImage(
           file.path,
@@ -44,9 +50,8 @@ class MedicineService {
 
         await fs.promises.access(file.path, fs.constants.F_OK);
         await fs.promises.unlink(file.path);
-        console.log("File đã được xóa:", file.path);
       } catch (err) {
-        console.error("Lỗi trong quá trình xử lý file:", err);
+        console.error("Error deleting file:", err);
       }
     }
     medicine.createdAt = new Date();
@@ -123,24 +128,29 @@ class MedicineService {
         message: ErrorCode.MEDICINE_NOT_EXISTED,
       };
 
+    const isMedicine = await this.#medicineRepository.findByName(name);
+    if (isMedicine && isMedicine.id !== id)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.MEDICINE_NAME_EXISTED,
+      };
+
     let imageUrl = medicineData.imageUrl;
 
     if (file) {
-      const image = await this.#medicineRepository.getImageById(name);
-      if (image)
-        throw {
-          status: StatusCode.HTTP_400_BAD_REQUEST,
-          message: ErrorCode.MEDICINE_NAME_EXISTED,
-        };
-      const result = await this.#medicineRepository.uploadImage(
-        file.path,
-        name
-      );
-      imageUrl = result;
+      try {
+        await this.#medicineRepository.deleteImage(medicineData.name);
+        const result = await this.#medicineRepository.uploadImage(
+          file.path,
+          name
+        );
+        imageUrl = result;
 
-      await fs.promises.access(file.path, fs.constants.F_OK);
-      await fs.promises.unlink(file.path);
-      console.log("File đã được xóa:", file.path);
+        await fs.promises.access(file.path, fs.constants.F_OK);
+        await fs.promises.unlink(file.path);
+      } catch (err) {
+        console.error("Error deleting file:", err);
+      }
     }
 
     Object.assign(medicineData, {
@@ -156,4 +166,3 @@ class MedicineService {
     return { message: ErrorCode.MEDICINE_UPDATED };
   }
 }
-module.exports = MedicineService;

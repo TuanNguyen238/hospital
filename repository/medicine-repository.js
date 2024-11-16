@@ -65,12 +65,28 @@ class MedicineRepository {
       console.log("Image found:", image);
       return image;
     } catch (err) {
-      if (err.http_code === 404) {
+      if (err.http_code === 404)
         console.error(`Image with publicId ${publicId} not found.`);
-      } else {
-        console.error("Error retrieving image:", err);
-      }
+      else console.error("Error retrieving image:", err);
+
       return null;
+    }
+  }
+
+  async deleteImage(publicId) {
+    try {
+      const result = await cloudinary.uploader.destroy(`medicine/${publicId}`);
+      if (result.result === "ok")
+        console.log(`Image with publicId "${publicId}" deleted successfully.`);
+      else if (result.result === "not found")
+        console.warn(`Image with publicId "${publicId}" not found.`);
+      else
+        console.error(
+          `Failed to delete image with publicId "${publicId}":`,
+          result
+        );
+    } catch (err) {
+      console.error("Error deleting image:", err);
     }
   }
 
