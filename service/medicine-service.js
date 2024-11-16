@@ -42,15 +42,20 @@ class MedicineService {
 
     if (file) {
       try {
-        await this.#medicineRepository.deleteImage(medicine.name);
-        const result = await this.#medicineRepository.uploadImage(
-          file.path,
-          medicine.name
-        );
-        medicine.imageUrl = result;
+        const processFile = async () => {
+          await this.#medicineRepository.deleteImage(medicine.name);
 
-        await fs.promises.access(file.path, fs.constants.F_OK);
-        await fs.promises.unlink(file.path);
+          const result = await this.#medicineRepository.uploadImage(
+            file.path,
+            medicine.name
+          );
+
+          medicine.imageUrl = result;
+
+          await fs.promises.access(file.path, fs.constants.F_OK);
+          await fs.promises.unlink(file.path);
+        };
+        await processFile();
       } catch (err) {
         console.error("Error deleting file:", err);
       }
@@ -140,15 +145,18 @@ class MedicineService {
 
     if (file) {
       try {
-        await this.#medicineRepository.deleteImage(medicineData.name);
-        const result = await this.#medicineRepository.uploadImage(
-          file.path,
-          name
-        );
-        imageUrl = result;
+        const processFile = async () => {
+          await this.#medicineRepository.deleteImage(medicineData.name);
+          const result = await this.#medicineRepository.uploadImage(
+            file.path,
+            name
+          );
+          imageUrl = result;
 
-        await fs.promises.access(file.path, fs.constants.F_OK);
-        await fs.promises.unlink(file.path);
+          await fs.promises.access(file.path, fs.constants.F_OK);
+          await fs.promises.unlink(file.path);
+        };
+        await processFile();
       } catch (err) {
         console.error("Error deleting file:", err);
       }
