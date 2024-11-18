@@ -175,14 +175,14 @@ class OrderService {
         total: orderMedicine.medicine.price * orderMedicine.quantity,
       }));
 
-      const totalPrice = orderMedicines.reduce(
-        (total, medicine) => total + medicine.total,
-        0
-      );
+      // const totalPrice = orderMedicines.reduce(
+      //   (total, medicine) => total + medicine.total,
+      //   0
+      // );
 
       return {
         ...order,
-        totalPrice,
+        // totalPrice,
         orderMedicines,
       };
     });

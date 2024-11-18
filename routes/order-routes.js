@@ -14,7 +14,7 @@ router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
 router.get("/doctor", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   orderController.getDoctorOrderByPhoneNumber(req, res)
 );
-router.get("/client", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+router.get("/client", UserMiddleware.authenticationTokenUser, (req, res) =>
   orderController.getClientOrderByPhoneNumber(req, res)
 );
 router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
