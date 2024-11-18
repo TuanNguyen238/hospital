@@ -51,7 +51,6 @@ class OrderRepository {
             medicine: orderMed.medicine,
             quantity: orderMed.quantity,
           })),
-          priceBefore: orderData.totalPrice,
         };
       }
     );
