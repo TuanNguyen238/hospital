@@ -20,7 +20,7 @@ router.get("/client", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   orderController.getCount(req, res)
 );
-router.get("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+router.post("/month", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   orderController.getCountByMonth(req, res)
 );
 
