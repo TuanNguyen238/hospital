@@ -20,7 +20,16 @@ class OrderRepository {
   }
 
   async getCount() {
-    return await this.#repository.count();
+    const result = await this.#repository
+      .createQueryBuilder("order")
+      .select("SUM(order.totalPrice)", "totalRevenue")
+      .addSelect("SUM(order.totalPrice - order.usedPoint)", "actualRevenue")
+      .getRawOne();
+
+    return {
+      totalPrice: parseFloat(result.totalRevenue || 0),
+      discountedPrice: parseFloat(result.actualRevenue || 0),
+    };
   }
 
   async createOrderWithTransaction(orderData, orderMedicinesData) {
@@ -129,7 +138,6 @@ class OrderRepository {
       where: {
         createdAt: Between(start, end),
       },
-      select: ["createdAt"],
     });
 
     const result = Array(12)
@@ -142,7 +150,7 @@ class OrderRepository {
 
     orders.forEach((order) => {
       const month = order.createdAt.getMonth();
-      result[month] += 1;
+      result[month].count += 1;
       result[month].totalPrice += parseFloat(order.totalPrice);
       const discounted =
         parseFloat(order.totalPrice) - parseFloat(order.usedPoint);
