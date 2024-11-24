@@ -197,7 +197,7 @@ class OrderService {
   }
 
   async getCountByMonth({ year }) {
-    const count = await this.#orderRepository.getCountByMonth(year);
+    const count = await this.#orderRepository.getCountByMonth(Number(year));
     return { message: ErrorCode.SUCCESS, data: count };
   }
 

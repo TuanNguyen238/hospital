@@ -62,11 +62,6 @@ class UserRepository {
       relations: ["role"],
     });
 
-    const result = Array.from({ length: 12 }, () => ({
-      user: 0,
-      doctor: 0,
-      admin: 0,
-    }));
     const userCount = {
       user: Array(12).fill(0),
       doctor: Array(12).fill(0),
