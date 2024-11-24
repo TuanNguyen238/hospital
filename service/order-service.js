@@ -196,8 +196,7 @@ class OrderService {
     return { message: ErrorCode.SUCCESS, data: count };
   }
 
-  async getCountByMonth() {
-    const year = new Date().getFullYear();
+  async getCountByMonth({ year }) {
     const count = await this.#orderRepository.getCountByMonth(year);
     return { message: ErrorCode.SUCCESS, data: count };
   }

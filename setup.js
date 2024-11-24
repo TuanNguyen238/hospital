@@ -58,6 +58,7 @@ class Setup {
           password: hashedPassword,
           phoneNumber: "0937837564",
           role: adminRole,
+          createdAt: new Date(2024, 5, 1),
         };
 
         const usersData2 = {
@@ -66,6 +67,7 @@ class Setup {
           password: hashedPassword,
           phoneNumber: "0943640913",
           role: adminRole,
+          createdAt: new Date(2024, 6, 5),
         };
 
         await this.#userRepository.saveUser(usersData1);

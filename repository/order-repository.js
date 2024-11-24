@@ -132,11 +132,21 @@ class OrderRepository {
       select: ["createdAt"],
     });
 
-    const result = Array(12).fill(0);
+    const result = Array(12)
+      .fill(null)
+      .map(() => ({
+        count: 0,
+        totalPrice: 0,
+        discountedPrice: 0,
+      }));
 
     orders.forEach((order) => {
       const month = order.createdAt.getMonth();
       result[month] += 1;
+      result[month].totalPrice += parseFloat(order.totalPrice);
+      const discounted =
+        parseFloat(order.totalPrice) - parseFloat(order.usedPoint);
+      result[month].discountedPrice += discounted;
     });
 
     return result;
