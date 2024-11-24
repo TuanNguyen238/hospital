@@ -22,11 +22,13 @@ class OrderRepository {
   async getCount() {
     const result = await this.#repository
       .createQueryBuilder("order")
-      .select("SUM(order.totalPrice)", "totalRevenue")
+      .select("COUNT(order.id)", "totalOrders")
+      .addSelect("SUM(order.totalPrice)", "totalRevenue")
       .addSelect("SUM(order.totalPrice - order.usedPoint)", "actualRevenue")
       .getRawOne();
 
     return {
+      totalOrders: parseInt(result.totalOrders || 0, 10),
       totalPrice: parseFloat(result.totalRevenue || 0),
       discountedPrice: parseFloat(result.actualRevenue || 0),
     };
