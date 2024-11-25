@@ -67,9 +67,10 @@ class PatientRepository {
     });
   }
 
-  async getPatientByPatientCode(patientCode) {
+  async getPatientByPatientCodeAndPhoneNumber(patientCode, phoneNumber) {
     return await this.#repository.findOneBy({
       patientCode: patientCode,
+      user: { phoneNumber: phoneNumber },
     });
   }
 }

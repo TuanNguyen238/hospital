@@ -15,10 +15,15 @@ class RecordService {
     this.#patientRepository = new PatientRepository();
   }
 
-  async bookRecord({ patientCode, examDate, examTime, reasonForVisit }) {
-    const patient = await this.#patientRepository.getPatientByPatientCode(
-      patientCode
-    );
+  async bookRecord(
+    phoneNumber,
+    { patientCode, examDate, examTime, reasonForVisit }
+  ) {
+    const patient =
+      await this.#patientRepository.getPatientByPatientCodeAndPhoneNumber(
+        patientCode,
+        phoneNumber
+      );
 
     if (!patient) {
       throw {
