@@ -54,5 +54,29 @@ class PatientService {
       data: patientData,
     };
   }
+
+  async getPatientByPatientCode(phoneNumber, patientCode) {
+    if (!patientCode)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PATIENT_NOT_EXISTED,
+      };
+    const patient =
+      await this.#patientRepository.getPatientByPatientCodeAndPhoneNumber(
+        patientCode,
+        phoneNumber
+      );
+
+    if (!patient)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PATIENT_NOT_EXISTED,
+      };
+
+    return {
+      message: ErrorCode.SUCCESS,
+      data: patient,
+    };
+  }
 }
 module.exports = PatientService;

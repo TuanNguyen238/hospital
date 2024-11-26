@@ -37,6 +37,12 @@ class RecordService {
       examTime
     );
 
+    if (rooms.length == 0)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EXAMROOM_NOT_EXISTED,
+      };
+
     const availableRooms = rooms.filter(
       (room) => room.currentPatients < room.maxPatients
     );

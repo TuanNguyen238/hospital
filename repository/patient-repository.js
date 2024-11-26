@@ -62,15 +62,19 @@ class PatientRepository {
   }
 
   async getPatientsByPhoneNumber(phoneNumber) {
-    return await this.#repository.findBy({
-      user: { phoneNumber: phoneNumber },
+    return await this.#repository.find({
+      where: { user: { phoneNumber: phoneNumber } },
+      relations: ["relative"],
     });
   }
 
   async getPatientByPatientCodeAndPhoneNumber(patientCode, phoneNumber) {
-    return await this.#repository.findOneBy({
-      patientCode: patientCode,
-      user: { phoneNumber: phoneNumber },
+    return await this.#repository.findOne({
+      where: {
+        patientCode: patientCode,
+        user: { phoneNumber: phoneNumber },
+      },
+      relations: ["relative"],
     });
   }
 }

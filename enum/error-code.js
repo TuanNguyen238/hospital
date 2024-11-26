@@ -22,6 +22,7 @@ const ErrorCode = {
   EXAMROOM_CREATED: "Tạo phòng khám thành công",
   EXAMROOM_EXISTED: "Phòng khám đã tồn tại",
   EXAMROOM_NOT_AVAILABLE: "Phòng khám đã đầy",
+  EXAMROOM_NOT_EXISTED: "Phòng khám không tồn tại",
   RECORD_BOOKED: "Đặt phòng khám thành công",
   SUCCESS: "Thành công",
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
