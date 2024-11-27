@@ -9,6 +9,12 @@ const MedicalRecord = new EntitySchema({
       type: "uuid",
       generated: "uuid",
     },
+    recordCode: {
+      type: "varchar",
+      length: 20,
+      unique: true,
+      nullable: false,
+    },
     reasonForVisit: {
       type: "varchar",
       length: 255,

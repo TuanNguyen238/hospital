@@ -25,6 +25,21 @@ class RecordRepository {
       relations: ["patient", "examRoom"],
     });
   }
+
+  async generateRecordCode() {
+    const lastRecord = await this.#repository
+      .createQueryBuilder("medicalRecords")
+      .orderBy("medicalRecords.recordCode", "DESC")
+      .getOne();
+
+    if (!lastRecord) {
+      return "R000000001";
+    }
+
+    const lastCode = parseInt(lastRecord.recordCode.replace("R", ""), 10);
+    const newCode = lastCode + 1;
+    return `R${newCode.toString().padStart(9, "0")}`;
+  }
 }
 
 module.exports = RecordRepository;
