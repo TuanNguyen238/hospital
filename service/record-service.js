@@ -117,7 +117,6 @@ class RecordService {
         `${record.examRoom.examDate}T${record.examRoom.examTime}`
       );
       const timeDifference = examDateTime - now;
-      const paidStatus = record.paid ? "Đã thanh toán" : "Chưa thanh toán";
 
       let status;
       let timeUntilAppointment;
@@ -158,7 +157,6 @@ class RecordService {
         ...record,
         status,
         timeUntilAppointment,
-        paidStatus,
       };
     });
   }
