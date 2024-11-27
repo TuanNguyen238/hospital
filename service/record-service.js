@@ -56,7 +56,7 @@ class RecordService {
     const randomRoom =
       availableRooms[Math.floor(Math.random() * availableRooms.length)];
 
-    const code = this.#recordRepository.generateRecordCode();
+    const code = await this.#recordRepository.generateRecordCode();
 
     await this.#recordRepository.saveRecord({
       patient: patient,
