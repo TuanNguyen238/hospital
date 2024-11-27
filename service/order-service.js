@@ -101,7 +101,7 @@ class OrderService {
     const totalPrice = orderMedicinesData.reduce((total, orderMed) => {
       return total + orderMed.medicine.price * orderMed.quantity;
     }, 0);
-    const createdAt = new Date();
+    const createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
 
     const result = await this.#orderRepository.createOrderWithTransaction(
       { client, doctor, usedPoint, totalPrice, createdAt },

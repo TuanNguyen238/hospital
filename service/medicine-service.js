@@ -59,7 +59,7 @@ class MedicineService {
         console.error("Error deleting file:", err);
       }
     }
-    medicine.createdAt = new Date();
+    medicine.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
 
     await this.#medicineRepository.saveMedicine(medicine);
     return { message: ErrorCode.MEDICINE_CREATED };
@@ -77,7 +77,7 @@ class MedicineService {
     //   } else
     //     medicinesToSave.push({
     //       ...medicine,
-    //       createdAt: new Date(),
+    //       createdAt: new Date(new Date().getTime() + 7 * 60 * 60 * 1000),
     //     });
     // });
     // const saveMedicine = await this.#medicineRepository.saveMedicine(

@@ -59,7 +59,7 @@ class UserService {
       };
 
     user.role = userRole;
-    user.createdAt = new Date();
+    user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
     await this.#userRepository.saveUser(user);
     await this.#rewardPointRepository.saveRewardPoint({ user });
 
@@ -87,7 +87,7 @@ class UserService {
       };
 
     user.role = role;
-    user.createdAt = new Date();
+    user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
     await this.#userRepository.saveUser(user);
     await this.#rewardPointRepository.saveRewardPoint({ user });
 

@@ -116,7 +116,7 @@ class RecordService {
   }
 
   async processExamStatus(records) {
-    const now = new Date();
+    const now = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
     return records.map((record) => {
       const examDateTime = new Date(
         `${record.examRoom.examDate}T${record.examRoom.examTime}`

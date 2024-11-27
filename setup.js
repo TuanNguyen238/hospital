@@ -205,7 +205,7 @@ class Setup {
           level: 1,
           price: 5000.0,
           quantity: 50,
-          createdAt: new Date(),
+          createdAt: new Date(new Date().getTime() + 7 * 60 * 60 * 1000),
           imageUrl: DEFAULT_MEDICINE.value,
         },
       ];
