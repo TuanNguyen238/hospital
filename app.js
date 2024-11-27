@@ -80,6 +80,7 @@ AppDataSource.initialize()
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
+      console.log("Server started at", new Date());
     });
   })
   .catch((err) => {
