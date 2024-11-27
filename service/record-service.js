@@ -83,34 +83,36 @@ class RecordService {
       patientCodes
     );
 
-    const patientRecords = await Promise.all(
-      patients.map(async (patient) => {
-        const patientRecordList = records.filter(
-          (record) => record.patient.patientCode === patient.patientCode
-        );
+    const processedRecords = await this.processExamStatus(records);
 
-        if (patientRecordList.length > 0) {
-          const sanitizedRecords = patientRecordList.map((record) => {
-            const { patient, ...rest } = record;
-            return rest;
-          });
+    const dueRecords = processedRecords
+      .filter((record) => record.status === "Đã tới hẹn")
+      .sort((a, b) => {
+        const timeA = new Date(`${a.examRoom.examDate}T${a.examRoom.examTime}`);
+        const timeB = new Date(`${b.examRoom.examDate}T${b.examRoom.examTime}`);
+        return timeB - timeA;
+      });
 
-          const processedRecords = await this.processExamStatus(
-            sanitizedRecords
-          );
+    const upcomingRecords = processedRecords
+      .filter((record) => record.status === "Chưa tới hẹn")
+      .sort((a, b) => {
+        const timeA = new Date(`${a.examRoom.examDate}T${a.examRoom.examTime}`);
+        const timeB = new Date(`${b.examRoom.examDate}T${b.examRoom.examTime}`);
+        return timeA - timeB;
+      });
 
-          return {
-            patient,
-            records: processedRecords,
-          };
-        }
-        return null;
-      })
-    );
+    const overdueRecords = processedRecords
+      .filter((record) => record.status === "Đã trễ hẹn")
+      .sort((a, b) => {
+        const timeA = new Date(`${a.examRoom.examDate}T${a.examRoom.examTime}`);
+        const timeB = new Date(`${b.examRoom.examDate}T${b.examRoom.examTime}`);
+        return timeB - timeA;
+      });
 
-    const filteredRecords = patientRecords.filter(Boolean);
-
-    return { message: ErrorCode.SUCCESS, data: filteredRecords };
+    return {
+      message: ErrorCode.SUCCESS,
+      data: [...dueRecords, ...upcomingRecords, ...overdueRecords],
+    };
   }
 
   async processExamStatus(records) {

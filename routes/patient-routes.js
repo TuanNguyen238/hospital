@@ -14,8 +14,5 @@ router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.put("/updateInfo", UserMiddleware.authenticationTokenUser, (req, res) =>
   patientController.udpatePatient(req, res)
 );
-router.get("/code", UserMiddleware.authenticationTokenUser, (req, res) =>
-  patientController.getPatientsByPatientCode(req, res)
-);
 
 module.exports = router;
