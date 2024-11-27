@@ -35,8 +35,8 @@ class PatientService {
   async updateInfo(phoneNumber, obj) {
     const patient =
       await this.#patientRepository.getPatientByPatientCodeAndPhoneNumber(
-        phoneNumber,
-        obj.patientCode
+        obj.patientCode,
+        phoneNumber
       );
 
     if (!patient)
