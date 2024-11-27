@@ -4,6 +4,7 @@ const UserRepository = require("../repository/user-repository.js");
 const { formatDate } = require("../utils/const.js");
 const RecordRepository = require("../repository/record-repository.js");
 const StatusCode = require("../enum/status-code.js");
+const { messaging } = require("firebase-admin");
 
 class PatientService {
   #patientRepository;
@@ -29,6 +30,25 @@ class PatientService {
       await this.#patientRepository.createPatientWithTransaction(obj, user);
 
     return { message: ErrorCode.PATIENT_CREATED, data: savedPatient };
+  }
+
+  async updateInfo(phoneNumber, obj) {
+    const patient =
+      await this.#patientRepository.getPatientByPatientCodeAndPhoneNumber(
+        phoneNumber,
+        obj.patientCode
+      );
+
+    if (!patient)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.PATIENT_NOT_EXISTED,
+      };
+
+    const savedPatient =
+      await this.#patientRepository.updatePatientWithTransaction(patient, obj);
+
+    return { message: ErrorCode.PATIENT_UPDATED, data: savedPatient };
   }
 
   async getPatientsByPhoneNumber(phoneNumber) {

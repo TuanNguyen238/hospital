@@ -61,6 +61,45 @@ class PatientRepository {
     );
   }
 
+  async updatePatientWithTransaction(patient, obj) {
+    return await AppDataSource.transaction(
+      async (transactionalEntityManager) => {
+        const relativeRepository = AppDataSource.getRepository(Relative);
+        const existingRelative = await relativeRepository.findOne({
+          where: { id: patient.relative.id },
+        });
+
+        existingRelative.fullName =
+          obj.fullNameRLT || existingRelative.fullName;
+        existingRelative.phoneNumber =
+          obj.phoneNumberRLT || existingRelative.phoneNumber;
+        existingRelative.address = obj.addressRLT || existingRelative.address;
+        existingRelative.relations =
+          obj.relations || existingRelative.relations;
+
+        const updatedRelative = await transactionalEntityManager.save(
+          Relative,
+          existingRelative
+        );
+
+        patient.fullName = obj.fullName || patient.fullName;
+        patient.phoneNumber = obj.phoneNumberPatient || patient.phoneNumber;
+        patient.address = obj.address || patient.address;
+        patient.identifyCard = obj.identifyCard || patient.identifyCard;
+        patient.dateOfBirth = obj.dateOfBirth || patient.dateOfBirth;
+        patient.gender = obj.gender || patient.gender;
+        patient.relative = updatedRelative;
+
+        const updatedPatient = await transactionalEntityManager.save(
+          Patient,
+          patient
+        );
+
+        return updatedPatient;
+      }
+    );
+  }
+
   async getPatientsByPhoneNumber(phoneNumber) {
     return await this.#repository.find({
       where: { user: { phoneNumber: phoneNumber } },
