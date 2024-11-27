@@ -60,12 +60,48 @@ class RecordService {
       patient: patient,
       examRoom: randomRoom,
       reasonForVisit: reasonForVisit,
+      paid: true,
     });
 
     randomRoom.currentPatients++;
     this.#examRoomRepository.saveExamRoom(randomRoom);
 
     return { message: ErrorCode.RECORD_BOOKED };
+  }
+
+  async getRecordByPhoneNumber(phoneNumber) {
+    const patients = await this.#patientRepository.getPatientsByPhoneNumber(
+      phoneNumber
+    );
+
+    const patientCodes = patients.map((patient) => patient.patientCode);
+
+    const records = await this.#recordRepository.findRecordsByPatientCodes(
+      patientCodes
+    );
+
+    const patientRecords = patients
+      .map((patient) => {
+        const patientRecordList = records.filter(
+          (record) => record.patient.patientCode === patient.patientCode
+        );
+
+        if (patientRecordList.length > 0) {
+          const sanitizedRecords = patientRecordList.map((record) => {
+            const { patient, ...rest } = record;
+            return rest;
+          });
+
+          return {
+            patient,
+            records: sanitizedRecords,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+
+    return { message: ErrorCode.SUCCESS, data: patientRecords };
   }
 }
 

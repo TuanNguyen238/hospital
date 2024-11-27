@@ -24,6 +24,16 @@ const MedicalRecord = new EntitySchema({
       length: 255,
       nullable: true,
     },
+    status: {
+      type: "varchar",
+      length: 255,
+      nullable: true,
+    },
+    paid: {
+      type: "boolean",
+      default: false,
+      nullable: false,
+    },
   },
   relations: {
     patient: {
