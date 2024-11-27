@@ -80,8 +80,8 @@ class RecordService {
       patientCodes
     );
 
-    const patientRecords = patients
-      .map((patient) => {
+    const patientRecords = await Promise.all(
+      patients.map(async (patient) => {
         const patientRecordList = records.filter(
           (record) => record.patient.patientCode === patient.patientCode
         );
@@ -92,16 +92,75 @@ class RecordService {
             return rest;
           });
 
+          const processedRecords = await this.processExamStatus(
+            sanitizedRecords
+          );
+
           return {
             patient,
-            records: sanitizedRecords,
+            records: processedRecords,
           };
         }
         return null;
       })
-      .filter(Boolean);
+    );
 
-    return { message: ErrorCode.SUCCESS, data: patientRecords };
+    const filteredRecords = patientRecords.filter(Boolean);
+
+    return { message: ErrorCode.SUCCESS, data: filteredRecords };
+  }
+
+  async processExamStatus(records) {
+    const now = new Date();
+    return records.map((record) => {
+      const examDateTime = new Date(
+        `${record.examRoom.examDate}T${record.examRoom.examTime}`
+      );
+      const timeDifference = examDateTime - now;
+      const paidStatus = record.paid ? "Đã thanh toán" : "Chưa thanh toán";
+
+      let status;
+      let timeUntilAppointment;
+
+      if (timeDifference > 0) {
+        status = "Chưa tới hẹn";
+        const daysUntil = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hoursUntil = Math.floor(
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutesUntil = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        );
+
+        if (daysUntil > 0) {
+          if (daysUntil >= 30) {
+            const monthsUntil = Math.floor(daysUntil / 30);
+            timeUntilAppointment = `${monthsUntil} tháng tới`;
+          } else {
+            timeUntilAppointment = `${daysUntil} ngày tới`;
+          }
+        } else if (hoursUntil > 0) {
+          timeUntilAppointment = `${hoursUntil} giờ tới`;
+        } else if (minutesUntil > 0) {
+          timeUntilAppointment = `${minutesUntil} phút tới`;
+        } else {
+          timeUntilAppointment = "Đã tới giờ hẹn";
+        }
+      } else if (timeDifference === 0) {
+        status = "Đã tới hẹn";
+        timeUntilAppointment = "Đã tới giờ hẹn";
+      } else {
+        status = "Đã trễ hẹn";
+        timeUntilAppointment = "Đã trễ hẹn";
+      }
+
+      return {
+        ...record,
+        status,
+        timeUntilAppointment,
+        paidStatus,
+      };
+    });
   }
 }
 
