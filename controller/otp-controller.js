@@ -33,6 +33,7 @@ class OtpController {
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
+        data: result.data,
       });
     } catch (err) {
       console.log("Error:", err);
