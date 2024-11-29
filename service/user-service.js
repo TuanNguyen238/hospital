@@ -58,6 +58,12 @@ class UserService {
         message: ErrorCode.ROLE_NOT_EXISTED,
       };
 
+    if (userRole.name === EnumRole.ADMIN)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.ROLE_NOT_EXISTED,
+      };
+
     user.role = userRole;
     user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
     await this.#userRepository.saveUser(user);
