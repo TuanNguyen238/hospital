@@ -14,4 +14,7 @@ router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
 router.post("/time", (req, res) =>
   examRoomcontroller.getAvailableTimes(req, res)
 );
+router.get("/count", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  examRoomcontroller.getCount(req, res)
+);
 module.exports = router;

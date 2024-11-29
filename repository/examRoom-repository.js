@@ -36,6 +36,10 @@ class ExamRoomRepository {
       examTime: examTime,
     });
   }
+
+  async getCount() {
+    return await this.#repository.count();
+  }
 }
 
 module.exports = ExamRoomRepository;

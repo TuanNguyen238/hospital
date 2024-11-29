@@ -51,5 +51,10 @@ class ExamRoomService {
     );
     return { message: ErrorCode.SUCCESS, data: times };
   }
+
+  async getCount() {
+    const count = await this.#examRoomRepository.getCount();
+    return { message: ErrorCode.SUCCESS, data: count };
+  }
 }
 module.exports = ExamRoomService;
