@@ -135,20 +135,17 @@ AppDataSource.initialize()
             .send("Refresh Token not found. Please authorize first.");
         }
 
-        // Cập nhật credentials của oAuth2Client với refresh token
         oAuth2Client.setCredentials({ refresh_token: refreshToken });
 
-        // Tạo email dưới dạng MIME
         const rawEmail = createEmail(
           req.body.to,
           req.body.subject,
           req.body.text
         );
 
-        // Gửi email thông qua Gmail API
         const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
         const request = {
-          userId: "me", // "me" có nghĩa là tài khoản người dùng hiện tại
+          userId: "me",
           resource: {
             raw: rawEmail,
           },
