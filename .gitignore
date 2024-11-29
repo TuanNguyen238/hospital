@@ -1,6 +1,6 @@
 # Environment variables
 .env
 service-account.json
-
+client_secret.json
 # Node modules
 node_modules/
