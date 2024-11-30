@@ -17,5 +17,14 @@ router.post("/introspect", UserMiddleware.authenticationTokenUser, (req, res) =>
     message: ErrorCode.SUCCESS,
   })
 );
+router.get("/generateUrl", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  authenticationController.generateUrl(req, res)
+);
+router.get("/callback", (req, res) =>
+  authenticationController.callback(req, res)
+);
+router.post("/sendEmail", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  authenticationController.sendEmail(req, res)
+);
 
 module.exports = router;

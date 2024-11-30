@@ -41,6 +41,10 @@ const ErrorCode = {
   REWARDPOINT_NOT_ENOUGH: "Điểm tích lũy không đủ",
   IMAGE_EXITED: "Ảnh đã tồn tại",
   MEDICINE_NAME_EXISTED: "Tên thuốc đã tồn tại",
+  GOOGLE_AUTH_SUCCESS: "Authorization successful! Refresh Token saved.",
+  GOOGLE_AUTH_ERROR: "Refresh Token can not be retrieved.",
+  EMAIL_SEND_FAILED: "Email sent failed",
+  EMAIL_SEND_SUCCESSFUL: "Email sent successfully",
 };
 // const ErrorCode = {
 //   USER_NOT_EXISTED: "User does not exist",

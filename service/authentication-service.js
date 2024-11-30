@@ -7,16 +7,19 @@ const ErrorCode = require("../enum/error-code.js");
 const StatusCode = require("../enum/status-code.js");
 const TokenRepository = require("../repository/token-repository.js");
 const Status = require("../enum/status.js");
+const Email = require("../utils/email.js");
 
 dotenv.config();
 
 class AuthenticationService {
   #userRepository;
   #tokenRepository;
+  #email;
 
   constructor() {
     this.#userRepository = new UserRepository();
     this.#tokenRepository = new TokenRepository();
+    this.#email = new Email();
   }
 
   async logout({ token }) {
@@ -134,6 +137,36 @@ class AuthenticationService {
     };
 
     return jwt.sign(payload, process.env.SIGNER_KEY, { algorithm: "HS512" });
+  }
+
+  async generateUrl() {
+    const authUrl = await this.#email.generateUrl();
+    return authUrl;
+  }
+
+  async callback(code) {
+    try {
+      const refreshToken = await this.#email.callBack(code);
+      return { message: ErrorCode.GOOGLE_AUTH_SUCCESS, data: refreshToken };
+    } catch (err) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.GOOGLE_AUTH_ERROR,
+      };
+    }
+  }
+
+  async sendEmail(obj) {
+    try {
+      const result = await this.#email.sendEmail(obj);
+      return { message: ErrorCode.EMAIL_SEND_SUCCESSFUL, data: result };
+    } catch (err) {
+      console.error("Err: ", err);
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EMAIL_SEND_FAILED,
+      };
+    }
   }
 }
 
