@@ -156,7 +156,7 @@ class UserService {
   async forgotPass({ phoneNumber, password }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
 
-    if (!user || user.role.name !== EnumRole.USER)
+    if (!user || user.role.name === EnumRole.ADMIN)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,
         message: ErrorCode.USER_NOT_EXISTED,
