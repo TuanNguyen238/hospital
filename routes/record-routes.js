@@ -12,5 +12,8 @@ router.post("/book", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.getRecordByPhoneNumber(req, res)
 );
+router.get("/patientCode", UserMiddleware.authenticationTokenUser, (req, res) =>
+  recordController.getRecordByPatientCode(req, res)
+);
 
 module.exports = router;

@@ -165,6 +165,17 @@ class RecordService {
       };
     });
   }
+
+  async getRecordByPatientCode({ patientCode }) {
+    const result = await this.#recordRepository.getMedicalRecordsByPatientCode(
+      patientCode
+    );
+
+    return {
+      message: ErrorCode.SUCCESS,
+      data: result,
+    };
+  }
 }
 
 module.exports = RecordService;
