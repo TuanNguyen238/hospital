@@ -40,6 +40,26 @@ class RecordRepository {
     const newCode = lastCode + 1;
     return `R${newCode.toString().padStart(9, "0")}`;
   }
+
+  async getMedicalRecordsByPatientCode(patientCode) {
+    try {
+      const medicalRecords = await getRepository(MedicalRecord)
+        .createQueryBuilder("medicalRecord")
+        .leftJoinAndSelect("medicalRecord.patient", "patient")
+        .leftJoinAndSelect("medicalRecord.prescription", "prescription")
+        .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
+        .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        .leftJoinAndSelect("prescription.dosages", "dosages")
+        .leftJoinAndSelect("dosages.medicine", "medicine")
+        .where("patient.patientCode = :patientCode", { patientCode })
+        .getMany();
+
+      return medicalRecords;
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = RecordRepository;
