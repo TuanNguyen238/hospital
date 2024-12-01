@@ -45,11 +45,11 @@ class Email {
     }
   }
 
-  async sendEmail(obj) {
+  async sendEmail(to, subject, text) {
     try {
       this.#oAuth2Client.setCredentials({ refresh_token: this.#refreshToken });
 
-      const rawEmail = this.#createEmail(obj.to, obj.subject, obj.text);
+      const rawEmail = this.#createEmail(to, subject, text);
 
       const gmail = google.gmail({ version: "v1", auth: this.#oAuth2Client });
       const request = {
@@ -69,18 +69,41 @@ class Email {
   }
 
   #createEmail(to, subject, message) {
+    const encodedSubject = `=?UTF-8?B?${Buffer.from(subject).toString(
+      "base64"
+    )}?=`;
     const str = [
       `Content-Type: text/plain; charset="UTF-8"`,
       "MIME-Version: 1.0",
       `To: ${to}`,
       `From: ${this.#emailUser}`,
-      `Subject: ${subject}`,
+      `Subject: ${encodedSubject}`,
       "",
       message,
     ].join("\n");
 
     const encodedEmail = base64url(Buffer.from(str, "utf-8"));
     return encodedEmail;
+  }
+
+  async generateDoctorEmailContent(doctorName, phoneNumber, password) {
+    return `
+  Chào Bác sĩ ${doctorName},
+  
+  Tài khoản bác sĩ của bạn đã được tạo thành công tại Medicare.  
+  Dưới đây là thông tin đăng nhập của bạn:
+  
+  - **Số điện thoại:** ${phoneNumber}
+  - **Mật khẩu:** ${password}
+  
+  **Lưu ý:** Để đảm bảo bảo mật, hãy đăng nhập và thay đổi mật khẩu trong lần đầu sử dụng.
+  
+  Cần hỗ trợ? Liên hệ với chúng tôi qua email trên
+  
+  Trân trọng,  
+  Đội ngũ quản lý  
+  Medicare
+    `;
   }
 }
 

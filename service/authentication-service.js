@@ -158,7 +158,7 @@ class AuthenticationService {
 
   async sendEmail(obj) {
     try {
-      const result = await this.#email.sendEmail(obj);
+      const result = await this.#email.sendEmail(obj.to, obj.subject, obj.text);
       return { message: ErrorCode.EMAIL_SEND_SUCCESSFUL, data: result };
     } catch (err) {
       console.error("Err: ", err);

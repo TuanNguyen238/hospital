@@ -95,6 +95,22 @@ class UserController {
     }
   }
 
+  async adminCreateDoctor(req, res) {
+    try {
+      const result = await this.#userService.adminCreateDoctor(req.body);
+      res.status(StatusCode.HTTP_201_CREATED).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
   async doctorCreateUser(req, res) {
     try {
       const result = await this.#userService.doctorCreateUser(req.body);

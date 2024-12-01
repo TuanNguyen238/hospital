@@ -6,16 +6,19 @@ const RewardPointRepository = require("../repository/rewardPoint-repository.js")
 const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
+const Email = require("../utils/email.js");
 
 class UserService {
   #userRepository;
   #roleRepository;
   #rewardPointRepository;
+  #email;
 
   constructor() {
     this.#userRepository = new UserRepository();
     this.#roleRepository = new RoleRepository();
     this.#rewardPointRepository = new RewardPointRepository();
+    this.#email = new Email();
   }
 
   async getUserById(phoneNumber) {
@@ -50,7 +53,7 @@ class UserService {
         message: ErrorCode.USER_ALREADY_EXISTS,
       };
     user.password = await bcrypt.hash(user.password, 10);
-    const userRole = await this.#roleRepository.getRole(user.role);
+    const userRole = await this.#roleRepository.getRole(EnumRole.USER);
 
     if (!userRole)
       throw {
@@ -58,7 +61,40 @@ class UserService {
         message: ErrorCode.ROLE_NOT_EXISTED,
       };
 
-    if (userRole.name === EnumRole.ADMIN)
+    user.role = userRole;
+    user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
+
+    await this.#userRepository.saveUser(user);
+    await this.#rewardPointRepository.saveRewardPoint({ user });
+
+    return { message: ErrorCode.REGISTED };
+  }
+
+  #generateRandomNumericPassword(length = 8) {
+    const digits = "0123456789";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * digits.length);
+      password += digits[randomIndex];
+    }
+    return password;
+  }
+
+  async adminCreateDoctor(user) {
+    const checkUser = await this.#userRepository.findByPhoneNumber(
+      user.phoneNumber
+    );
+    if (checkUser)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.USER_ALREADY_EXISTS,
+      };
+
+    const randomPassword = this.#generateRandomNumericPassword(8);
+    user.password = await bcrypt.hash(randomPassword, 10);
+    const userRole = await this.#roleRepository.getRole(EnumRole.DOCTOR);
+
+    if (!userRole)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.ROLE_NOT_EXISTED,
@@ -66,8 +102,25 @@ class UserService {
 
     user.role = userRole;
     user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
-    await this.#userRepository.saveUser(user);
-    await this.#rewardPointRepository.saveRewardPoint({ user });
+
+    const object = "Tài khoản bác sĩ đã được tạo thành công";
+    const text = await this.#email.generateDoctorEmailContent(
+      user.username,
+      user.phoneNumber,
+      randomPassword
+    );
+
+    try {
+      await this.#email.sendEmail(user.email, object, text);
+      await this.#userRepository.saveUser(user);
+      await this.#rewardPointRepository.saveRewardPoint({ user });
+    } catch (err) {
+      console.error("Err: ", err);
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EMAIL_SEND_FAILED,
+      };
+    }
 
     return { message: ErrorCode.REGISTED };
   }
