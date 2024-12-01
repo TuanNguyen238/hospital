@@ -101,7 +101,7 @@ class AuthenticationService {
     if (!authenticated)
       throw {
         status: StatusCode.HTTP_401_UNAUTHORIZED,
-        message: ErrorCode.UNAUTHENTICATED,
+        message: ErrorCode.LOGIN_FAILED,
       };
     if (user.status != Status.ACTIVE)
       throw {

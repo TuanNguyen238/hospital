@@ -3,6 +3,7 @@ const ErrorCode = {
   USER_ALREADY_EXISTS: "Người dùng đã tồn tại",
   ROLE_NOT_EXISTED: "Vai trò không tồn tại",
   UNAUTHENTICATED: "Mật khẩu không đúng",
+  LOGIN_FAILED: "Tài khoản hoặc mật khẩu không đúng",
   PHONE_NUMBER_NOT_EXISTED: "Số điện thoại chưa đăng ký tài khoản",
   INVALID_OTP: "Mã OTP không hợp lệ",
   OTP_SENT: "Mã OTP đã được gửi đi",
