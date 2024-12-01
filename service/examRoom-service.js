@@ -1,4 +1,5 @@
 const ErrorCode = require("../enum/error-code.js");
+const StatusCode = require("../enum/status-code.js");
 const ExamRoomRepository = require("../repository/examRoom-repository.js");
 const { timeSlots } = require("../utils/const.js");
 
