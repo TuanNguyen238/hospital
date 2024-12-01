@@ -188,12 +188,19 @@ class UserService {
     return { message: ErrorCode.PASS_UPDATED };
   }
 
-  async updatePassAdmin({ phoneNumber, newPass }) {
+  async updatePassAdmin({ phoneNumber, password, newPass }) {
     const user = await this.#userRepository.findByPhoneNumber(phoneNumber);
     if (!user || user.role.name === EnumRole.USER)
       throw {
         status: StatusCode.HTTP_403_FORBIDDEN,
         message: ErrorCode.PRIVACY,
+      };
+
+    const authenticated = await bcrypt.compare(password, user.password);
+    if (!authenticated)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.UNAUTHENTICATED,
       };
 
     user.password = await bcrypt.hash(newPass, 10);
