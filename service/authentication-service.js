@@ -80,7 +80,7 @@ class AuthenticationService {
     if (!user)
       throw {
         status: StatusCode.HTTP_404_NOT_FOUND,
-        message: ErrorCode.USER_NOT_EXISTED,
+        message: ErrorCode.LOGIN_FAILED,
       };
 
     const hasCorrectRole = isMobile
@@ -90,7 +90,7 @@ class AuthenticationService {
     if (!hasCorrectRole)
       throw {
         status: StatusCode.HTTP_403_FORBIDDEN,
-        message: ErrorCode.INSUFFICIENT_PERMISSION,
+        message: ErrorCode.LOGIN_FAILED,
       };
 
     const authenticated = await bcrypt.compare(
@@ -106,7 +106,7 @@ class AuthenticationService {
     if (user.status != Status.ACTIVE)
       throw {
         status: StatusCode.HTTP_400_BAD_REQUEST,
-        message: ErrorCode.USER_DISABLED,
+        message: ErrorCode.LOGIN_FAILED,
       };
 
     const token = this.#generateToken(user);
