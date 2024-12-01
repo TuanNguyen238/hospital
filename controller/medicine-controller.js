@@ -46,6 +46,7 @@ class MedicineController {
 
   async createMedicine(req, res) {
     try {
+      console.log(req.file);
       const result = await this.#medicineService.createMedicine(
         req.body,
         req.file
