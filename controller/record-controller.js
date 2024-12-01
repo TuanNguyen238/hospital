@@ -45,7 +45,7 @@ class RecordController {
 
   async getRecordByPatientCode(req, res) {
     try {
-      const patientCode = req.headers["patientCode"];
+      const patientCode = req.headers["patientcode"];
       const result = await this.#recordService.getRecordByPatientCode(
         patientCode
       );

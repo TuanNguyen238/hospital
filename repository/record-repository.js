@@ -43,14 +43,14 @@ class RecordRepository {
 
   async getMedicalRecordsByPatientCode(patientCode) {
     try {
-      const medicalRecords = await getRepository(MedicalRecord)
+      const medicalRecords = await this.#repository
         .createQueryBuilder("medicalRecord")
         .leftJoinAndSelect("medicalRecord.patient", "patient")
-        .leftJoinAndSelect("medicalRecord.prescription", "prescription")
-        .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
-        .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
-        .leftJoinAndSelect("prescription.dosages", "dosages")
-        .leftJoinAndSelect("dosages.medicine", "medicine")
+        // .leftJoinAndSelect("medicalRecord.prescription", "prescription")
+        // .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
+        // .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        // .leftJoinAndSelect("prescription.dosages", "dosages")
+        // .leftJoinAndSelect("dosages.medicine", "medicine")
         .where("patient.patientCode = :patientCode", { patientCode })
         .getMany();
 

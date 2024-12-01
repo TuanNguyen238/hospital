@@ -166,7 +166,7 @@ class RecordService {
     });
   }
 
-  async getRecordByPatientCode({ patientCode }) {
+  async getRecordByPatientCode(patientCode) {
     const result = await this.#recordRepository.getMedicalRecordsByPatientCode(
       patientCode
     );
