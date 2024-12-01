@@ -26,6 +26,22 @@ class ExamRoomcontroller {
     }
   }
 
+  async updateExamRoom(req, res) {
+    try {
+      const result = await this.#examRoomService.updateExamRoom(req.body);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+      });
+    } catch (err) {
+      console.log("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
   async getAllExamRoom(req, res) {
     try {
       const result = await this.#examRoomService.getAllExamRoom();

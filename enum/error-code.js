@@ -22,6 +22,7 @@ const ErrorCode = {
   MEDICINE_NOT_EXISTED: "Thuốc không tồn tại",
   MEDICINE_UPDATED: "Cập nhật thuốc thành công",
   EXAMROOM_CREATED: "Tạo phòng khám thành công",
+  EXAMROOM_UPDATED: "Cập nhật phòng khám thành công",
   EXAMROOM_EXISTED: "Phòng khám đã tồn tại",
   EXAMROOM_NOT_AVAILABLE: "Phòng khám đã đầy",
   EXAMROOM_NOT_EXISTED: "Phòng khám không tồn tại",
@@ -46,6 +47,7 @@ const ErrorCode = {
   GOOGLE_AUTH_ERROR: "Refresh Token can not be retrieved.",
   EMAIL_SEND_FAILED: "Email sent failed",
   EMAIL_SEND_SUCCESSFUL: "Email sent successfully",
+  MAX_PATIENT_ERROR: "Số lượng bệnh nhân tối đa không hợp lệ",
 };
 // const ErrorCode = {
 //   USER_NOT_EXISTED: "User does not exist",

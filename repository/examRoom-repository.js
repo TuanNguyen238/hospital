@@ -24,6 +24,12 @@ class ExamRoomRepository {
     return await this.#repository.find();
   }
 
+  async getRoomById(id) {
+    return await this.#repository.findOne({
+      where: { id: id },
+    });
+  }
+
   async getExamRoomsByDate(examDate) {
     return await this.#repository.findBy({
       examDate: examDate,

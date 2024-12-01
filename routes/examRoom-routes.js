@@ -8,6 +8,9 @@ const examRoomcontroller = new ExamRoomcontroller();
 router.post("/create", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   examRoomcontroller.createExamRoom(req, res)
 );
+router.put("/update", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+  examRoomcontroller.updateExamRoom(req, res)
+);
 router.get("/", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   examRoomcontroller.getAllExamRoom(req, res)
 );

@@ -23,6 +23,26 @@ class ExamRoomService {
     return { message: ErrorCode.EXAMROOM_CREATED };
   }
 
+  async updateExamRoom(obj) {
+    const room = await this.#examRoomRepository.getRoomById(obj.id);
+
+    if (!room)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EXAMROOM_NOT_EXISTED,
+      };
+
+    if (obj.maxPatients < room.currentPatients)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.MAX_PATIENT_ERROR,
+      };
+
+    room.maxPatients = obj.maxPatients;
+    await this.#examRoomRepository.saveExamRoom(room);
+    return { message: ErrorCode.EXAMROOM_UPDATED };
+  }
+
   async getAllExamRoom() {
     const examRoom = await this.#examRoomRepository.getAllExamRoom();
     return { message: ErrorCode.SUCCESS, data: examRoom };
