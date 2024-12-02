@@ -2,19 +2,14 @@ const ErrorCode = require("../enum/error-code.js");
 const PatientRepository = require("../repository/patient-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const { formatDate } = require("../utils/const.js");
-const RecordRepository = require("../repository/record-repository.js");
 const StatusCode = require("../enum/status-code.js");
-const { messaging } = require("firebase-admin");
 
 class PatientService {
   #patientRepository;
   #userRepository;
-  #recordRepository;
-
   constructor() {
     this.#patientRepository = new PatientRepository();
     this.#userRepository = new UserRepository();
-    this.#recordRepository = new RecordRepository();
   }
 
   async createPatient(phoneNumber, obj) {
