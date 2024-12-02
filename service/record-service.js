@@ -199,6 +199,17 @@ class RecordService {
       data: result,
     };
   }
+
+  async getRecordsByPhoneNumber(phoneNumber) {
+    const result = await this.#recordRepository.getRecordsByUserPhoneNumber(
+      phoneNumber
+    );
+
+    return {
+      message: ErrorCode.SUCCESS,
+      data: result,
+    };
+  }
 }
 
 module.exports = RecordService;

@@ -60,6 +60,27 @@ class RecordRepository {
       throw error;
     }
   }
+
+  async getRecordsByUserPhoneNumber(phoneNumber) {
+    try {
+      const records = await this.#repository
+        .createQueryBuilder("medicalRecord")
+        .leftJoinAndSelect("medicalRecord.patient", "patient")
+        .leftJoinAndSelect("medicalRecord.prescription", "prescription")
+        .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
+        .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        .leftJoinAndSelect("prescription.dosages", "dosages")
+        .leftJoinAndSelect("dosages.medicine", "medicine")
+        .leftJoin("patient.user", "user")
+        .where("user.phoneNumber = :phoneNumber", { phoneNumber })
+        .getMany();
+
+      return records;
+    } catch (error) {
+      console.error("Error fetching records by user phone number:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = RecordRepository;

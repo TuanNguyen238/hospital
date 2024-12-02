@@ -8,12 +8,13 @@ const recordController = new RecordController();
 router.post("/book", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.bookRecord(req, res)
 );
-
 router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.getRecordByPhoneNumber(req, res)
 );
 router.get("/patientCode", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.getRecordByPatientCode(req, res)
 );
-
+router.get("/phoneNumber", UserMiddleware.authenticationTokenUser, (req, res) =>
+  recordController.getRecordsByPhoneNumber(req, res)
+);
 module.exports = router;
