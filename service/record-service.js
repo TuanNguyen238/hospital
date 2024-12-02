@@ -1,3 +1,4 @@
+const EnumRole = require("../enum/enum-role");
 const ErrorCode = require("../enum/error-code");
 const Status = require("../enum/status");
 const StatusCode = require("../enum/status-code");
@@ -172,7 +173,21 @@ class RecordService {
     });
   }
 
-  async getRecordByPatientCode(patientCode) {
+  async getRecordByPatientCode(role, phoneNumber, patientCode) {
+    if (role === EnumRole.USER) {
+      const patient =
+        await this.#patientRepository.getPatientByPatientCodeAndPhoneNumber(
+          patientCode,
+          phoneNumber
+        );
+
+      if (!patient)
+        throw {
+          status: StatusCode.HTTP_404_NOT_FOUND,
+          message: ErrorCode.PATIENT_NOT_EXISTED,
+        };
+    }
+
     const result = await this.#recordRepository.getMedicalRecordsByPatientCode(
       patientCode
     );

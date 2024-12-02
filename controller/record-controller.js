@@ -47,6 +47,8 @@ class RecordController {
     try {
       const patientCode = req.headers["patientcode"];
       const result = await this.#recordService.getRecordByPatientCode(
+        req.scope,
+        req.sub,
         patientCode
       );
       res.status(StatusCode.HTTP_200_OK).json({
