@@ -48,9 +48,11 @@ class ExamRoomService {
     return { message: ErrorCode.SUCCESS, data: examRoom };
   }
 
-  async getAvailableTimes({ date }) {
-    const examRooms = await this.#examRoomRepository.getExamRoomsByDate(date);
-
+  async getAvailableTimes({ examDate }) {
+    const examRooms = await this.#examRoomRepository.getExamRoomsByDate(
+      examDate
+    );
+    console.log(examRooms);
     const availableTimes = timeSlots.map((time) => {
       const matchingExamRooms = examRooms.filter(
         (room) => room.examTime === time
