@@ -12,6 +12,10 @@ class RoleRepository {
     return await this.#repository.findOneBy({ name: name });
   }
 
+  async getAllRoles() {
+    return await this.#repository.find();
+  }
+
   async createRole(role) {
     await this.#repository.save(role);
   }

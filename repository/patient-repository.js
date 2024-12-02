@@ -106,23 +106,6 @@ class PatientRepository {
       relations: ["relative"],
     });
   }
-  async getPatientsWithRecordCount(phoneNumber) {
-    const result = await this.#repository
-      .createQueryBuilder("patient")
-      .leftJoinAndSelect("patient.relative", "relative")
-      .leftJoin("patient.medicalRecord", "medicalRecord")
-      .where("patient.user.phoneNumber = :phoneNumber", { phoneNumber })
-      .addSelect("COUNT(medicalRecord.id)", "recordCount")
-      .groupBy("patient.id")
-      .getRawAndEntities();
-
-    const patientsWithRecordCount = result.entities.map((patient, index) => ({
-      ...patient,
-      recordCount: parseInt(result.raw[index].recordCount, 10),
-    }));
-
-    return patientsWithRecordCount;
-  }
 
   async getPatientByPatientCodeAndPhoneNumber(patientCode, phoneNumber) {
     return await this.#repository.findOne({
@@ -132,6 +115,10 @@ class PatientRepository {
       },
       relations: ["relative"],
     });
+  }
+
+  async savePatient(patient) {
+    await this.#repository.save(patient);
   }
 }
 

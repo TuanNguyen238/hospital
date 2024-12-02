@@ -22,6 +22,12 @@ class MedicineRepository {
     return await this.#repository.findOneBy({ name: name });
   }
 
+  async findByNames(names) {
+    return await this.#repository.find({
+      where: { name: In(names) },
+    });
+  }
+
   async getCount() {
     return await this.#repository.count();
   }

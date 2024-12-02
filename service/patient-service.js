@@ -47,17 +47,18 @@ class PatientService {
   }
 
   async getPatientsByPhoneNumber(phoneNumber) {
-    const patientData =
-      await this.#patientRepository.getPatientsWithRecordCount(phoneNumber);
+    const patientData = await this.#patientRepository.getPatientsByPhoneNumber(
+      phoneNumber
+    );
 
-    const formattedData = patientData.map((patient) => ({
-      ...patient,
-      dateOfBirth: formatDate(patient.dateOfBirth),
-    }));
+    // const formattedData = patientData.map((patient) => ({
+    //   ...patient,
+    //   dateOfBirth: formatDate(patient.dateOfBirth),
+    // }));
 
     return {
       message: ErrorCode.SUCCESS,
-      data: formattedData,
+      data: patientData,
     };
   }
 }

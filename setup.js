@@ -19,9 +19,7 @@ class Setup {
 
   async setupDatabase() {
     try {
-      await this.setupRole(EnumRole.ADMIN, "admin role");
-      await this.setupRole(EnumRole.USER, "user role");
-      await this.setupRole(EnumRole.DOCTOR, "doctor role");
+      await this.setupRoles();
       await this.setupAdmin();
 
       await this.setupMedicine();
@@ -30,16 +28,27 @@ class Setup {
     }
   }
 
-  async setupRole(name, description) {
+  async setupRoles() {
     try {
-      let role = await this.#roleRepository.getRole(name);
-      if (!role) {
-        role = this.#roleRepository.createEntity(name, description);
-        await this.#roleRepository.createRole(role);
-        console.log(`${name} role created.`);
-      }
+      const roles = [
+        { name: EnumRole.ADMIN, description: "admin role" },
+        { name: EnumRole.USER, description: "user role" },
+        { name: EnumRole.DOCTOR, description: "doctor role" },
+      ];
+
+      const existingRoles = await this.#roleRepository.getAllRoles();
+      const existingRoleNames = new Set(existingRoles.map((role) => role.name));
+
+      const newRoles = roles.filter(
+        (role) => !existingRoleNames.has(role.name)
+      );
+
+      if (newRoles.length > 0) {
+        await this.#roleRepository.createRoles(newRoles);
+        console.log(`${newRoles.length} roles created.`);
+      } else console.log("All roles already exist.");
     } catch (err) {
-      console.error(`Error setup Role ${name}: ${err}`);
+      console.error("Error setting up roles:", err);
     }
   }
 
@@ -48,34 +57,34 @@ class Setup {
       const users = await this.#userRepository.getAllUsers();
       if (users.length === 0) {
         console.log("Users table does not exist or is empty. Seeding data...");
-        let adminRole = await this.#roleRepository.getRole(EnumRole.ADMIN);
+        const adminRole = await this.#roleRepository.getRole(EnumRole.ADMIN);
 
         const hashedPassword = await bcrypt.hash("admin", 10);
 
-        const usersData1 = {
-          username: "Tuan Nguyen",
-          email: "tuannguyen23823@gmail.com",
-          password: hashedPassword,
-          phoneNumber: "0937837564",
-          role: adminRole,
-          createdAt: new Date(2024, 5, 1),
-        };
+        const usersData = [
+          {
+            username: "Tuan Nguyen",
+            email: "tuannguyen23823@gmail.com",
+            password: hashedPassword,
+            phoneNumber: "0937837564",
+            role: adminRole,
+            createdAt: new Date(2024, 5, 1),
+          },
+          {
+            username: "Thuy Duyen",
+            email: "lethithuyduyen230803@gmail.com",
+            password: hashedPassword,
+            phoneNumber: "0943640913",
+            role: adminRole,
+            createdAt: new Date(2024, 6, 5),
+          },
+        ];
 
-        const usersData2 = {
-          username: "Thuy Duyen",
-          email: "lethithuyduyen230803@gmail.com",
-          password: hashedPassword,
-          phoneNumber: "0943640913",
-          role: adminRole,
-          createdAt: new Date(2024, 6, 5),
-        };
-
-        await this.#userRepository.saveUser(usersData1);
-        await this.#userRepository.saveUser(usersData2);
+        await this.#userRepository.saveUsers(usersData);
         console.log("Users seeded.");
       } else console.log("Users table already exists.");
     } catch (err) {
-      console.error(`Error setup Admin: ${err}`);
+      console.error(`Error setting up Admin: ${err}`);
     }
   }
 
@@ -209,17 +218,23 @@ class Setup {
           imageUrl: DEFAULT_MEDICINE.value,
         },
       ];
-      const medicineData = [];
-      for (const medicine of medicines) {
-        const existingMedicine = await this.#medicineRepository.findByName(
-          medicine.name
-        );
-        if (!existingMedicine) medicineData.push(medicine);
+      const existingMedicines = await this.#medicineRepository.findByNames(
+        medicines.map((medicine) => medicine.name)
+      );
+
+      const existingNames = new Set(existingMedicines.map((med) => med.name));
+      const newMedicines = medicines.filter(
+        (medicine) => !existingNames.has(medicine.name)
+      );
+
+      if (newMedicines.length > 0) {
+        await this.#medicineRepository.saveMedicine(newMedicines);
+        console.log("Medicines seeded.");
+      } else {
+        console.log("All medicines already exist.");
       }
-      await this.#medicineRepository.saveMedicine(medicineData);
-      console.log("Medicine seeded!");
     } catch (err) {
-      console.error(`Error setup Medicine: ${err}`);
+      console.error(`Error setting up medicines: ${err}`);
     }
   }
 }

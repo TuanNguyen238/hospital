@@ -1,4 +1,5 @@
 const ErrorCode = require("../enum/error-code");
+const Status = require("../enum/status");
 const StatusCode = require("../enum/status-code");
 const ExamRoomRepository = require("../repository/examRoom-repository");
 const PatientRepository = require("../repository/patient-repository");
@@ -68,6 +69,11 @@ class RecordService {
 
     randomRoom.currentPatients++;
     this.#examRoomRepository.saveExamRoom(randomRoom);
+
+    if (patient.status === Status.INACTIVE) {
+      patient.status = Status.ACTIVE;
+      await this.#patientRepository.savePatient(patient);
+    }
 
     return { message: ErrorCode.RECORD_BOOKED };
   }

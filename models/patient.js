@@ -1,4 +1,5 @@
 const { EntitySchema } = require("typeorm");
+const Status = require("../enum/status");
 
 const Patient = new EntitySchema({
   name: "Patient",
@@ -42,6 +43,11 @@ const Patient = new EntitySchema({
       type: "varchar",
       length: 20,
       nullable: false,
+    },
+    status: {
+      type: "varchar",
+      length: 20,
+      default: Status.INACTIVE,
     },
   },
   relations: {
