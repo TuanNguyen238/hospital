@@ -51,14 +51,14 @@ class PatientService {
       phoneNumber
     );
 
-    // const formattedData = patientData.map((patient) => ({
-    //   ...patient,
-    //   dateOfBirth: formatDate(patient.dateOfBirth),
-    // }));
+    const formattedData = patientData.map((patient) => ({
+      ...patient,
+      dateOfBirth: formatDate(patient.dateOfBirth),
+    }));
 
     return {
       message: ErrorCode.SUCCESS,
-      data: patientData,
+      data: formattedData,
     };
   }
 }
