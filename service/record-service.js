@@ -66,6 +66,8 @@ class RecordService {
       reasonForVisit: reasonForVisit,
       paid: true,
       recordCode: code,
+      status: Status.UNFINISHED,
+      orderNumber: randomRoom.currentPatients + 1,
     });
 
     randomRoom.currentPatients++;
