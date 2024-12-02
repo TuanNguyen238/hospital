@@ -16,6 +16,7 @@ class RecordController {
       res.status(StatusCode.HTTP_201_CREATED).json({
         status: Status.SUCCESS,
         message: result.message,
+        data: result.data,
       });
     } catch (err) {
       console.error("Error:", err);

@@ -16,7 +16,7 @@ class RecordRepository {
   }
 
   async saveRecord(record) {
-    await this.#repository.save(record);
+    return await this.#repository.save(record);
   }
 
   async findRecordsByPatientCodes(patientCodes) {

@@ -60,16 +60,6 @@ class RecordService {
 
     const code = await this.#recordRepository.generateRecordCode();
 
-    await this.#recordRepository.saveRecord({
-      patient: patient,
-      examRoom: randomRoom,
-      reasonForVisit: reasonForVisit,
-      paid: true,
-      recordCode: code,
-      status: Status.UNFINISHED,
-      orderNumber: randomRoom.currentPatients + 1,
-    });
-
     randomRoom.currentPatients++;
     this.#examRoomRepository.saveExamRoom(randomRoom);
 
@@ -78,7 +68,17 @@ class RecordService {
       await this.#patientRepository.savePatient(patient);
     }
 
-    return { message: ErrorCode.RECORD_BOOKED };
+    const result = await this.#recordRepository.saveRecord({
+      patient: patient,
+      examRoom: randomRoom,
+      reasonForVisit: reasonForVisit,
+      paid: true,
+      recordCode: code,
+      status: Status.UNFINISHED,
+      orderNumber: randomRoom.currentPatients,
+    });
+
+    return { message: ErrorCode.RECORD_BOOKED, data: result };
   }
 
   async getRecordByPhoneNumber(phoneNumber) {
