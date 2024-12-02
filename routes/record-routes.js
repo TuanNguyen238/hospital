@@ -17,4 +17,7 @@ router.get("/patientCode", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.get("/phoneNumber", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.getRecordsByPhoneNumber(req, res)
 );
+router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  recordController.getRecords(req, res)
+);
 module.exports = router;

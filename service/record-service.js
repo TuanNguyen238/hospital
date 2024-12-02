@@ -210,6 +210,14 @@ class RecordService {
       data: result,
     };
   }
+
+  async getRecords() {
+    const result = await this.#recordRepository.getMedicalRecords();
+    return {
+      message: ErrorCode.SUCCESS,
+      data: result,
+    };
+  }
 }
 
 module.exports = RecordService;

@@ -81,6 +81,25 @@ class RecordRepository {
       throw error;
     }
   }
+
+  async getMedicalRecords() {
+    try {
+      const medicalRecords = await this.#repository
+        .createQueryBuilder("medicalRecord")
+        .leftJoinAndSelect("medicalRecord.patient", "patient")
+        .leftJoinAndSelect("medicalRecord.prescription", "prescription")
+        .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
+        .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        .leftJoinAndSelect("prescription.dosages", "dosages")
+        .leftJoinAndSelect("dosages.medicine", "medicine")
+        .getMany();
+
+      return medicalRecords;
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = RecordRepository;
