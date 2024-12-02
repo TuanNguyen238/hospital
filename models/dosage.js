@@ -11,15 +11,19 @@ const Dosage = new EntitySchema({
     },
     morning: {
       type: "int",
-      nullable: true,
+      default: 0,
     },
     afternoon: {
       type: "int",
-      nullable: true,
+      default: 0,
     },
     evening: {
       type: "int",
-      nullable: true,
+      default: 0,
+    },
+    days: {
+      type: "int",
+      default: 0,
     },
   },
   relations: {
