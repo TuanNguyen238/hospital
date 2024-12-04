@@ -9,9 +9,12 @@ const Status = require("../enum/status");
 
 class RecordRepository {
   #repository;
+  #detailedRecordRepository;
 
   constructor() {
     this.#repository = AppDataSource.getRepository(MedicalRecord);
+    this.#detailedRecordRepository =
+      AppDataSource.getRepository(DetailedRecord);
   }
 
   async getCountById(id) {
@@ -180,6 +183,10 @@ class RecordRepository {
         "doctor",
       ],
     });
+  }
+
+  async savedDetailedRecord(detailedRecord) {
+    return await this.#detailedRecordRepository.save(detailedRecord);
   }
 
   async deleteImage(publicId) {

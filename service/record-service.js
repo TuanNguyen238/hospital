@@ -386,6 +386,8 @@ class RecordService {
         message: ErrorCode.RECORD_NOT_EXISTED,
       };
 
+    let imageUrl = null;
+
     if (file) {
       try {
         const name = generateTimestampString();
@@ -395,13 +397,18 @@ class RecordService {
             file.path,
             name
           );
-          record.imageUrl = result;
+          imageUrl = result;
 
           await fs.promises.access(file.path, fs.constants.F_OK);
           await fs.promises.unlink(file.path);
         };
         await processFile();
-        const result = await this.#recordRepository.saveRecord(record);
+        const detailedRecord = record.detailedRecord;
+        detailedRecord.imageUrl = imageUrl;
+        console.log(detailedRecord);
+        const result = await this.#recordRepository.savedDetailedRecord(
+          detailedRecord
+        );
         return {
           message: ErrorCode.RECORD_UPDATED,
           data: result,
