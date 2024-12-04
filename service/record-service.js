@@ -339,12 +339,15 @@ class RecordService {
     return { message: ErrorCode.RECORD_CREATED, data: result };
   }
 
-  async getStaisticRecord() {
+  async getStaisticRecord(inputdate) {
     const records = await this.#recordRepository.getStatisticRecord();
     let totalRevenue = 0;
     const monthRevenue = Array(12).fill(0);
     const dayRegisteredRevenue = Array(10).fill(0);
     const daySuccessfullRevenue = Array(10).fill(0);
+
+    const [day, month, year] = inputdate.split("/");
+    const inputDateObj = new Date(year, month - 1, day);
 
     records.forEach((record) => {
       if (record.paid) {
@@ -356,9 +359,9 @@ class RecordService {
 
         const roomNumber = record.examRoom.roomNumber;
         const isSuccessfull = record.status === "Đã thực hiện";
-        dayRegisteredRevenue[roomNumber - 1] += 150000;
-        if (isSuccessfull) {
-          daySuccessfullRevenue[roomNumber - 1] += 150000;
+        if (examDate.toDateString() === inputDateObj.toDateString()) {
+          dayRegisteredRevenue[roomNumber - 1] += 150000;
+          if (isSuccessfull) daySuccessfullRevenue[roomNumber - 1] += 150000;
         }
       }
     });

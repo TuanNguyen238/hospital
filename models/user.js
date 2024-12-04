@@ -1,4 +1,4 @@
-const { EntitySchema, JoinColumn } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 const Status = require("../enum/status");
 
 const User = new EntitySchema({

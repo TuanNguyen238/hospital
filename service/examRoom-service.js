@@ -52,7 +52,6 @@ class ExamRoomService {
     const examRooms = await this.#examRoomRepository.getExamRoomsByDate(
       examDate
     );
-    console.log(examRooms);
     const availableTimes = timeSlots.map((time) => {
       const matchingExamRooms = examRooms.filter(
         (room) => room.examTime === time
