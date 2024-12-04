@@ -1,6 +1,8 @@
 const express = require("express");
 const RecordController = require("../controller/record-controller.js");
 const UserMiddleware = require("../middleware/user-middleware.js");
+const multer = require("multer");
+const upload = multer({ dest: "../uploads/" });
 
 const router = express.Router();
 const recordController = new RecordController();
@@ -19,5 +21,11 @@ router.get("/phoneNumber", UserMiddleware.authenticationTokenUser, (req, res) =>
 );
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   recordController.getRecords(req, res)
+);
+router.post(
+  "/",
+  UserMiddleware.authenticationTokenDoctor,
+  upload.single("image"),
+  (req, res) => recordController.createRecord(req, res)
 );
 module.exports = router;

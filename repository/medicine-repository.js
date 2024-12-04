@@ -2,7 +2,6 @@ const AppDataSource = require("../utils/database.js");
 const Medicine = require("../models/medicine.js");
 const { In, Between } = require("typeorm");
 const { cloudinary } = require("../utils/cloudinary.js");
-const path = require("path");
 class MedicineRepository {
   #repository;
 

@@ -27,6 +27,7 @@ const ErrorCode = {
   EXAMROOM_NOT_AVAILABLE: "Phòng khám đã đầy",
   EXAMROOM_NOT_EXISTED: "Phòng khám không tồn tại",
   RECORD_BOOKED: "Đặt phòng khám thành công",
+  RECORD_CREATED: "Tạo hồ sơ bệnh án thành công",
   SUCCESS: "Thành công",
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
   INSUFFICIENT_PERMISSION: "Lỗi quyền truy cập",

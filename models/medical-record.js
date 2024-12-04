@@ -67,6 +67,12 @@ const MedicalRecord = new EntitySchema({
       type: "many-to-one",
       joinColumn: true,
     },
+    doctor: {
+      target: "User",
+      type: "many-to-one",
+      joinColumn: true,
+      nullable: true,
+    },
   },
 });
 

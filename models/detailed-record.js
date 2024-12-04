@@ -31,6 +31,16 @@ const DetailedRecord = new EntitySchema({
     spO2: {
       type: "int",
     },
+    clinicalIndicator: {
+      type: "varchar",
+      length: 255,
+      nullable: true,
+    },
+    imageUrl: {
+      type: "varchar",
+      length: 500,
+      nullable: true,
+    },
   },
   relations: {
     medicalRecord: {

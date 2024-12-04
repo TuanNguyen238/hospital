@@ -44,7 +44,7 @@ class Setup {
       );
 
       if (newRoles.length > 0) {
-        await this.#roleRepository.createRoles(newRoles);
+        await this.#roleRepository.createRole(newRoles);
         console.log(`${newRoles.length} roles created.`);
       } else console.log("All roles already exist.");
     } catch (err) {
@@ -80,7 +80,7 @@ class Setup {
           },
         ];
 
-        await this.#userRepository.saveUsers(usersData);
+        await this.#userRepository.saveUser(usersData);
         console.log("Users seeded.");
       } else console.log("Users table already exists.");
     } catch (err) {

@@ -3,18 +3,26 @@ const ErrorCode = require("../enum/error-code");
 const Status = require("../enum/status");
 const StatusCode = require("../enum/status-code");
 const ExamRoomRepository = require("../repository/examRoom-repository");
+const MedicineRepository = require("../repository/medicine-repository");
 const PatientRepository = require("../repository/patient-repository");
 const RecordRepository = require("../repository/record-repository");
+const UserRepository = require("../repository/user-repository");
+const { generateTimestampString } = require("../utils/const");
+const fs = require("fs");
 
 class RecordService {
   #recordRepository;
   #examRoomRepository;
   #patientRepository;
+  #userRepository;
+  #medicineRepository;
 
   constructor() {
     this.#recordRepository = new RecordRepository();
     this.#examRoomRepository = new ExamRoomRepository();
     this.#patientRepository = new PatientRepository();
+    this.#userRepository = new UserRepository();
+    this.#medicineRepository = new MedicineRepository();
   }
 
   async bookRecord(
@@ -217,6 +225,118 @@ class RecordService {
       message: ErrorCode.SUCCESS,
       data: result,
     };
+  }
+
+  async createRecord(record, phoneNumber, file) {
+    console.log(file);
+    const doctor = await this.#userRepository.findByPhoneNumber(phoneNumber);
+    if (!doctor)
+      throw {
+        status: StatusCode.HTTP_404_NOT_FOUND,
+        message: ErrorCode.USER_NOT_EXISTED,
+      };
+
+    const medicineIds = record.medicines.map((med) => med.medicineId);
+    const medicines = await this.#medicineRepository.findByIds(medicineIds);
+
+    if (medicines.length !== medicineIds.length) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.MEDICINE_NOT_EXISTED,
+      };
+    }
+
+    const medicinesData = [];
+    const errorMessages = [];
+
+    for (const medicine of record.medicines) {
+      const morning = parseInt(medicine.morning, 10);
+      const afternoon = parseInt(medicine.afternoon, 10);
+      const evening = parseInt(medicine.evening, 10);
+      const days = parseInt(medicine.days, 10);
+      const medicineData = medicines.find(
+        (med) => med.id === medicine.medicineId
+      );
+
+      if (medicineData.status !== Status.ACTIVE)
+        errorMessages.push({
+          medicine: medicineData,
+          message: ErrorCode.MEDICINE_DISABLED,
+        });
+      else if (medicineData.quantity < (morning + afternoon + evening) * days)
+        errorMessages.push({
+          medicine: medicineData,
+          message: ErrorCode.INSUFFICIENT_STOCK,
+        });
+      else
+        medicinesData.push({
+          medicine: medicineData,
+          morning: morning,
+          afternoon: afternoon,
+          evening: evening,
+          days: days,
+        });
+    }
+    if (errorMessages.length > 0) {
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.INVALID_REQUEST,
+        data: errorMessages,
+      };
+    }
+
+    const prescriptionData = {
+      note: record.note,
+      medicines: medicinesData,
+    };
+
+    let imageUrl = null;
+    const name = generateTimestampString();
+
+    if (file) {
+      try {
+        const processFile = async () => {
+          await this.#recordRepository.deleteImage(name);
+          const result = await this.#recordRepository.uploadImage(
+            file.path,
+            name
+          );
+          imageUrl = result;
+
+          await fs.promises.access(file.path, fs.constants.F_OK);
+          await fs.promises.unlink(file.path);
+        };
+        await processFile();
+      } catch (err) {
+        console.error("Error deleting file:", err);
+      }
+    }
+
+    const detailedRecordsData = {
+      weight: parseInt(record.weight),
+      height: parseInt(record.height),
+      bmi: parseFloat(record.bmi),
+      heartRate: parseInt(record.heartRate),
+      respiratoryRate: parseInt(record.respiratoryRate),
+      bloodPressure: record.bloodPressure,
+      spO2: parseInt(record.spO2),
+      clinicalIndicator: record.clinicalIndicator,
+      imageUrl: imageUrl,
+    };
+
+    const recordData = {
+      id: record.id,
+      examResult: record.examResult,
+      diagnosis: record.diagnosis,
+      doctor: doctor,
+    };
+
+    const result = await this.#recordRepository.createRecordWithTransaction(
+      recordData,
+      detailedRecordsData,
+      prescriptionData
+    );
+    return { message: ErrorCode.RECORD_CREATED, data: result };
   }
 }
 

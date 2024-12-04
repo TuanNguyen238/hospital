@@ -99,6 +99,28 @@ class RecordController {
       });
     }
   }
+
+  async createRecord(req, res) {
+    try {
+      const result = await this.#recordService.createRecord(
+        req.body,
+        req.sub,
+        req.file
+      );
+      res.status(StatusCode.HTTP_201_CREATED).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+        data: err.data || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
 }
 
 module.exports = RecordController;
