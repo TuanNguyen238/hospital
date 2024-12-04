@@ -4,10 +4,11 @@ const Status = require("../enum/status");
 const StatusCode = require("../enum/status-code");
 const ExamRoomRepository = require("../repository/examRoom-repository");
 const MedicineRepository = require("../repository/medicine-repository");
+const NotificationRepository = require("../repository/notification-repository");
 const PatientRepository = require("../repository/patient-repository");
 const RecordRepository = require("../repository/record-repository");
 const UserRepository = require("../repository/user-repository");
-const { generateTimestampString } = require("../utils/const");
+const { generateTimestampString, formatDate } = require("../utils/const");
 const fs = require("fs");
 
 class RecordService {
@@ -16,6 +17,7 @@ class RecordService {
   #patientRepository;
   #userRepository;
   #medicineRepository;
+  #notificationRepository;
 
   constructor() {
     this.#recordRepository = new RecordRepository();
@@ -23,6 +25,7 @@ class RecordService {
     this.#patientRepository = new PatientRepository();
     this.#userRepository = new UserRepository();
     this.#medicineRepository = new MedicineRepository();
+    this.#notificationRepository = new NotificationRepository();
   }
 
   async bookRecord(
@@ -85,7 +88,17 @@ class RecordService {
       status: Status.UNFINISHED,
       orderNumber: randomRoom.currentPatients,
     });
+    const newDate = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
 
+    const notification = {
+      title: ErrorCode.RECORD_BOOKED,
+      content: `Cuộc hẹn Khám tim vào ngày ${formatDate(
+        examDate
+      )} của bạn đã được thanh toán`,
+      createdAt: newDate,
+      medicalRecord: result,
+    };
+    await this.#notificationRepository.saveNotification(notification);
     return { message: ErrorCode.RECORD_BOOKED, data: result };
   }
 
