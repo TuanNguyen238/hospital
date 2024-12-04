@@ -34,9 +34,6 @@ class NotificationRepository {
           "notification.title",
           "notification.content",
           "notification.createdAt",
-          "medicalRecord.id",
-          "patient.fullName",
-          "user.phoneNumber",
         ])
         .orderBy("notification.createdAt", "DESC")
         .getMany();

@@ -26,7 +26,6 @@ class NotificationService {
         const relativeTime = await this.#calculateRelativeTime(
           notification.createdAt
         );
-        console.log(relativeTime);
         return {
           ...notification,
           relativeTime,
@@ -42,9 +41,7 @@ class NotificationService {
     const createdDate = new Date(createdAt);
 
     const yearDiff = now.getFullYear() - createdDate.getFullYear();
-    console.log(yearDiff);
     const monthDiff = now.getMonth() - createdDate.getMonth() + yearDiff * 12;
-    console.log(monthDiff);
     const dayDiff = Math.floor((now - createdDate) / (1000 * 60 * 60 * 24));
 
     if (yearDiff > 0) return `${yearDiff} năm trước`;
