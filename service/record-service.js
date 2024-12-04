@@ -338,6 +338,41 @@ class RecordService {
     );
     return { message: ErrorCode.RECORD_CREATED, data: result };
   }
+
+  async getStaisticRecord() {
+    const records = await this.#recordRepository.getStatisticRecord();
+    let totalRevenue = 0;
+    const monthRevenue = Array(12).fill(0);
+    const dayRegisteredRevenue = Array(10).fill(0);
+    const daySuccessfullRevenue = Array(10).fill(0);
+
+    records.forEach((record) => {
+      if (record.paid) {
+        totalRevenue += 150000;
+
+        const examDate = new Date(record.examRoom.examDate);
+        const examMonth = examDate.getMonth();
+        monthRevenue[examMonth] += 150000;
+
+        const roomNumber = record.examRoom.roomNumber;
+        const isSuccessfull = record.status === "Đã thực hiện";
+        dayRegisteredRevenue[roomNumber - 1] += 150000;
+        if (isSuccessfull) {
+          daySuccessfullRevenue[roomNumber - 1] += 150000;
+        }
+      }
+    });
+
+    return {
+      message: ErrorCode.SUCCESS,
+      data: {
+        totalRevenue,
+        monthRevenue,
+        dayRegisteredRevenue,
+        daySuccessfullRevenue,
+      },
+    };
+  }
 }
 
 module.exports = RecordService;

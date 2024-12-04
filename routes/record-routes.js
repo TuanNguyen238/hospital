@@ -22,6 +22,9 @@ router.get("/phoneNumber", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   recordController.getRecords(req, res)
 );
+router.get("/statistic", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  recordController.getStatisticRecord(req, res)
+);
 router.post(
   "/",
   UserMiddleware.authenticationTokenDoctor,

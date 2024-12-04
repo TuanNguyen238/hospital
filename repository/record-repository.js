@@ -5,6 +5,7 @@ const Prescription = require("../models/prescription");
 const Dosage = require("../models/dosage");
 const { cloudinary } = require("../utils/cloudinary");
 const DetailedRecord = require("../models/detailed-record");
+const Status = require("../enum/status");
 
 class RecordRepository {
   #repository;
@@ -105,6 +106,20 @@ class RecordRepository {
     }
   }
 
+  async getStatisticRecord() {
+    return await this.#repository.find({
+      select: [
+        "paid",
+        "status",
+        "examRoom.examDate",
+        "examRoom.roomNumber",
+        "examRoom.maxPatients",
+        "examRoom.currentPatients",
+      ],
+      relations: ["examRoom"],
+    });
+  }
+
   async createRecordWithTransaction(
     recordData,
     detailedRecordsData,
@@ -146,6 +161,7 @@ class RecordRepository {
             "doctor",
           ],
         });
+        record.status = Status.FINISHED;
         record.examResult = recordData.examResult;
         record.diagnosis = recordData.diagnosis;
         record.prescription = savedPrescription;
