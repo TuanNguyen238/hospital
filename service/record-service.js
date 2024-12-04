@@ -291,10 +291,10 @@ class RecordService {
     };
 
     let imageUrl = null;
-    const name = generateTimestampString();
 
     if (file) {
       try {
+        const name = generateTimestampString();
         const processFile = async () => {
           await this.#recordRepository.deleteImage(name);
           const result = await this.#recordRepository.uploadImage(
@@ -374,6 +374,46 @@ class RecordService {
         dayRegisteredRevenue,
         daySuccessfullRevenue,
       },
+    };
+  }
+
+  async importImageUrl(file, id) {
+    const record = await this.#recordRepository.findById(id);
+
+    if (!record)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.RECORD_NOT_EXISTED,
+      };
+
+    if (file) {
+      try {
+        const name = generateTimestampString();
+        const processFile = async () => {
+          await this.#recordRepository.deleteImage(name);
+          const result = await this.#recordRepository.uploadImage(
+            file.path,
+            name
+          );
+          record.imageUrl = result;
+
+          await fs.promises.access(file.path, fs.constants.F_OK);
+          await fs.promises.unlink(file.path);
+        };
+        await processFile();
+        const result = await this.#recordRepository.saveRecord(record);
+        return {
+          message: ErrorCode.RECORD_UPDATED,
+          data: result,
+        };
+      } catch (err) {
+        console.error("Error deleting file:", err);
+      }
+    }
+
+    throw {
+      status: StatusCode.HTTP_400_BAD_REQUEST,
+      message: ErrorCode.FILE_NOT_FOUND,
     };
   }
 }

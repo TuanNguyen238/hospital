@@ -151,16 +151,7 @@ class RecordRepository {
           detailedRecordsData
         );
 
-        const record = await this.#repository.findOne({
-          where: { id: recordData.id },
-          relations: [
-            "patient",
-            "prescription",
-            "detailedRecord",
-            "examRoom",
-            "doctor",
-          ],
-        });
+        const record = await this.findById(recordData.id);
         record.status = Status.FINISHED;
         record.examResult = recordData.examResult;
         record.diagnosis = recordData.diagnosis;
@@ -176,6 +167,19 @@ class RecordRepository {
         return savedRecord;
       }
     );
+  }
+
+  async findById(id) {
+    return await this.#repository.findOne({
+      where: { id: id },
+      relations: [
+        "patient",
+        "prescription",
+        "detailedRecord",
+        "examRoom",
+        "doctor",
+      ],
+    });
   }
 
   async deleteImage(publicId) {

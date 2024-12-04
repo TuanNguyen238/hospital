@@ -31,4 +31,10 @@ router.post(
   upload.single("image"),
   (req, res) => recordController.createRecord(req, res)
 );
+router.post(
+  "/flutterflow",
+  UserMiddleware.authenticationTokenDoctor,
+  upload.single("image"),
+  (req, res) => recordController.updateFileRecord(req, res)
+);
 module.exports = router;
