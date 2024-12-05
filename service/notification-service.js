@@ -51,39 +51,47 @@ class NotificationService {
   }
 
   async checkAndCreateNotifications() {
-    const records =
-      await this.#notificationRepository.getRecordsWithUpcomingExam();
+    try {
+      const records =
+        await this.#notificationRepository.getRecordsWithUpcomingExam();
 
-    const existingNotifications =
-      await this.#notificationRepository.getExistingNotificationsByRecords(
-        records
-      );
-
-    const notificationsToCreate = [];
-    const now = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
-
-    for (const record of records) {
-      const examRoom = record.examRoom;
-      const examDate = new Date(examRoom.examDate); // examDate từ examRoom
-      const oneDayBefore = new Date(examDate);
-      oneDayBefore.setDate(examDate.getDate() - 1);
-
-      if (now >= oneDayBefore && now < examDate) {
-        const alreadyExists = existingNotifications.some(
-          (notification) => notification.medicalRecord.id === record.id
+      const existingNotifications =
+        await this.#notificationRepository.getExistingNotificationsByRecords(
+          records
         );
 
-        if (!alreadyExists) {
-          notificationsToCreate.push(this.#createNotification(record));
+      const notificationsToCreate = [];
+      const now = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
+
+      for (const record of records) {
+        if (!record.id || !record.examRoom || !record.examRoom.examDate) {
+          console.error("Invalid record or missing examRoom/examDate:", record);
+          continue; // Bỏ qua record không hợp lệ
+        }
+        const examRoom = record.examRoom;
+        const examDate = new Date(examRoom.examDate);
+        const oneDayBefore = new Date(examDate);
+        oneDayBefore.setDate(examDate.getDate() - 1);
+
+        if (now >= oneDayBefore && now < examDate) {
+          const alreadyExists = existingNotifications.some(
+            (notification) => notification.medicalRecord?.id === record.id
+          );
+
+          if (!alreadyExists) {
+            notificationsToCreate.push(this.#createNotification(record));
+          }
         }
       }
-    }
 
-    if (notificationsToCreate.length > 0) {
-      await this.#notificationRepository.saveNotification(
-        notificationsToCreate
-      );
-      console.log(`Đã tạo ${notificationsToCreate.length} thông báo`);
+      if (notificationsToCreate.length > 0) {
+        await this.#notificationRepository.saveNotification(
+          notificationsToCreate
+        );
+        console.log(`Đã tạo ${notificationsToCreate.length} thông báo`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
