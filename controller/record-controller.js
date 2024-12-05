@@ -66,6 +66,24 @@ class RecordController {
     }
   }
 
+  async getRecordByID(req, res) {
+    try {
+      const id = req.headers["id"];
+      const result = await this.#recordService.getRecordById(id);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: Status.SUCCESS,
+        message: result.message,
+        data: result.data,
+      });
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
   async getRecordsByPhoneNumber(req, res) {
     try {
       const result = await this.#recordService.getRecordsByPhoneNumber(req.sub);

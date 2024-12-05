@@ -232,6 +232,15 @@ class RecordService {
     };
   }
 
+  async getRecordById(id) {
+    const result = await this.#recordRepository.getRecordById(id);
+
+    return {
+      message: ErrorCode.SUCCESS,
+      data: result,
+    };
+  }
+
   async getRecords() {
     const result = await this.#recordRepository.getMedicalRecords();
     return {

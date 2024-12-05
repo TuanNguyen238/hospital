@@ -49,6 +49,13 @@ class RecordRepository {
     return `R${newCode.toString().padStart(9, "0")}`;
   }
 
+  async getRecordById(id) {
+    return await this.#repository.findOne({
+      where: { id: id },
+      relations: ["patient", "examRoom"],
+    });
+  }
+
   async getMedicalRecordsByPatientCode(patientCode) {
     try {
       const medicalRecords = await this.#repository

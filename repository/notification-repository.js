@@ -34,11 +34,16 @@ class NotificationRepository {
           "notification.title",
           "notification.content",
           "notification.createdAt",
+          "medicalRecord.id",
         ])
         .orderBy("notification.createdAt", "DESC")
         .getMany();
-
-      return notifications;
+      const enhancedNotifications = notifications.map((notification) => ({
+        ...notification,
+        medicalRecordId: notification.medicalRecord?.id,
+        medicalRecord: undefined,
+      }));
+      return enhancedNotifications;
     } catch (error) {
       console.error("Error fetching notifications:", error);
       throw new Error("Failed to fetch notifications.");

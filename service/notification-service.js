@@ -75,7 +75,9 @@ class NotificationService {
 
         if (now >= oneDayBefore && now < examDate) {
           const alreadyExists = existingNotifications.some(
-            (notification) => notification.medicalRecord?.id === record.id
+            (notification) =>
+              notification.medicalRecord?.id === record.id &&
+              notification.title === "Thông báo tới hẹn"
           );
 
           if (!alreadyExists) {

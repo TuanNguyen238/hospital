@@ -25,6 +25,9 @@ router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/statistic", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   recordController.getStatisticRecord(req, res)
 );
+router.get("/id", UserMiddleware.authenticationTokenUser, (req, res) =>
+  recordController.getRecordByID(req, res)
+);
 router.post(
   "/",
   UserMiddleware.authenticationTokenDoctor,
