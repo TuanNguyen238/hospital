@@ -120,6 +120,14 @@ class PatientRepository {
   async savePatient(patient) {
     await this.#repository.save(patient);
   }
+
+  async deletePatientById(id) {
+    await this.#repository.delete({ id: id });
+  }
+
+  async getPatientById(id) {
+    return await this.#repository.findOne({ where: { id } });
+  }
 }
 
 module.exports = PatientRepository;

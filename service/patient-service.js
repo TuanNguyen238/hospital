@@ -3,6 +3,7 @@ const PatientRepository = require("../repository/patient-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const { formatDate } = require("../utils/const.js");
 const StatusCode = require("../enum/status-code.js");
+const Status = require("../enum/status.js");
 
 class PatientService {
   #patientRepository;
@@ -59,6 +60,28 @@ class PatientService {
     return {
       message: ErrorCode.SUCCESS,
       data: formattedData,
+    };
+  }
+
+  async deletePatientById(id) {
+    console.log(id);
+    const patientData = await this.#patientRepository.getPatientById(id);
+    if (!patientData)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.PATIENT_NOT_EXISTED,
+      };
+
+    if (patientData.status === Status.ACTIVE)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.PATIENT_NOT_AVAILABLE,
+      };
+
+    await this.#patientRepository.deletePatientById(id);
+
+    return {
+      message: ErrorCode.PATIENT_DELETED,
     };
   }
 }

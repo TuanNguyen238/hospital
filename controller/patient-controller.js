@@ -63,6 +63,23 @@ class PatientController {
       });
     }
   }
+
+  async deletedPatientByid(req, res) {
+    try {
+      const id = req.headers["id"];
+      const result = await this.#patientService.deletePatientById(id);
+      res.status(StatusCode.HTTP_200_OK).json({
+        status: "success",
+        message: result.message,
+      });
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(err.status || StatusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({
+        status: Status.ERROR,
+        message: err.message || ErrorCode.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
 }
 
 module.exports = PatientController;

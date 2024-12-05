@@ -16,6 +16,8 @@ const ErrorCode = {
   TOKEN_EXPIRED: "Phiên xác thực hết hạn",
   PATIENT_CREATED: "Tạo bệnh nhân thành công",
   PATIENT_UPDATED: "Cập nhật bệnh nhân thành công",
+  PATIENT_NOT_AVAILABLE: "Bệnh nhân không khả dụng",
+  PATIENT_DELETED: "Xóa bệnh nhân thành công",
   PRIVACY: "Vi phạm quyền riêng tư người dùng",
   MEDICINE_CREATED: "Tạo thuốc thành công",
   ORDER_CREATED: "Tạo đơn hàng thành công",

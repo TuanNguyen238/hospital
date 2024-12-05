@@ -14,5 +14,8 @@ router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.put("/updateInfo", UserMiddleware.authenticationTokenUser, (req, res) =>
   patientController.udpatePatient(req, res)
 );
+router.delete("/", UserMiddleware.authenticationTokenUser, (req, res) =>
+  patientController.deletedPatientByid(req, res)
+);
 
 module.exports = router;
