@@ -87,7 +87,9 @@ class RecordController {
   async getRecordByRecordCode(req, res) {
     try {
       const recordCode = req.headers["recordCode"];
-      const result = await this.#recordService.getRecordById(recordCode);
+      const result = await this.#recordService.getRecordByRecordCode(
+        recordCode
+      );
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,
