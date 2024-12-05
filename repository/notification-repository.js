@@ -55,6 +55,7 @@ class NotificationRepository {
     return await this.#repository
       .createQueryBuilder("notification")
       .leftJoin("notification.medicalRecord", "medicalRecord")
+      .addSelect("medicalRecord.id")
       .where(
         "medicalRecord.id IN (:...recordIds) AND notification.title = :title",
         {
