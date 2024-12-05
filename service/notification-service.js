@@ -60,8 +60,6 @@ class NotificationService {
           records
         );
 
-      console.log(existingNotifications);
-
       const notificationsToCreate = [];
       const now = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
 
@@ -89,9 +87,9 @@ class NotificationService {
       }
 
       if (notificationsToCreate.length > 0) {
-        // await this.#notificationRepository.saveNotification(
-        //   notificationsToCreate
-        // );
+        await this.#notificationRepository.saveNotification(
+          notificationsToCreate
+        );
         console.log(notificationsToCreate);
         console.log(`Đã tạo ${notificationsToCreate.length} thông báo`);
       } else {
