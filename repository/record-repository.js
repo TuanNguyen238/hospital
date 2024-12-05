@@ -56,6 +56,13 @@ class RecordRepository {
     });
   }
 
+  async getRecordByRecordCode(recordCode) {
+    return await this.#repository.findOne({
+      where: { recordCode: recordCode },
+      relations: ["patient", "examRoom"],
+    });
+  }
+
   async getMedicalRecordsByPatientCode(patientCode) {
     try {
       const medicalRecords = await this.#repository
