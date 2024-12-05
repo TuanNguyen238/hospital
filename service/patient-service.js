@@ -64,7 +64,6 @@ class PatientService {
   }
 
   async deletePatientById(id) {
-    console.log(id);
     const patientData = await this.#patientRepository.getPatientById(id);
     if (!patientData)
       throw {
