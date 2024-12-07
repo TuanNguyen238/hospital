@@ -30,7 +30,12 @@ class RecordRepository {
   async findRecordsByPatientCodes(patientCodes) {
     return await this.#repository.find({
       where: { patient: { patientCode: In(patientCodes) } },
-      relations: ["patient", "examRoom"],
+      relations: [
+        "patient",
+        "examRoom",
+        "examRoom.doctor",
+        "examRoom.doctor.user",
+      ],
     });
   }
 

@@ -128,6 +128,8 @@ class RecordService {
       patientCodes
     );
 
+    console.log(records);
+
     const processedRecords = await this.processExamStatus(records);
 
     const dueRecords = processedRecords
