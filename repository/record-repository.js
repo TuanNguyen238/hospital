@@ -112,7 +112,7 @@ class RecordRepository {
         .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
         .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
         .leftJoinAndSelect("examRoom.doctor", "doctor")
-        .leftJoinAndSelect("doctor.user", "user")
+        .leftJoinAndSelect("doctor.user", "doctorUser")
         .leftJoinAndSelect("prescription.dosages", "dosages")
         .leftJoinAndSelect("dosages.medicine", "medicine")
         .leftJoin("patient.user", "user")
