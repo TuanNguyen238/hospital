@@ -74,6 +74,15 @@ class UserMiddleware {
   static authenticationTokenUser(req, res, next) {
     UserMiddleware.authenticateToken(req, res, next, [
       EnumRole.USER,
+      EnumRole.STAFF,
+      EnumRole.DOCTOR,
+      EnumRole.ADMIN,
+    ]);
+  }
+
+  static authenticationTokenStaff(req, res, next) {
+    UserMiddleware.authenticateToken(req, res, next, [
+      EnumRole.STAFF,
       EnumRole.DOCTOR,
       EnumRole.ADMIN,
     ]);

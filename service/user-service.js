@@ -7,18 +7,22 @@ const RoleRepository = require("../repository/role-repository.js");
 const UserRepository = require("../repository/user-repository.js");
 const bcrypt = require("bcrypt");
 const Email = require("../utils/email.js");
+const DetailDoctorRepository = require("../repository/detailedDoctor-repository.js");
+const { isValidType } = require("../enum/enum-type.js");
 
 class UserService {
   #userRepository;
   #roleRepository;
   #rewardPointRepository;
   #email;
+  #doctorRepository;
 
   constructor() {
     this.#userRepository = new UserRepository();
     this.#roleRepository = new RoleRepository();
     this.#rewardPointRepository = new RewardPointRepository();
     this.#email = new Email();
+    this.#doctorRepository = new DetailDoctorRepository();
   }
 
   async getUserById(phoneNumber) {
@@ -52,6 +56,8 @@ class UserService {
         status: StatusCode.HTTP_400_BAD_REQUEST,
         message: ErrorCode.USER_ALREADY_EXISTS,
       };
+
+    const password = user.password;
     user.password = await bcrypt.hash(user.password, 10);
     const userRole = await this.#roleRepository.getRole(EnumRole.USER);
 
@@ -63,7 +69,15 @@ class UserService {
 
     user.role = userRole;
     user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
+    const object = "Tài khoản người dùng đã được tạo thành công";
+    const text = await this.#email.generateEmailContent(
+      user.username,
+      user.phoneNumber,
+      password,
+      EnumRole.USER
+    );
 
+    await this.#email.sendEmail(user.email, object, text);
     await this.#userRepository.saveUser(user);
     await this.#rewardPointRepository.saveRewardPoint({ user });
 
@@ -90,6 +104,12 @@ class UserService {
         message: ErrorCode.USER_ALREADY_EXISTS,
       };
 
+    if (!isValidType(user.type))
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.TYPE_NOT_EXISTED,
+      };
+
     const randomPassword = this.#generateRandomNumericPassword(8);
     user.password = await bcrypt.hash(randomPassword, 10);
     const userRole = await this.#roleRepository.getRole(EnumRole.DOCTOR);
@@ -104,16 +124,81 @@ class UserService {
     user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
 
     const object = "Tài khoản bác sĩ đã được tạo thành công";
-    const text = await this.#email.generateDoctorEmailContent(
+    const text = await this.#email.generateEmailContent(
       user.username,
       user.phoneNumber,
-      randomPassword
+      randomPassword,
+      EnumRole.DOCTOR
     );
 
     try {
+      const savedUser = await this.#userRepository.saveUser(user);
+      const detailDoctor = {
+        type: user.type,
+        user: savedUser,
+      };
+
+      await this.#doctorRepository.saveDoctor(detailDoctor);
+      await this.#rewardPointRepository.saveRewardPoint({ user: savedUser });
       await this.#email.sendEmail(user.email, object, text);
-      await this.#userRepository.saveUser(user);
-      await this.#rewardPointRepository.saveRewardPoint({ user });
+    } catch (err) {
+      console.error("Err: ", err);
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.EMAIL_SEND_FAILED,
+      };
+    }
+
+    return { message: ErrorCode.REGISTED };
+  }
+
+  async adminCreateStaff(user) {
+    const checkUser = await this.#userRepository.findByPhoneNumber(
+      user.phoneNumber
+    );
+    if (checkUser)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.USER_ALREADY_EXISTS,
+      };
+
+    if (!isValidType(user.type))
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.TYPE_NOT_EXISTED,
+      };
+
+    const randomPassword = this.#generateRandomNumericPassword(8);
+    user.password = await bcrypt.hash(randomPassword, 10);
+    const userRole = await this.#roleRepository.getRole(EnumRole.STAFF);
+
+    if (!userRole)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.ROLE_NOT_EXISTED,
+      };
+
+    user.role = userRole;
+    user.createdAt = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
+
+    const object = "Tài khoản nhân viên đã được tạo thành công";
+    const text = await this.#email.generateEmailContent(
+      user.username,
+      user.phoneNumber,
+      randomPassword,
+      EnumRole.STAFF
+    );
+
+    try {
+      const savedUser = await this.#userRepository.saveUser(user);
+      const detailDoctor = {
+        type: user.type,
+        user: savedUser,
+      };
+
+      await this.#doctorRepository.saveDoctor(detailDoctor);
+      await this.#rewardPointRepository.saveRewardPoint({ user: savedUser });
+      await this.#email.sendEmail(user.email, object, text);
     } catch (err) {
       console.error("Err: ", err);
       throw {

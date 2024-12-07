@@ -1,6 +1,7 @@
 const { default: base64url } = require("base64url");
 const dotenv = require("dotenv");
 const { google } = require("googleapis");
+const EnumRole = require("../enum/enum-role");
 dotenv.config();
 
 class Email {
@@ -86,11 +87,19 @@ class Email {
     return encodedEmail;
   }
 
-  async generateDoctorEmailContent(doctorName, phoneNumber, password) {
+  async generateEmailContent(doctorName, phoneNumber, password, role) {
+    const type =
+      role === EnumRole.DOCTOR
+        ? "Bác sĩ"
+        : role === EnumRole.STAFF
+        ? "Nhân viên"
+        : role === EnumRole.USER
+        ? "Người dùng"
+        : "Không xác định";
     return `
-  Chào Bác sĩ ${doctorName},
+  Chào ${type} ${doctorName},
   
-  Tài khoản bác sĩ của bạn đã được tạo thành công tại Medicare.  
+  Tài khoản ${type} của bạn đã được tạo thành công tại Medicare.  
   Dưới đây là thông tin đăng nhập của bạn:
   
   - **Số điện thoại:** ${phoneNumber}

@@ -53,7 +53,8 @@ const ErrorCode = {
   EMAIL_SEND_FAILED: "Email sent failed",
   EMAIL_SEND_SUCCESSFUL: "Email sent successfully",
   MAX_PATIENT_ERROR: "Số lượng bệnh nhân tối đa không hợp lệ",
-  FILE_NOT_FOUND: "File not found",
+  FILE_NOT_FOUND: "Không tìm thấy file",
+  TYPE_NOT_EXISTED: "Chức vụ không tồn tại",
 };
 // const ErrorCode = {
 //   USER_NOT_EXISTED: "User does not exist",

@@ -34,6 +34,7 @@ class Setup {
         { name: EnumRole.ADMIN, description: "admin role" },
         { name: EnumRole.USER, description: "user role" },
         { name: EnumRole.DOCTOR, description: "doctor role" },
+        { name: EnumRole.STAFF, description: "staff role" },
       ];
 
       const existingRoles = await this.#roleRepository.getAllRoles();

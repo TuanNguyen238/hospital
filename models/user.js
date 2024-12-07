@@ -60,6 +60,11 @@ const User = new EntitySchema({
       type: "one-to-one",
       inverseSide: "users",
     },
+    detailDoctors: {
+      target: "DetailDoctor",
+      type: "one-to-many",
+      inverseSide: "user",
+    },
   },
 });
 

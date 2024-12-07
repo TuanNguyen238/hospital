@@ -66,7 +66,7 @@ class NotificationService {
       for (const record of records) {
         if (!record.id || !record.examRoom || !record.examRoom.examDate) {
           console.error("Invalid record or missing examRoom/examDate:", record);
-          continue; // Bỏ qua record không hợp lệ
+          continue;
         }
         const examRoom = record.examRoom;
         const examDate = new Date(examRoom.examDate);

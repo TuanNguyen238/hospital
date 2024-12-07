@@ -28,13 +28,10 @@ class RecordService {
     this.#notificationRepository = new NotificationRepository();
   }
 
-  async bookRecord(
-    phoneNumber,
-    { patientCode, examDate, examTime, reasonForVisit }
-  ) {
+  async bookRecord(phoneNumber, record) {
     const patient =
       await this.#patientRepository.getPatientByPatientCodeAndPhoneNumber(
-        patientCode,
+        record.patientCode,
         phoneNumber
       );
 
@@ -46,8 +43,8 @@ class RecordService {
     }
 
     const rooms = await this.#examRoomRepository.getExamRoomsByDateTime(
-      examDate,
-      examTime
+      record.examDate,
+      record.examTime
     );
 
     if (rooms.length == 0)
@@ -82,8 +79,8 @@ class RecordService {
     const result = await this.#recordRepository.saveRecord({
       patient: patient,
       examRoom: randomRoom,
-      reasonForVisit: reasonForVisit,
-      paid: true,
+      reasonForVisit: record.reasonForVisit,
+      paid: record.paid,
       recordCode: code,
       status: Status.UNFINISHED,
       orderNumber: randomRoom.currentPatients,
@@ -93,7 +90,7 @@ class RecordService {
     const notification = {
       title: ErrorCode.RECORD_BOOKED,
       content: `Cuộc hẹn Khám tim vào ngày ${formatDate(
-        examDate
+        record.examDate
       )} của bạn đã được thanh toán`,
       createdAt: newDate,
       medicalRecord: result,

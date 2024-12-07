@@ -51,6 +51,10 @@ class NotificationRepository {
   }
 
   async getExistingNotificationsByRecords(records) {
+    if (!records || records.length === 0) {
+      console.log("No records provided to check notifications.");
+      return [];
+    }
     const recordIds = records.map((record) => record.id);
     return await this.#repository
       .createQueryBuilder("notification")

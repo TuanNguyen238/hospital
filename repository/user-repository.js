@@ -18,7 +18,7 @@ class UserRepository {
   }
 
   async saveUser(user) {
-    await this.#repository.save(user);
+    return await this.#repository.save(user);
   }
 
   async getAllUsers() {
