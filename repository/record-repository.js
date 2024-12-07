@@ -49,13 +49,6 @@ class RecordRepository {
     return `R${newCode.toString().padStart(9, "0")}`;
   }
 
-  async getRecordById(id) {
-    return await this.#repository.findOne({
-      where: { id: id },
-      relations: ["patient", "examRoom"],
-    });
-  }
-
   async getRecordByRecordCode(recordCode) {
     return await this.#repository.findOne({
       where: { recordCode: recordCode },
@@ -83,6 +76,33 @@ class RecordRepository {
     }
   }
 
+  async getMedicalRecordsByDoctorPhoneAndCurrentDate(phoneNumber) {
+    try {
+      const currentDate = new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
+
+      const medicalRecords = await this.#repository
+        .createQueryBuilder("medicalRecord")
+        .leftJoinAndSelect("medicalRecord.patient", "patient")
+        .leftJoinAndSelect("medicalRecord.prescription", "prescription")
+        .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
+        .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        .leftJoinAndSelect("prescription.dosages", "dosages")
+        .leftJoinAndSelect("dosages.medicine", "medicine")
+        .leftJoinAndSelect("examRoom.doctor", "doctor")
+        .leftJoinAndSelect("doctor.user", "user")
+        .where("user.phoneNumber = :phoneNumber", { phoneNumber })
+        .andWhere("medicalRecord.examDate = :currentDate", { currentDate })
+        .getMany();
+
+      return medicalRecords;
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      throw error;
+    }
+  }
+
   async getRecordsByUserPhoneNumber(phoneNumber) {
     try {
       const records = await this.#repository
@@ -91,6 +111,8 @@ class RecordRepository {
         .leftJoinAndSelect("medicalRecord.prescription", "prescription")
         .leftJoinAndSelect("medicalRecord.detailedRecord", "detailedRecord")
         .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        .leftJoinAndSelect("examRoom.doctor", "doctor")
+        .leftJoinAndSelect("doctor.user", "user")
         .leftJoinAndSelect("prescription.dosages", "dosages")
         .leftJoinAndSelect("dosages.medicine", "medicine")
         .leftJoin("patient.user", "user")

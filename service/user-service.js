@@ -162,12 +162,6 @@ class UserService {
         message: ErrorCode.USER_ALREADY_EXISTS,
       };
 
-    if (!isValidType(user.type))
-      throw {
-        status: StatusCode.HTTP_400_BAD_REQUEST,
-        message: ErrorCode.TYPE_NOT_EXISTED,
-      };
-
     const randomPassword = this.#generateRandomNumericPassword(8);
     user.password = await bcrypt.hash(randomPassword, 10);
     const userRole = await this.#roleRepository.getRole(EnumRole.STAFF);

@@ -89,14 +89,32 @@ class RecordService {
 
     const notification = {
       title: ErrorCode.RECORD_BOOKED,
-      content: `Cuộc hẹn Khám tim vào ngày ${formatDate(
-        record.examDate
-      )} của bạn đã được thanh toán`,
+      content: record.paid
+        ? `Cuộc hẹn Khám tim vào ngày ${formatDate(
+            record.examDate
+          )} của bạn đã được thanh toán`
+        : `Cuộc hẹn Khám tim vào ngày ${formatDate(
+            record.examDate
+          )} của bạn đã được tạo`,
       createdAt: newDate,
       medicalRecord: result,
     };
     await this.#notificationRepository.saveNotification(notification);
     return { message: ErrorCode.RECORD_BOOKED, data: result };
+  }
+
+  async approveRecord({ id }) {
+    const record = await this.#recordRepository.findById(id);
+
+    if (!record)
+      throw {
+        status: StatusCode.HTTP_400_BAD_REQUEST,
+        message: ErrorCode.APPOINTMENT_NOT_EXISTED,
+      };
+
+    record.paid = true;
+    const result = await this.#recordRepository.saveRecord(record);
+    return { message: ErrorCode.RECORD_PAID, data: result };
   }
 
   async getRecordByPhoneNumber(phoneNumber) {
@@ -230,7 +248,7 @@ class RecordService {
   }
 
   async getRecordById(id) {
-    const result = await this.#recordRepository.getRecordById(id);
+    const result = await this.#recordRepository.findById(id);
 
     return {
       message: ErrorCode.SUCCESS,

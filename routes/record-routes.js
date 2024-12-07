@@ -10,6 +10,9 @@ const recordController = new RecordController();
 router.post("/book", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.bookRecord(req, res)
 );
+router.post("/approve", UserMiddleware.authenticationTokenStaff, (req, res) =>
+  recordController.approveRecord(req, res)
+);
 router.get("/current", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.getRecordByPhoneNumber(req, res)
 );

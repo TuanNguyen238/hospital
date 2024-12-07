@@ -31,7 +31,6 @@ class ExamRoomService {
       };
 
     examRoom.doctor = doctor;
-    console.log(examRoom);
 
     await this.#examRoomRepository.saveExamRoom(examRoom);
     return { message: ErrorCode.EXAMROOM_CREATED };
