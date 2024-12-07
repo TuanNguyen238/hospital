@@ -32,6 +32,9 @@ router.post(
   UserMiddleware.authenticateTokenAdmin,
   (req, res) => userController.adminCreateDoctor(req, res)
 );
+router.post("/createStaff", UserMiddleware.authenticateTokenAdmin, (req, res) =>
+  userController.adminCreateStaff(req, res)
+);
 router.put("/forgotpass", (req, res) => userController.forgotPass(req, res));
 
 router.put("/updatepass", UserMiddleware.authenticationTokenUser, (req, res) =>

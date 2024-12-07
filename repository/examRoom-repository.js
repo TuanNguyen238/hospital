@@ -30,16 +30,22 @@ class ExamRoomRepository {
     });
   }
 
-  async getExamRoomsByDate(examDate) {
-    return await this.#repository.findBy({
-      examDate: examDate,
-    });
+  async getExamRoomsByDateAndDoctorType(examDate) {
+    return await this.#repository
+      .createQueryBuilder("examRoom")
+      .leftJoinAndSelect("examRoom.doctor", "doctor")
+      .where("examRoom.examDate = :examDate", { examDate })
+      .andWhere("doctor.type = :type", { type: "PRESCRIPTION" })
+      .getMany();
   }
 
   async getExamRoomsByDateTime(examDate, examTime) {
-    return await this.#repository.findBy({
-      examDate: examDate,
-      examTime: examTime,
+    return await this.#repository.find({
+      where: {
+        examDate: examDate,
+        examTime: examTime,
+      },
+      relations: ["doctor.user"],
     });
   }
 

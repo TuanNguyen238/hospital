@@ -45,7 +45,7 @@ const ExamRoom = new EntitySchema({
     },
     doctor: {
       target: "DetailDoctor",
-      type: "one-to-one",
+      type: "many-to-one",
       joinColumn: true,
     },
   },

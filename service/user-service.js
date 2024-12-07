@@ -191,12 +191,6 @@ class UserService {
 
     try {
       const savedUser = await this.#userRepository.saveUser(user);
-      const detailDoctor = {
-        type: user.type,
-        user: savedUser,
-      };
-
-      await this.#doctorRepository.saveDoctor(detailDoctor);
       await this.#rewardPointRepository.saveRewardPoint({ user: savedUser });
       await this.#email.sendEmail(user.email, object, text);
     } catch (err) {

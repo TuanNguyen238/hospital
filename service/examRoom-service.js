@@ -63,9 +63,8 @@ class ExamRoomService {
   }
 
   async getAvailableTimes({ examDate }) {
-    const examRooms = await this.#examRoomRepository.getExamRoomsByDate(
-      examDate
-    );
+    const examRooms =
+      await this.#examRoomRepository.getExamRoomsByDateAndDoctorType(examDate);
     const availableTimes = timeSlots.map((time) => {
       const matchingExamRooms = examRooms.filter(
         (room) => room.examTime === time
