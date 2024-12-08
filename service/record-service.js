@@ -387,7 +387,7 @@ class RecordService {
     return { message: ErrorCode.RECORD_CREATED, data: result };
   }
 
-  async getStaisticRecord(inputdate) {
+  async getStatisticRecord(inputdate) {
     const records = await this.#recordRepository.getStatisticRecord();
     let totalRevenue = 0;
     const monthRevenue = Array(12).fill(0);

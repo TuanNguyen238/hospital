@@ -194,7 +194,7 @@ class RecordController {
   async getStatisticRecord(req, res) {
     try {
       const inputdate = req.headers["inputdate"];
-      const result = await this.#recordService.getStaisticRecord(inputdate);
+      const result = await this.#recordService.getStatisticRecord(inputdate);
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,
         message: result.message,

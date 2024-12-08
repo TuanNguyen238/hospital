@@ -95,23 +95,21 @@ class DoctorService {
         phoneNumber,
         date
       );
-      const scheduleMap = timeSlots.map((timeSlot) => {
-        const matchingSchedule = schedules.find(
-          (schedule) => schedule.examRoom_examTime === timeSlot
-        );
-        return {
-          time: timeSlot,
-          roomNumber: matchingSchedule
-            ? matchingSchedule.examRoom_roomNumber
-            : null,
-          maxPatients: matchingSchedule
-            ? matchingSchedule.examRoom_maxPatients
-            : null,
-          currentPatients: matchingSchedule
-            ? matchingSchedule.examRoom_currentPatients
-            : null,
-        };
-      });
+      const scheduleMap = timeSlots
+        .map((timeSlot) => {
+          const matchingSchedule = schedules.find(
+            (schedule) => schedule.examRoom_examTime === timeSlot
+          );
+          if (!matchingSchedule) return null;
+
+          return {
+            time: timeSlot,
+            roomNumber: matchingSchedule.examRoom_roomNumber,
+            maxPatients: matchingSchedule.examRoom_maxPatients,
+            currentPatients: matchingSchedule.examRoom_currentPatients,
+          };
+        })
+        .filter((entry) => entry !== null);
 
       return {
         message: "SUCCESS",
