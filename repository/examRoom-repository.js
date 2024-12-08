@@ -55,6 +55,7 @@ class ExamRoomRepository {
 
   async getDoctorSchedule(phoneNumber, date) {
     try {
+      console.log(date);
       const examDate = new Date(date);
       const schedules = await this.#repository
         .createQueryBuilder("examRoom")
