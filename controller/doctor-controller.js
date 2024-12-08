@@ -50,10 +50,9 @@ class DoctorController {
 
   async getScheduleForDoctor(req, res) {
     try {
-      const date = req.headers["date"];
       const result = await this.#doctorService.getScheduleForDoctor(
         req.sub,
-        date
+        req.body.date
       );
       res.status(StatusCode.HTTP_200_OK).json({
         status: Status.SUCCESS,

@@ -11,7 +11,7 @@ router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
 router.get("/salary", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   doctorController.getSalaryForDoctor(req, res)
 );
-router.get("/schedule", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+router.post("/schedule", UserMiddleware.authenticationTokenDoctor, (req, res) =>
   doctorController.getScheduleForDoctor(req, res)
 );
 
