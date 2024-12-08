@@ -101,9 +101,9 @@ class RecordRepository {
         .leftJoinAndSelect("doctor.user", "user")
         .where("user.phoneNumber = :phoneNumber", { phoneNumber })
         .andWhere("medicalRecord.status = :status", { status })
-        .andWhere("examRoom.examDate = :currentDate", {
-          currentDate,
-        })
+        // .andWhere("examRoom.examDate = :currentDate", {
+        //   currentDate,
+        // })
         .getMany();
 
       return medicalRecords;
@@ -115,18 +115,19 @@ class RecordRepository {
 
   async getMedicalRecordsByStaff() {
     try {
-      const currentDate = new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
-        .toISOString()
-        .split("T")[0];
+      const currentDate = new Date(
+        new Date().getTime() + 7 * 60 * 60 * 1000
+      ).toISOString();
+      t[0];
 
       const medicalRecords = await this.#repository
         .createQueryBuilder("medicalRecord")
         .leftJoinAndSelect("medicalRecord.patient", "patient")
         .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
         .where("medicalRecord.paid = :paid", { paid: false })
-        .andWhere("examRoom.examDate = :currentDate", {
-          currentDate,
-        })
+        // .andWhere("examRoom.examDate = :currentDate", {
+        //   currentDate,
+        // })
         .getMany();
 
       return medicalRecords;
