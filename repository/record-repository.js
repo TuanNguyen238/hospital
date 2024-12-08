@@ -118,7 +118,7 @@ class RecordRepository {
       const currentDate = new Date(
         new Date().getTime() + 7 * 60 * 60 * 1000
       ).toISOString();
-      t[0];
+      [0];
 
       const medicalRecords = await this.#repository
         .createQueryBuilder("medicalRecord")
