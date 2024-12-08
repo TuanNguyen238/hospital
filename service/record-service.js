@@ -128,8 +128,6 @@ class RecordService {
       patientCodes
     );
 
-    console.log(records);
-
     const processedRecords = await this.processExamStatus(records);
 
     const dueRecords = processedRecords
@@ -472,6 +470,21 @@ class RecordService {
       status: StatusCode.HTTP_400_BAD_REQUEST,
       message: ErrorCode.FILE_NOT_FOUND,
     };
+  }
+
+  async getRecordsByDoctor(phoneNumber) {
+    const result =
+      await this.#recordRepository.getMedicalRecordsByDoctorPhoneAndCurrentDate(
+        phoneNumber
+      );
+
+    return { message: ErrorCode.SUCCESS, data: result };
+  }
+
+  async getRecordsByStaff() {
+    const result = await this.#recordRepository.getMedicalRecordsByStaff();
+
+    return { message: ErrorCode.SUCCESS, data: result };
   }
 }
 

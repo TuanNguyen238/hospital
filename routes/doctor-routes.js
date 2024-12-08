@@ -8,5 +8,11 @@ const doctorController = new DoctorController();
 router.get("/", UserMiddleware.authenticateTokenAdmin, (req, res) =>
   doctorController.getAllDoctor(req, res)
 );
+router.get("/salary", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+  doctorController.getSalaryForDoctor(req, res)
+);
+router.get("/schedule", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+  doctorController.getScheduleForDoctor(req, res)
+);
 
 module.exports = router;

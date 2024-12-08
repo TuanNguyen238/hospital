@@ -87,6 +87,8 @@ class RecordRepository {
         .toISOString()
         .split("T")[0];
 
+      const status = Status.UNFINISHED;
+
       const medicalRecords = await this.#repository
         .createQueryBuilder("medicalRecord")
         .leftJoinAndSelect("medicalRecord.patient", "patient")
@@ -98,7 +100,33 @@ class RecordRepository {
         .leftJoinAndSelect("examRoom.doctor", "doctor")
         .leftJoinAndSelect("doctor.user", "user")
         .where("user.phoneNumber = :phoneNumber", { phoneNumber })
-        .andWhere("medicalRecord.examDate = :currentDate", { currentDate })
+        .andWhere("medicalRecord.status = :status", { status })
+        .andWhere("examRoom.examDate = :currentDate", {
+          currentDate,
+        })
+        .getMany();
+
+      return medicalRecords;
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      throw error;
+    }
+  }
+
+  async getMedicalRecordsByStaff() {
+    try {
+      const currentDate = new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
+
+      const medicalRecords = await this.#repository
+        .createQueryBuilder("medicalRecord")
+        .leftJoinAndSelect("medicalRecord.patient", "patient")
+        .leftJoinAndSelect("medicalRecord.examRoom", "examRoom")
+        .where("medicalRecord.paid = :paid", { paid: false })
+        .andWhere("examRoom.examDate = :currentDate", {
+          currentDate,
+        })
         .getMany();
 
       return medicalRecords;
@@ -257,6 +285,40 @@ class RecordRepository {
     });
     console.log("Image uploaded:", result);
     return result.url;
+  }
+
+  async getSalaryForDoctor(doctor, month) {
+    try {
+      const startDate = new Date(`2024-${month}-01`);
+      const endDate = new Date(startDate);
+      endDate.setMonth(endDate.getMonth() + 1);
+
+      const status = Status.FINISHED;
+
+      const result = await this.#repository
+        .createQueryBuilder("medicalRecord")
+        .select("COUNT(medicalRecord.id)", "totalPatients")
+        .addSelect("doctor.type", "doctorType")
+        .leftJoin("medicalRecord.examRoom", "examRoom")
+        .leftJoin("examRoom.doctor", "doctor")
+        .where("doctor.id = :doctorId", { doctorId: doctor.id })
+        .andWhere("medicalRecord.status = :status", { status })
+        .andWhere("examRoom.examDate >= :startDate", { startDate })
+        .andWhere("examRoom.examDate < :endDate", { endDate })
+        .groupBy("doctor.type")
+        .getRawOne();
+
+      if (!result) {
+        return {
+          doctorType: doctor.type,
+          totalPatients: "0",
+        };
+      }
+      return result;
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      throw error;
+    }
   }
 }
 

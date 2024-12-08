@@ -52,6 +52,35 @@ class ExamRoomRepository {
   async getCount() {
     return await this.#repository.count();
   }
+
+  async getDoctorSchedule(phoneNumber, date) {
+    try {
+      const examDate = new Date(date);
+      const schedules = await this.#repository
+        .createQueryBuilder("examRoom")
+        .select([
+          "examRoom.roomNumber",
+          "examRoom.examTime",
+          "examRoom.maxPatients",
+          "examRoom.currentPatients",
+        ])
+        .leftJoin("examRoom.doctor", "doctor")
+        .leftJoin("doctor.user", "user")
+        .where("user.phoneNumber = :phoneNumber", { phoneNumber })
+        .andWhere("examRoom.examTime >= '07:00:00'")
+        .andWhere("examRoom.examTime <= '15:00:00'")
+        .andWhere("DATE_FORMAT(examRoom.examDate, '%Y-%m-%d') = :examDate", {
+          examDate: examDate.toISOString().split("T")[0],
+        })
+
+        .getRawMany();
+
+      return schedules;
+    } catch (error) {
+      console.error("Error fetching doctor schedule:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = ExamRoomRepository;

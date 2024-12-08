@@ -34,6 +34,12 @@ router.get("/id", UserMiddleware.authenticationTokenUser, (req, res) =>
 router.get("/recordCode", UserMiddleware.authenticationTokenUser, (req, res) =>
   recordController.getRecordByRecordCode(req, res)
 );
+router.get("/doctor", UserMiddleware.authenticationTokenDoctor, (req, res) =>
+  recordController.getRecordsByDoctor(req, res)
+);
+router.get("/staff", UserMiddleware.authenticationTokenStaff, (req, res) =>
+  recordController.getRecordsByStaff(req, res)
+);
 router.post(
   "/",
   UserMiddleware.authenticationTokenDoctor,

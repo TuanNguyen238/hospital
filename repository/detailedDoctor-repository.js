@@ -1,5 +1,6 @@
 const AppDataSource = require("../utils/database.js");
 const DetailDoctor = require("../models/detailed-doctor.js");
+const Status = require("../enum/status.js");
 
 class DetailDoctorRepository {
   #repository;
@@ -21,6 +22,13 @@ class DetailDoctorRepository {
 
   async getAllDoctor() {
     return await this.#repository.find({
+      relations: ["user"],
+    });
+  }
+
+  async getDoctorByPhoneNumber(phoneNumber) {
+    return await this.#repository.findOne({
+      where: { user: { phoneNumber: phoneNumber } },
       relations: ["user"],
     });
   }
