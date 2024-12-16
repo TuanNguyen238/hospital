@@ -21,7 +21,9 @@ class ExamRoomRepository {
   }
 
   async getAllExamRoom() {
-    return await this.#repository.find();
+    return await this.#repository.find({
+      relations: ["doctor.user"],
+    });
   }
 
   async getRoomById(id) {
